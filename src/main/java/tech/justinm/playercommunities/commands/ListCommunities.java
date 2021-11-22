@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import tech.justinm.playercommunities.PlayerCommunities;
 import tech.justinm.playercommunities.base.Community;
 
+import java.util.Collections;
 import java.util.List;
 
 public class ListCommunities implements CommandExecutor {
@@ -23,6 +24,7 @@ public class ListCommunities implements CommandExecutor {
             if (sender instanceof Player) {
                 Player player = (Player) sender;
                 List<Community> communityList = plugin.getCommunities();
+                Collections.sort(communityList);
                 player.sendMessage(communityList.toString());
                 return true;
             }

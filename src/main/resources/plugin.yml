@@ -25,3 +25,20 @@ commands:
   pcwarp:
     description: Warp to a community warp!
     usage: "Usage:/pcwarp <warpName>"
+
+  pcsetdesc:
+    description: Set your community's description!
+    usage: "Usage:/pcsetdesc <description>"
+
+  pcinfo:
+    description: View a community's public info.
+    usage: "Usage:/pcinfo <communityName>"
+
+  pcinvite:
+    description: Invite players to your community!
+    usage: "Usage:/pcinvite <player>"
+
+  pcaccept:
+    description: Accept an invite to another community!
+    usage: "Usage:/pcaccept <player>"
+

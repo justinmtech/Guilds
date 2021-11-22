@@ -1,12 +1,11 @@
 package tech.justinm.playercommunities.base;
 
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Community {
+public class Community implements Comparable<Community>{
     private String name;
     private Player owner;
     private String description;
@@ -32,6 +31,7 @@ public class Community {
     public Community(String name, Player owner) {
         this.name = name;
         this.owner = owner;
+        this.description = "Default description :(";
         this.members = new ArrayList<>();
         this.warps = new ArrayList<>();
     }
@@ -56,6 +56,29 @@ public class Community {
         return members;
     }
 
+    public boolean isOwner(Player player) {
+        if (player.equals(owner)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean containsMember(Player player) {
+        if (members.contains(player)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean containsWarp(String name) {
+        if (warps.stream().anyMatch(w -> w.getName().equalsIgnoreCase(name))) {
+            return true;
+        }
+        return false;
+    }
+
     public void setMembers(List<Player> members) {
         this.members = members;
     }
@@ -78,6 +101,15 @@ public class Community {
 
     @Override
     public String toString() {
-        return name;
+        return "Community: " + name + ", Members: " + members.size() + ", Description: [" + description + "], " + "Warps: " + warps.size();
+    }
+
+    @Override
+    public int compareTo(Community o) {
+        if (this.members.size() > o.getMembers().size()) {
+            return 1;
+        } else {
+            return -1;
+        }
     }
 }
