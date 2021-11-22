@@ -1,0 +1,27 @@
+name: PlayerCommunities
+version: '${project.version}'
+main: tech.justinm.playercommunities.PlayerCommunities
+api-version: 1.17
+authors: [ justinmtech ]
+description: A plugin that allows players to create their own goal-oriented communities to inspire cooperation and socializing.
+website: https://justinm.tech
+commands:
+  pccreate:
+    description: Create a new commmunity!
+    usage: "Usage:/pccreate <communityName>"
+
+  pclist:
+    description: List all communities!
+    usage: "Usage:/pclist"
+
+  pcdelete:
+    description: Delete your community!
+    usage: "Usage:/pcdelete <communityName>"
+
+  pcsetwarp:
+    description: Set a community warp!
+    usage: "Usage:/pcsetwarp <warpName>"
+
+  pcwarp:
+    description: Warp to a community warp!
+    usage: "Usage:/pcwarp <warpName>"
