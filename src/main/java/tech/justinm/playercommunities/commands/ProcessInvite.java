@@ -5,7 +5,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import tech.justinm.playercommunities.PlayerCommunities;
-import tech.justinm.playercommunities.base.Invite;
+import tech.justinm.playercommunities.core.Invite;
 
 import java.util.List;
 

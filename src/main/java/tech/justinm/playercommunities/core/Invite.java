@@ -1,4 +1,4 @@
-package tech.justinm.playercommunities.base;
+package tech.justinm.playercommunities.core;
 
 import org.bukkit.entity.Player;
 

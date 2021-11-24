@@ -1,8 +1,8 @@
 package tech.justinm.playercommunities;
 
 import org.bukkit.plugin.java.JavaPlugin;
-import tech.justinm.playercommunities.base.Community;
-import tech.justinm.playercommunities.base.Invite;
+import tech.justinm.playercommunities.core.Community;
+import tech.justinm.playercommunities.core.Invite;
 import tech.justinm.playercommunities.commands.*;
 
 import java.util.ArrayList;

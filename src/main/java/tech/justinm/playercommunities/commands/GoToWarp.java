@@ -5,8 +5,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import tech.justinm.playercommunities.PlayerCommunities;
-import tech.justinm.playercommunities.base.Community;
-import tech.justinm.playercommunities.base.Warp;
+import tech.justinm.playercommunities.core.Community;
+import tech.justinm.playercommunities.core.Warp;
 
 public class GoToWarp implements CommandExecutor {
     private PlayerCommunities plugin;
