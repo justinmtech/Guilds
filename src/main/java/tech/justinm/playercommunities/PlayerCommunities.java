@@ -14,13 +14,9 @@ public final class PlayerCommunities extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // Plugin startup logic
-
-        //Get community data from persistent data storage
         communities = new ArrayList<>();
         invites = new ArrayList<>();
 
-        System.out.println("PlayerCommunities enabled!");
         this.getCommand("pccreate").setExecutor(new CreateCommunity(this));
         this.getCommand("pclist").setExecutor(new ListCommunities(this));
         this.getCommand("pcdelete").setExecutor(new DeleteCommunity(this));
@@ -31,11 +27,13 @@ public final class PlayerCommunities extends JavaPlugin {
         this.getCommand("pcinvite").setExecutor(new InvitePlayer(this));
         this.getCommand("pcaccept").setExecutor(new ProcessInvite(this));
 
+        System.out.println("PlayerCommunities enabled!");
     }
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        communities.clear();
+        invites.clear();
         System.out.println("PlayerCommunities disabled!");
     }
 
