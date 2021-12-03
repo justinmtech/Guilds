@@ -6,14 +6,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import tech.justinm.playercommunities.PlayerCommunities;
 import tech.justinm.playercommunities.core.Community;
-import tech.justinm.playercommunities.core.Invite;
 
 public class ProcessInvite implements CommandExecutor {
-    private PlayerCommunities plugin;
-    private Invite invite;
-    private Community community;
-    private Player player2;
-    private String communityName;
+    private final PlayerCommunities plugin;
 
     public ProcessInvite(PlayerCommunities plugin) {
         this.plugin = plugin;
@@ -22,41 +17,27 @@ public class ProcessInvite implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (label.equalsIgnoreCase("pcaccept")) {
-            if (sender instanceof Player) {
-                player2 = (Player) sender;
-                communityName = args[0];
+            if (sender instanceof Player && args.length == 1) {
+                Player player2 = (Player) sender;
+                String communityName = args[0];
+                boolean invited = plugin.getInvites().stream().anyMatch(i -> i.getReceiver().equals(player2) &&
+                        i.getCommunity().getName().equalsIgnoreCase(communityName));
+                boolean communityExists = plugin.getCommunities().stream().anyMatch(c -> c.getName().equalsIgnoreCase(communityName));
 
-                if (inviteExists() && communityExists()) {
+                if (invited && communityExists) {
+                    Community community = plugin.getCommunities().stream()
+                            .filter(c -> c.getName().equalsIgnoreCase(communityName)).findAny().orElseThrow(NullPointerException::new);
                     community.getMembers().add(player2);
                     player2.sendMessage("You joined " + community.getName() + "!");
-                    invite.getSender().sendMessage(player2.getName() + " joined your community!");
+                    community.getOwner().sendMessage(player2.getName() + " joined your community!");
                 } else {
-                    player2.sendMessage("That community does not exist anymore!");
+                    if (communityName == null) player2.sendMessage("Please use the correct syntax! /pcaccept <community>");
+                    if (!invited) player2.sendMessage("You do not have a pending invite from " + communityName + ".");
+                    if (!communityExists) player2.sendMessage(communityName + " does not exist anymore!");
                 }
                 return true;
                 }
             }
         return false;
-    }
-
-    private boolean inviteExists() {
-        try {
-            invite = plugin.getInvites().stream().filter(i -> i.getReceiver().equals(player2) &&
-                    i.getCommunity().getName().equalsIgnoreCase(communityName)).findAny().orElseThrow(NullPointerException::new);
-            return true;
-        } catch (NullPointerException e) {
-            player2.sendMessage("No invite found from that community!");
-            return false;
-        }
-    }
-
-    private boolean communityExists() {
-        try {
-            community = invite.getCommunity();
-            return plugin.getCommunities().stream().anyMatch(c -> c.equals(community));
-        } catch (NullPointerException e) {
-            player2.sendMessage(communityName + " not found!");
-            return false;
-        }
     }
 }
