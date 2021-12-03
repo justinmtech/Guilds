@@ -1,69 +1,115 @@
 package tech.justinm.playercommunities.persistence;
 
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import tech.justinm.playercommunities.PlayerCommunities;
 import tech.justinm.playercommunities.core.Community;
+import tech.justinm.playercommunities.core.Invite;
 
+import java.io.File;
 import java.util.List;
 
 public class FlatfileDataHandler implements ManageData {
     private final PlayerCommunities plugin;
-    private Community community;
     private List<Community> communities;
+    private List<Invite> invites;
 
-    public FlatfileDataHandler(PlayerCommunities plugin, Community community, List<Community> communities) {
+    public FlatfileDataHandler(PlayerCommunities plugin) {
         this.plugin = plugin;
-        this.community = community;
-        this.communities = communities;
-    }
-
-    public FlatfileDataHandler(PlayerCommunities plugin, Community community) {
-        this.plugin = plugin;
-        this.community = community;
-    }
-
-    public FlatfileDataHandler(PlayerCommunities plugin, List<Community> communities) {
-        this.plugin = plugin;
-        this.communities = communities;
     }
 
 
     @Override
-    public Community getCommunity(String name) {
-        //Get community by name from data storage file
-        return null;
-    }
-
-    @Override
-    public List<Community> getALlCommunities() {
-        //Return a list of communities from the data storage file
-        return null;
-    }
-
-    @Override
-    public void createCommunity(Community community) {
-        //Create a new community in the data storage file IF it does not already exist
+    public boolean setup() {
         try {
-            if (!plugin.getDataFolder().exists()) {
-                if (plugin.getDataFolder().createNewFile()) {
-                }
+            File file = new File("plugins//PlayerCommunities//data");
+            if (!file.exists()) {
+            return file.mkdir();
             }
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
     }
 
     @Override
-    public void updateCommunity(Community community) {
-
+    public Community getCommunity(Player player) {
+        return communities.stream().filter(c -> c.getMembers().contains(player)).findAny().orElseThrow(NullPointerException::new);
     }
 
     @Override
-    public void deleteCommunity(Community community) {
-
+    public Community getCommunity(Player player, String name) {
+        return communities.stream().filter(c -> c.getMembers().contains(player)
+                && c.getName().equalsIgnoreCase(name)).findAny().orElseThrow(NullPointerException::new);
     }
 
     @Override
-    public void saveAllCommunities() {
+    public List<Community> getALlCommunities() {
+        return communities;
+    }
 
+    @Override
+    public boolean saveCommunity(Community community) {
+        try {
+            File file = new File("plugins//PlayerCommunities//data//" + community.getName());
+                if (!file.exists()) {
+                    file.createNewFile();
+                }
+            FileConfiguration config = YamlConfiguration.loadConfiguration(file);
+            config.set("name", community.getName());
+            config.set("description", community.getDescription());
+            config.set("members", community.getMembers());
+            config.set("warps", community.getWarps());
+            config.save(file);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean saveAllCommunities(List<Community> communities) {
+        try {
+            for (Community community : communities) {
+                saveCommunity(community);
+            }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean loadCommunity(Player player) {
+        return false;
+    }
+
+    @Override
+    public boolean loadAllCommunities() {
+        return false;
+    }
+
+    @Override
+    public boolean deleteCommunity(Community community) {
+        return false;
+    }
+
+    @Override
+    public Invite getInvite(Player receiver) {
+        return null;
+    }
+
+    @Override
+    public List<Invite> getAllInvites() {
+        return null;
+    }
+
+    @Override
+    public boolean deleteInvite(Invite invite) {
+        return false;
     }
 }

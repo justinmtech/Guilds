@@ -1,24 +1,28 @@
 package tech.justinm.playercommunities.core;
 
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Player;
 
-public class Invite {
+import java.util.HashMap;
+import java.util.Map;
+
+public class Invite implements ConfigurationSerializable {
     private Player sender;
     private Player receiver;
     private Community community;
-    private boolean confirmed;
-    private boolean expired;
 
     public Invite(Player sender, Player receiver, Community community) {
         this.sender = sender;
         this.receiver = receiver;
         this.community = community;
-        this.confirmed = false;
     }
 
-    public boolean isExpired() {
-        return expired;
+    public Invite(Map<String, Object> serializedMap) {
+        sender = (Player) serializedMap.get("sender");
+        receiver = (Player) serializedMap.get("receiver");
+        community = (Community) serializedMap.get("community");
     }
+
 
     public Community getCommunity() {
         return community;
@@ -26,10 +30,6 @@ public class Invite {
 
     public void setCommunity(Community community) {
         this.community = community;
-    }
-
-    public void setExpired(boolean expired) {
-        this.expired = expired;
     }
 
     public Player getSender() {
@@ -48,11 +48,14 @@ public class Invite {
         this.receiver = receiver;
     }
 
-    public boolean isConfirmed() {
-        return confirmed;
-    }
+    @Override
+    public Map<String, Object> serialize() {
+        HashMap<String, Object> serializableMap = new HashMap<>();
 
-    public void setConfirmed(boolean confirmed) {
-        this.confirmed = confirmed;
+        serializableMap.put("sender", sender);
+        serializableMap.put("receiver", receiver);
+        serializableMap.put("community", community);
+
+        return serializableMap;
     }
 }

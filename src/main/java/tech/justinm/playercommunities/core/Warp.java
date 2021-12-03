@@ -1,8 +1,12 @@
 package tech.justinm.playercommunities.core;
 
 import org.bukkit.Location;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
-public class Warp {
+import java.util.HashMap;
+import java.util.Map;
+
+public class Warp implements ConfigurationSerializable {
     private String name;
     private String description;
     private Location location;
@@ -16,6 +20,12 @@ public class Warp {
     public Warp(String name, Location location) {
         this.name = name;
         this.location = location;
+    }
+
+    public Warp(Map<String, Object> serializedMap) {
+        name = (String) serializedMap.get("name");
+        description = (String) serializedMap.get("description");
+        location = (Location) serializedMap.get("location");
     }
 
     public String getName() {
@@ -40,5 +50,16 @@ public class Warp {
 
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    @Override
+    public Map<String, Object> serialize() {
+        HashMap<String, Object> serializableMap = new HashMap<>();
+
+        serializableMap.put("name", name);
+        serializableMap.put("description", description);
+        serializableMap.put("location", location);
+
+        return serializableMap;
     }
 }

@@ -1,11 +1,14 @@
 package tech.justinm.playercommunities.core;
 
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class Community implements Comparable<Community>{
+public class Community implements Comparable<Community>, ConfigurationSerializable {
     private String name;
     private Player owner;
     private String description;
@@ -34,6 +37,14 @@ public class Community implements Comparable<Community>{
         this.description = "Default description :(";
         this.members = new ArrayList<>();
         this.warps = new ArrayList<>();
+    }
+
+    public Community(Map<String, Object> serializedMap) {
+        name = (String) serializedMap.get("name");
+        owner = (Player) serializedMap.get("owner");
+        description = (String) serializedMap.get("description");
+        members = (List<Player>) serializedMap.get("members");
+        warps = (List<Warp>) serializedMap.get("warps");
     }
 
     public String getName() {
@@ -111,5 +122,17 @@ public class Community implements Comparable<Community>{
         } else {
             return -1;
         }
+    }
+
+    @Override
+    public Map<String, Object> serialize() {
+        HashMap<String,Object> mapSerializer = new HashMap<>();
+
+        mapSerializer.put("name", name);
+        mapSerializer.put("owner", owner);
+        mapSerializer.put("description", description);
+        mapSerializer.put("members", members);
+        mapSerializer.put("warps", warps);
+        return mapSerializer;
     }
 }
