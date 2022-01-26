@@ -31,21 +31,17 @@ public class Community implements Comparable<Community> {
         this.owner = ownerId;
         this.description = description;
         this.members = memberUuids;
-        //((JSONArray) warps).forEach(warp -> _addWarps((JSONObject) warp));
+        ((JSONArray) warps).forEach(warp -> _addWarps((JSONObject) warp));
     }
 
     private void _addWarps(JSONObject warp) {
             String name = (String) warp.get("name");
-            String description = (String) warp.get("description");
             String world = (String) warp.get("world");
-
             double x = (Double) warp.get("x");
             double y = (Double) warp.get("y");
             double z = (Double) warp.get("z");
             double yaw = (Double) warp.get("yaw");
             double pitch = (Double) warp.get("pitch");
-
-            //this.warps.add(new Warp(name, description, world, x, y, z, (float) yaw, (float) pitch));
             this.warps.put(name, new Location(Bukkit.getWorld(world), x, y, z, (float) yaw, (float) pitch));
     }
 
