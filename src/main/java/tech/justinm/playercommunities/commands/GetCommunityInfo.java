@@ -8,7 +8,7 @@ import tech.justinm.playercommunities.PlayerCommunities;
 import tech.justinm.playercommunities.core.Community;
 
 public class GetCommunityInfo implements CommandExecutor {
-    private PlayerCommunities plugin;
+    private final PlayerCommunities plugin;
 
     public GetCommunityInfo(PlayerCommunities plugin) {
         this.plugin = plugin;

@@ -8,7 +8,7 @@ import tech.justinm.playercommunities.PlayerCommunities;
 import tech.justinm.playercommunities.core.Community;
 
 public class GoToWarp implements CommandExecutor {
-    private PlayerCommunities plugin;
+    private final PlayerCommunities plugin;
 
     public GoToWarp(PlayerCommunities plugin) {
         this.plugin = plugin;

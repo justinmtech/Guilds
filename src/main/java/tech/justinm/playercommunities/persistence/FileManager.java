@@ -1,6 +1,5 @@
 package tech.justinm.playercommunities.persistence;
 
-import org.bukkit.entity.Player;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -54,12 +53,7 @@ public class FileManager implements ManageData {
     }
 
     @Override
-    public boolean saveCommunity(Community community) {
-        return false;
-    }
-
-    @Override
-    public boolean saveAllCommunities(List<Community> communities) {
+    public void saveAllCommunities(List<Community> communities) {
         FileWriter file = null;
 
         JSONArray communitiesArray = new JSONArray();
@@ -74,7 +68,6 @@ public class FileManager implements ManageData {
             file.write(communitiesArray.toJSONString());
         } catch (IOException e) {
             e.printStackTrace();
-            return false;
         } finally {
             try {
                 file.flush();
@@ -83,16 +76,10 @@ public class FileManager implements ManageData {
                 e.printStackTrace();
             }
         }
-        return true;
     }
 
     @Override
-    public boolean loadCommunity(Player player) {
-        return false;
-    }
-
-    @Override
-    public boolean loadAllCommunities() {
+    public void loadAllCommunities() {
         try {
             FileReader reader = new FileReader(plugin.getDataFolder().getAbsolutePath() + "//communities.json");
             Object object = new JSONParser().parse(reader);
@@ -100,7 +87,6 @@ public class FileManager implements ManageData {
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
-        return true;
     }
 
     private void _addCommunity(JSONObject communities) {
@@ -112,13 +98,12 @@ public class FileManager implements ManageData {
         List<UUID> members = (List<UUID>) community.get("members");
         List<Object> warps = (List<Object>) community.get("warps");
 
-        Community communityObject2 = new Community(name, ownerId, description, members, warps);
-        this.communities.add(communityObject2);
+        this.communities.add(new Community(name, ownerId, description, members, warps));
     }
 
     @Override
-    public boolean deleteCommunity(String communityName) {
-        return communities.remove(communityName);
+    public void deleteCommunity(String communityName) {
+        communities.remove(communityName);
     }
 
     @Override

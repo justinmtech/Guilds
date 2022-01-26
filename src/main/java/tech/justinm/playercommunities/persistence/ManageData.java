@@ -1,12 +1,7 @@
 package tech.justinm.playercommunities.persistence;
 
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import tech.justinm.playercommunities.core.Community;
-import tech.justinm.playercommunities.core.Invite;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,11 +11,9 @@ public interface ManageData {
     Community getCommunity(String name);
     List<Community> getAllCommunities();
     void createCommunity(UUID owner, String name);
-    boolean saveCommunity(Community community);
-    boolean saveAllCommunities(List<Community> communities) throws IOException;
-    boolean loadCommunity(Player player);
-    boolean loadAllCommunities() throws FileNotFoundException;
-    boolean deleteCommunity(String communityName);
+    void saveAllCommunities(List<Community> communities);
+    void loadAllCommunities();
+    void deleteCommunity(String communityName);
     String getInvite(UUID receiver);
     void deleteInvite(UUID receiver);
     void createInvite(UUID receiver, String communityName);

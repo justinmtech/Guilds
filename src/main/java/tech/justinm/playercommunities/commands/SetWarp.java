@@ -6,12 +6,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import tech.justinm.playercommunities.PlayerCommunities;
 import tech.justinm.playercommunities.core.Community;
-import tech.justinm.playercommunities.core.Warp;
-
-//TODO error handling
 
 public class SetWarp implements CommandExecutor {
-    private PlayerCommunities plugin;
+    private final PlayerCommunities plugin;
 
     public SetWarp(PlayerCommunities plugin) {
         this.plugin = plugin;

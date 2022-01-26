@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import tech.justinm.playercommunities.PlayerCommunities;
 
 public class SetDescription implements CommandExecutor {
-    private PlayerCommunities plugin;
+    private final PlayerCommunities plugin;
 
     public SetDescription(PlayerCommunities plugin) {
         this.plugin = plugin;
@@ -21,8 +21,8 @@ public class SetDescription implements CommandExecutor {
 
                 try {
                     StringBuilder desc = new StringBuilder();
-                    for (int i = 0; i < args.length; i++) {
-                        desc.append(args[i]).append(" ");
+                    for (String arg : args) {
+                        desc.append(arg).append(" ");
                     }
                     //Check perms other than is member
                     plugin.getData().getCommunity(player.getUniqueId()).setDescription(desc.toString().trim());

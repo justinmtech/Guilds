@@ -2,7 +2,6 @@ package tech.justinm.playercommunities.core;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -70,8 +69,8 @@ public class Community implements Comparable<Community> {
         return playerUuid.equals(owner);
     }
 
-    public boolean containsMember(Player player) {
-        return members.contains(player);
+    public boolean containsMember(UUID playerUuid) {
+        return members.contains(playerUuid);
     }
 
     public boolean containsWarp(String name) {

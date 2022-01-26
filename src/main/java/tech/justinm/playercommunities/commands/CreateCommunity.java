@@ -5,10 +5,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import tech.justinm.playercommunities.PlayerCommunities;
-import tech.justinm.playercommunities.core.Community;
 
 public class CreateCommunity implements CommandExecutor {
-    private PlayerCommunities plugin;
+    private final PlayerCommunities plugin;
 
     public CreateCommunity(PlayerCommunities plugin) {
         this.plugin = plugin;
