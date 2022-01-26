@@ -24,15 +24,13 @@ public class Community implements Comparable<Community> {
         this.warps = new HashMap<>();
     }
 
-    public Community(String name, String ownerId, String description, List<String> memberUuids, Object warps) {
+    public Community(String name, UUID ownerId, String description, List<UUID> memberUuids, Object warps) {
         this.members = new LinkedList<>();
         this.warps = new HashMap<>();
         this.name = name;
-        this.owner = UUID.fromString(ownerId);
+        this.owner = ownerId;
         this.description = description;
-        for (String member : memberUuids) {
-            members.add(UUID.fromString(member));
-        }
+        this.members = memberUuids;
         //((JSONArray) warps).forEach(warp -> _addWarps((JSONObject) warp));
     }
 
@@ -111,7 +109,27 @@ public class Community implements Comparable<Community> {
         json.put("owner", owner);
         json.put("description", description);
         json.put("members", members);
-        json.put("warps", warps);
+        JSONArray warpArray = new JSONArray();
+        for (String key : warps.keySet()) {
+            Location location = warps.get(key);
+            String world = location.getWorld().getName();
+            double x = location.getX();
+            double y = location.getY();
+            double z = location.getZ();
+            double yaw = location.getYaw();
+            double pitch = location.getPitch();
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("name", key);
+            jsonObject.put("world", world);
+            jsonObject.put("x", x);
+            jsonObject.put("y", y);
+            jsonObject.put("z", z);
+            jsonObject.put("yaw", yaw);
+            jsonObject.put("pitch", pitch);
+            warpArray.add(jsonObject);
+        }
+        json.put("warps", warpArray);
         return json.toString();
     }
 
