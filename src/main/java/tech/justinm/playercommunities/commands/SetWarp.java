@@ -26,7 +26,7 @@ public class SetWarp implements CommandExecutor {
                     String warpName = args[0];
                     Community community = plugin.getData().getCommunity(player.getUniqueId());
                     if (community.isOwner(player.getUniqueId())) {
-                        community.getWarps().add(new Warp(warpName, player.getLocation()));
+                        community.getWarps().put(warpName, player.getLocation());
                         player.sendMessage("You set a warp called " + warpName + " at your location!");
                     } else {
                         player.sendMessage("Something went wrong!");

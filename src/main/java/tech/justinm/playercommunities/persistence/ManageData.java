@@ -20,9 +20,9 @@ public interface ManageData {
     boolean saveAllCommunities(List<Community> communities) throws IOException;
     boolean loadCommunity(Player player);
     boolean loadAllCommunities() throws FileNotFoundException;
-    boolean deleteCommunity(Community community);
-    Invite getInvite(Player receiver);
-    List<Invite> getAllInvites();
-    boolean deleteInvite(Invite invite);
+    boolean deleteCommunity(String communityName);
+    String getInvite(UUID receiver);
+    void deleteInvite(UUID receiver);
+    void createInvite(UUID receiver, String communityName);
 
 }

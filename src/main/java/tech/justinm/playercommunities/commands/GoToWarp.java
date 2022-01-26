@@ -6,7 +6,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import tech.justinm.playercommunities.PlayerCommunities;
 import tech.justinm.playercommunities.core.Community;
-import tech.justinm.playercommunities.core.Warp;
 
 public class GoToWarp implements CommandExecutor {
     private PlayerCommunities plugin;
@@ -24,10 +23,9 @@ public class GoToWarp implements CommandExecutor {
                     Player player = (Player) sender;
                     String warpName = args[0];
 
-                    Community community = plugin.getData().getAllCommunities().stream().filter(c -> c.getMembers().contains(player)).findFirst().orElseThrow(null);
-                    if (community.getMembers().contains(player) && community.getWarps().stream().anyMatch(w -> w.getName().equalsIgnoreCase(warpName))) {
-                        Warp warp = community.getWarps().stream().filter(w -> w.getName().equalsIgnoreCase(warpName)).findFirst().orElseThrow(null);
-                        player.teleport(warp.getLocation());
+                    Community community = plugin.getData().getCommunity(player.getUniqueId());
+                    if (community.getWarps().containsKey(warpName)) {
+                        player.teleport(community.getWarps().get(warpName));
                         player.sendMessage("You were teleported to " + warpName + "!");
                         return true;
                     } else {

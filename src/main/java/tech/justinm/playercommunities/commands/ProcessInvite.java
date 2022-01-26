@@ -21,13 +21,11 @@ public class ProcessInvite implements CommandExecutor {
             if (sender instanceof Player && args.length == 1) {
                 Player player2 = (Player) sender;
                 String communityName = args[0];
-                boolean invited = plugin.getData().getAllInvites().stream().anyMatch(i -> i.getReceiver().equals(player2) &&
-                        i.getCommunity().getName().equalsIgnoreCase(communityName));
-                boolean communityExists = plugin.getData().getAllCommunities().stream().anyMatch(c -> c.getName().equalsIgnoreCase(communityName));
+                boolean invited = plugin.getData().getInvite(player2.getUniqueId()).equalsIgnoreCase(communityName);
+                Community community = plugin.getData().getCommunity(communityName);
+                boolean communityExists = plugin.getData().getCommunity(communityName) != null;
 
                 if (invited && communityExists) {
-                    Community community = plugin.getData().getAllCommunities().stream()
-                            .filter(c -> c.getName().equalsIgnoreCase(communityName)).findAny().orElseThrow(NullPointerException::new);
                     community.getMembers().add(player2.getUniqueId());
                     player2.sendMessage("You joined " + community.getName() + "!");
                     if (Bukkit.getPlayer(community.getOwner()) != null) Bukkit.getPlayer(community.getOwner()).sendMessage(player2.getName() + " joined your community!");

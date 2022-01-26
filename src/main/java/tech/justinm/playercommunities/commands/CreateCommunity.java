@@ -21,7 +21,7 @@ public class CreateCommunity implements CommandExecutor {
             if (sender instanceof Player) {
                 Player player = (Player) sender;
                 String name = args[0];
-                plugin.getData().getAllCommunities().add(new Community(player.getUniqueId(), name));
+                plugin.getData().createCommunity(player.getUniqueId(), name);
                 player.sendMessage("You created a community!");
                 return true;
             }

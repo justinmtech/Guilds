@@ -1,3 +1,4 @@
+/*
 package tech.justinm.playercommunities.core;
 
 import org.bukkit.Bukkit;
@@ -68,3 +69,4 @@ public class Warp {
         return json.toString();
     }
 }
+*/

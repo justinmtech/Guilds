@@ -18,20 +18,18 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public class FileManager implements ManageData {
     private final PlayerCommunities plugin;
     private final List<Community> communities;
-    private final List<Invite> invites;
+    //private final List<Invite> invites;
+    private final Map<UUID, String> invites;
 
     public FileManager(PlayerCommunities plugin) {
         this.plugin = plugin;
         this.communities = new LinkedList<>();
-        this.invites = new LinkedList<>();
+        this.invites = new HashMap<>();
     }
 
 
@@ -139,22 +137,22 @@ public class FileManager implements ManageData {
     }
 
     @Override
-    public boolean deleteCommunity(Community community) {
-        return communities.remove(community);
+    public boolean deleteCommunity(String communityName) {
+        return communities.remove(communityName);
     }
 
     @Override
-    public Invite getInvite(Player receiver) {
-        return invites.stream().filter(i -> i.getReceiver().equals(receiver)).findFirst().orElseThrow(NullPointerException::new);
+    public String getInvite(UUID receiver) {
+        return invites.get(receiver);
     }
 
     @Override
-    public List<Invite> getAllInvites() {
-        return invites;
+    public void createInvite(UUID receiver, String communityName) {
+        invites.put(receiver, communityName);
     }
 
     @Override
-    public boolean deleteInvite(Invite invite) {
-        return invites.remove(invite);
+    public void deleteInvite(UUID receiver) {
+        invites.remove(receiver);
     }
 }
