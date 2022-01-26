@@ -21,7 +21,7 @@ public class GetCommunityInfo implements CommandExecutor {
 
             try {
                 String communityName = args[0];
-                Community community = plugin.getCommunities().stream().filter(c -> c.getName().equalsIgnoreCase(communityName)).findAny().orElseThrow(NullPointerException::new);
+                Community community = plugin.getData().getAllCommunities().stream().filter(c -> c.getName().equalsIgnoreCase(communityName)).findAny().orElseThrow(NullPointerException::new);
                 player.sendMessage(community.toString());
                 return true;
 

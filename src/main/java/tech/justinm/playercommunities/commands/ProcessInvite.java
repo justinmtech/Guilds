@@ -1,5 +1,6 @@
 package tech.justinm.playercommunities.commands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -20,16 +21,16 @@ public class ProcessInvite implements CommandExecutor {
             if (sender instanceof Player && args.length == 1) {
                 Player player2 = (Player) sender;
                 String communityName = args[0];
-                boolean invited = plugin.getInvites().stream().anyMatch(i -> i.getReceiver().equals(player2) &&
+                boolean invited = plugin.getData().getAllInvites().stream().anyMatch(i -> i.getReceiver().equals(player2) &&
                         i.getCommunity().getName().equalsIgnoreCase(communityName));
-                boolean communityExists = plugin.getCommunities().stream().anyMatch(c -> c.getName().equalsIgnoreCase(communityName));
+                boolean communityExists = plugin.getData().getAllCommunities().stream().anyMatch(c -> c.getName().equalsIgnoreCase(communityName));
 
                 if (invited && communityExists) {
-                    Community community = plugin.getCommunities().stream()
+                    Community community = plugin.getData().getAllCommunities().stream()
                             .filter(c -> c.getName().equalsIgnoreCase(communityName)).findAny().orElseThrow(NullPointerException::new);
-                    community.getMembers().add(player2);
+                    community.getMembers().add(player2.getUniqueId());
                     player2.sendMessage("You joined " + community.getName() + "!");
-                    community.getOwner().sendMessage(player2.getName() + " joined your community!");
+                    if (Bukkit.getPlayer(community.getOwner()) != null) Bukkit.getPlayer(community.getOwner()).sendMessage(player2.getName() + " joined your community!");
                 } else {
                     if (communityName == null) player2.sendMessage("Please use the correct syntax! /pcaccept <community>");
                     if (!invited) player2.sendMessage("You do not have a pending invite from " + communityName + ".");

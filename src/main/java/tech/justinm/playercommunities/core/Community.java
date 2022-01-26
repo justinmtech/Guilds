@@ -1,50 +1,72 @@
 package tech.justinm.playercommunities.core;
 
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-public class Community implements Comparable<Community>, ConfigurationSerializable {
+public class Community implements Comparable<Community> {
     private String name;
-    private Player owner;
+    private UUID owner;
     private String description;
-    private List<Player> members;
+    private List<UUID> members;
     private List<Warp> warps;
 
-    public Community(String name, String description, List<Player> members, List<Warp> warps) {
+    public Community(UUID owner, String name) {
+        this.owner = owner;
         this.name = name;
+        this.members = new LinkedList<>();
+        members.add(owner);
+        this.warps = new LinkedList<>();
+    }
+
+    public Community(String name, String ownerId, String description, List<String> memberUuids, Object warps) {
+        this.members = new LinkedList<>();
+        this.warps = new LinkedList<>();
+        this.name = name;
+        this.owner = UUID.fromString(ownerId);
         this.description = description;
-        this.members = new ArrayList<>();
+        for (String member : memberUuids) {
+            members.add(UUID.fromString(member));
+        }
+        ((JSONArray) warps).forEach(warp -> _addWarps((JSONObject) warp));
+    }
+
+    private void _addWarps(JSONObject warp) {
+            String name = (String) warp.get("name");
+            String description = (String) warp.get("description");
+            String world = (String) warp.get("world");
+
+            double x = (Double) warp.get("x");
+            double y = (Double) warp.get("y");
+            double z = (Double) warp.get("z");
+            double yaw = (Double) warp.get("yaw");
+            double pitch = (Double) warp.get("pitch");
+
+            this.warps.add(new Warp(name, description, world, x, y, z, (float) yaw, (float) pitch));
+    }
+
+
+    public Community(String name, UUID owner, String description, List<UUID> members, List<Warp> warps) {
+        this.members = new LinkedList<>();
+        this.warps = new LinkedList<>();
+        this.name = name;
+        this.owner = owner;
+        this.description = description;
         this.members = members;
-        this.warps = new ArrayList<>();
         this.warps = warps;
     }
 
-    public Community(String name, String description) {
+    public Community(String name, String description, List<UUID> members, List<Warp> warps) {
         this.name = name;
         this.description = description;
-        this.members = new ArrayList<>();
-        this.warps = new ArrayList<>();
-    }
-
-    public Community(String name, Player owner) {
-        this.name = name;
-        this.owner = owner;
-        this.description = "Default description :(";
-        this.members = new ArrayList<>();
-        this.warps = new ArrayList<>();
-    }
-
-    public Community(Map<String, Object> serializedMap) {
-        name = (String) serializedMap.get("name");
-        owner = (Player) serializedMap.get("owner");
-        description = (String) serializedMap.get("description");
-        members = (List<Player>) serializedMap.get("members");
-        warps = (List<Warp>) serializedMap.get("warps");
+        this.members = new LinkedList<>();
+        this.members = members;
+        this.warps = new LinkedList<>();
+        this.warps = warps;
     }
 
     public String getName() {
@@ -63,34 +85,23 @@ public class Community implements Comparable<Community>, ConfigurationSerializab
         this.description = description;
     }
 
-    public List<Player> getMembers() {
+    public List<UUID> getMembers() {
         return members;
     }
 
-    public boolean isOwner(Player player) {
-        if (player.equals(owner)) {
-            return true;
-        } else {
-            return false;
-        }
+    public boolean isOwner(UUID playerUuid) {
+        return playerUuid.equals(owner);
     }
 
     public boolean containsMember(Player player) {
-        if (members.contains(player)) {
-            return true;
-        } else {
-            return false;
-        }
+        return members.contains(player);
     }
 
     public boolean containsWarp(String name) {
-        if (warps.stream().anyMatch(w -> w.getName().equalsIgnoreCase(name))) {
-            return true;
-        }
-        return false;
+        return warps.stream().anyMatch(w -> w.getName().equalsIgnoreCase(name));
     }
 
-    public void setMembers(List<Player> members) {
+    public void setMembers(List<UUID> members) {
         this.members = members;
     }
 
@@ -102,37 +113,28 @@ public class Community implements Comparable<Community>, ConfigurationSerializab
         this.warps = warps;
     }
 
-    public Player getOwner() {
+    public UUID getOwner() {
         return owner;
     }
 
-    public void setOwner(Player owner) {
+    public void setOwner(UUID owner) {
         this.owner = owner;
     }
 
     @Override
     public String toString() {
-        return "Community: " + name + ", Members: " + members.size() + ", Description: [" + description + "], " + "Warps: " + warps.size();
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("owner", owner);
+        json.put("description", description);
+        json.put("members", members);
+        json.put("warps", warps);
+        return json.toString();
     }
 
     @Override
     public int compareTo(Community o) {
-        if (this.members.size() > o.getMembers().size()) {
-            return 1;
-        } else {
-            return -1;
-        }
-    }
-
-    @Override
-    public Map<String, Object> serialize() {
-        HashMap<String,Object> mapSerializer = new HashMap<>();
-
-        mapSerializer.put("name", name);
-        mapSerializer.put("owner", owner);
-        mapSerializer.put("description", description);
-        mapSerializer.put("members", members);
-        mapSerializer.put("warps", warps);
-        return mapSerializer;
+        if (members.size() > o.getMembers().size()) return 1;
+        return -1;
     }
 }

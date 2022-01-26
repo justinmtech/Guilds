@@ -20,9 +20,9 @@ public class DeleteCommunity implements CommandExecutor {
             if (sender instanceof Player) {
                 Player player = (Player) sender;
                 String communityName = args[0];
-                Community community = plugin.getCommunities().stream().filter(c -> c.getName().equalsIgnoreCase(communityName)).findFirst().orElseThrow(null);
+                Community community = plugin.getData().getAllCommunities().stream().filter(c -> c.getName().equalsIgnoreCase(communityName)).findFirst().orElseThrow(null);
                 if (player.equals(community.getOwner())) {
-                    plugin.getCommunities().remove(community);
+                    plugin.getData().deleteCommunity(community);
                     player.sendMessage("You deleted your community!");
                     return true;
                 } else {

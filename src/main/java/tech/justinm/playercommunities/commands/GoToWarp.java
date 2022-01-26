@@ -18,15 +18,13 @@ public class GoToWarp implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-
         try {
-
             if (label.equalsIgnoreCase("pcwarp")) {
                 if (sender instanceof Player) {
                     Player player = (Player) sender;
                     String warpName = args[0];
 
-                    Community community = plugin.getCommunities().stream().filter(c -> c.getMembers().contains(player)).findFirst().orElseThrow(null);
+                    Community community = plugin.getData().getAllCommunities().stream().filter(c -> c.getMembers().contains(player)).findFirst().orElseThrow(null);
                     if (community.getMembers().contains(player) && community.getWarps().stream().anyMatch(w -> w.getName().equalsIgnoreCase(warpName))) {
                         Warp warp = community.getWarps().stream().filter(w -> w.getName().equalsIgnoreCase(warpName)).findFirst().orElseThrow(null);
                         player.teleport(warp.getLocation());

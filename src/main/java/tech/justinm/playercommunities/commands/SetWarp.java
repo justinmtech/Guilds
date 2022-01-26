@@ -22,15 +22,11 @@ public class SetWarp implements CommandExecutor {
             if (label.equalsIgnoreCase("pcsetwarp")) {
                 if (sender instanceof Player) {
                 Player player = (Player) sender;
-
                 try {
                     String warpName = args[0];
-                    Community community = plugin.getCommunities().stream().filter(c -> c.containsMember(player)).findAny().orElseThrow(NullPointerException::new);
-                    if (community.isOwner(player)) {
-                        plugin.getCommunities()
-                                .stream().filter(c -> c.getOwner().equals(player))
-                                .findAny().orElseThrow(NullPointerException::new)
-                                .getWarps().add(new Warp(warpName, player.getLocation()));
+                    Community community = plugin.getData().getCommunity(player.getUniqueId());
+                    if (community.isOwner(player.getUniqueId())) {
+                        community.getWarps().add(new Warp(warpName, player.getLocation()));
                         player.sendMessage("You set a warp called " + warpName + " at your location!");
                     } else {
                         player.sendMessage("Something went wrong!");

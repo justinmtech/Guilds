@@ -24,12 +24,12 @@ public class InvitePlayer implements CommandExecutor {
                 Player player = (Player) sender;
                 Player player2;
                 player2 = Bukkit.getPlayer(args[0]);
-                boolean senderOwnsCommunity = plugin.getCommunities().stream().anyMatch(c -> c.getOwner().equals(player));
-                boolean receiverNotInCommunity = plugin.getCommunities().stream().anyMatch(c -> c.getMembers().contains(player2));
+                boolean senderOwnsCommunity = plugin.getData().getAllCommunities().stream().anyMatch(c -> c.getOwner().equals(player));
+                boolean receiverNotInCommunity = plugin.getData().getAllCommunities().stream().anyMatch(c -> c.getMembers().contains(player2));
 
                 if (player2 != null && senderOwnsCommunity && receiverNotInCommunity) {
-                    Community community = plugin.getCommunities().stream().filter(c -> c.getOwner().equals(player)).findFirst().orElseThrow(NullPointerException::new);
-                    plugin.getInvites().add(new Invite(player, player2, community));
+                    Community community = plugin.getData().getAllCommunities().stream().filter(c -> c.getOwner().equals(player)).findFirst().orElseThrow(NullPointerException::new);
+                    plugin.getData().getAllInvites().add(new Invite(player, player2, community));
                     player.sendMessage("You sent " + player2.getName() + " an invite!");
                     player2.sendMessage("You received a community invite from " + player + "! Type /pcaccept <player> to accept.");
                 } else {

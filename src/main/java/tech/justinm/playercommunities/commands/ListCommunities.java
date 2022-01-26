@@ -23,7 +23,7 @@ public class ListCommunities implements CommandExecutor {
         if (label.equalsIgnoreCase("pclist")) {
             if (sender instanceof Player) {
                 Player player = (Player) sender;
-                List<Community> communityList = plugin.getCommunities();
+                List<Community> communityList = plugin.getData().getAllCommunities();
                 Collections.sort(communityList);
                 player.sendMessage(communityList.toString());
                 return true;

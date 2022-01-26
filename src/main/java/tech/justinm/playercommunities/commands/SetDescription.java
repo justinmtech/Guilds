@@ -20,14 +20,12 @@ public class SetDescription implements CommandExecutor {
                 Player player = (Player) sender;
 
                 try {
-
                     StringBuilder desc = new StringBuilder();
                     for (int i = 0; i < args.length; i++) {
                         desc.append(args[i]).append(" ");
                     }
-
                     //Check perms other than is member
-                    plugin.getCommunities().stream().filter(c -> c.containsMember(player)).findAny().orElseThrow(NullPointerException::new).setDescription(desc.toString().trim());
+                    plugin.getData().getCommunity(player.getUniqueId()).setDescription(desc.toString().trim());
                     player.sendMessage("Description set to: " + desc.toString());
                     return true;
                 } catch (NullPointerException e) {

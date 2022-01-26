@@ -1,15 +1,21 @@
 package tech.justinm.playercommunities.core;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.json.simple.JSONObject;
 
-import java.util.HashMap;
 import java.util.Map;
 
-public class Warp implements ConfigurationSerializable {
+public class Warp {
     private String name;
     private String description;
     private Location location;
+
+    public Warp(String name, String description, String world, double x, double y, double z, float yaw, float pitch) {
+        this.name = name;
+        this.description = description;
+        location = new Location(Bukkit.getWorld(world), x, y, z, yaw, pitch);
+    }
 
     public Warp(String name, String description, Location location) {
         this.name = name;
@@ -20,12 +26,6 @@ public class Warp implements ConfigurationSerializable {
     public Warp(String name, Location location) {
         this.name = name;
         this.location = location;
-    }
-
-    public Warp(Map<String, Object> serializedMap) {
-        name = (String) serializedMap.get("name");
-        description = (String) serializedMap.get("description");
-        location = (Location) serializedMap.get("location");
     }
 
     public String getName() {
@@ -53,13 +53,18 @@ public class Warp implements ConfigurationSerializable {
     }
 
     @Override
-    public Map<String, Object> serialize() {
-        HashMap<String, Object> serializableMap = new HashMap<>();
+    public String toString() {
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("description", description);
+        json.put("x", location.getX());
+        json.put("y", location.getY());
+        json.put("z", location.getZ());
+        json.put("pitch", location.getPitch());
+        json.put("yaw", location.getYaw());
+        json.put("world", location.getWorld().getName());
 
-        serializableMap.put("name", name);
-        serializableMap.put("description", description);
-        serializableMap.put("location", location);
 
-        return serializableMap;
+        return json.toString();
     }
 }
