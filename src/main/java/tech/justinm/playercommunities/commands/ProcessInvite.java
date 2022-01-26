@@ -17,10 +17,10 @@ public class ProcessInvite implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (label.equalsIgnoreCase("pcaccept")) {
-            if (sender instanceof Player && args.length == 1) {
+        if (label.equalsIgnoreCase("pc") && args.length == 2 && args[0].equalsIgnoreCase("accept")) {
+            if (sender instanceof Player) {
                 Player player2 = (Player) sender;
-                String communityName = args[0];
+                String communityName = args[1];
                 boolean invited = plugin.getData().getInvite(player2.getUniqueId()).equalsIgnoreCase(communityName);
                 Community community = plugin.getData().getCommunity(communityName);
                 boolean communityExists = plugin.getData().getCommunity(communityName) != null;

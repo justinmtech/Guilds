@@ -18,7 +18,8 @@ public class GoToWarp implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         try {
-            if (label.equalsIgnoreCase("pcwarp")) {
+            if (label.equalsIgnoreCase("pc") && args.length == 2 &&
+                args[0].equalsIgnoreCase("warp")) {
                 if (sender instanceof Player) {
                     Player player = (Player) sender;
                     String warpName = args[0];

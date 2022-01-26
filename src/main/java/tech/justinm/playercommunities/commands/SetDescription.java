@@ -15,7 +15,7 @@ public class SetDescription implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (label.equalsIgnoreCase("pcsetdesc")) {
+        if (label.equalsIgnoreCase("pc") && args.length >= 2 && args[0].equalsIgnoreCase("setdesc")) {
             if (sender instanceof Player) {
                 Player player = (Player) sender;
 
@@ -24,7 +24,6 @@ public class SetDescription implements CommandExecutor {
                     for (String arg : args) {
                         desc.append(arg).append(" ");
                     }
-                    //Check perms other than is member
                     plugin.getData().getCommunity(player.getUniqueId()).setDescription(desc.toString().trim());
                     player.sendMessage("Description set to: " + desc.toString());
                     return true;

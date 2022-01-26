@@ -20,7 +20,7 @@ public class ListCommunities implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        if (label.equalsIgnoreCase("pclist")) {
+        if (label.equalsIgnoreCase("pc") && args.length == 1 && args[0].equalsIgnoreCase("list")) {
             if (sender instanceof Player) {
                 Player player = (Player) sender;
                 List<Community> communityList = plugin.getData().getAllCommunities();

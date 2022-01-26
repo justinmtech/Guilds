@@ -16,10 +16,11 @@ public class CreateCommunity implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        if (label.equalsIgnoreCase("pccreate")) {
+        if (label.equalsIgnoreCase("pc") &&
+                args.length == 2 && args[0].equalsIgnoreCase("create")) {
             if (sender instanceof Player) {
                 Player player = (Player) sender;
-                String name = args[0];
+                String name = args[1];
                 plugin.getData().createCommunity(player.getUniqueId(), name);
                 player.sendMessage("You created a community!");
                 return true;

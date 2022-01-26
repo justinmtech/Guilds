@@ -18,11 +18,11 @@ public class InvitePlayer implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        if (label.equalsIgnoreCase("pcinvite")) {
+        if (label.equalsIgnoreCase("pc") && args.length == 2 && args[0].equalsIgnoreCase("invite")) {
             if (sender instanceof Player) {
                 Player player = (Player) sender;
                 Player player2;
-                player2 = Bukkit.getPlayer(args[0]);
+                player2 = Bukkit.getPlayer(args[1]);
                 Community community = plugin.getData().getCommunity(player.getUniqueId());
                 boolean senderOwnsCommunity = community.isOwner(player.getUniqueId());
                 boolean receiverNotInCommunity = !community.getMembers().contains(player2.getUniqueId());

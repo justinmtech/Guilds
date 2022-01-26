@@ -16,11 +16,12 @@ public class GetCommunityInfo implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (label.equalsIgnoreCase("pcinfo")) {
+        if (label.equalsIgnoreCase("pc") &&
+                args.length == 2 && args[0].equalsIgnoreCase("info")) {
             Player player = (Player) sender;
 
             try {
-                String communityName = args[0];
+                String communityName = args[1];
                 Community community = plugin.getData().getCommunity(communityName);
                 player.sendMessage(community.toString());
                 return true;

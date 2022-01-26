@@ -16,11 +16,11 @@ public class SetWarp implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-            if (label.equalsIgnoreCase("pcsetwarp")) {
+            if (label.equalsIgnoreCase("pc") && args.length == 2 && args[0].equalsIgnoreCase("setwarp")) {
                 if (sender instanceof Player) {
                 Player player = (Player) sender;
                 try {
-                    String warpName = args[0];
+                    String warpName = args[1];
                     Community community = plugin.getData().getCommunity(player.getUniqueId());
                     if (community.isOwner(player.getUniqueId())) {
                         community.getWarps().put(warpName, player.getLocation());

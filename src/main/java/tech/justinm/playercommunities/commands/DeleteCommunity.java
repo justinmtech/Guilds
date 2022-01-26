@@ -16,10 +16,11 @@ public class DeleteCommunity implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (label.equalsIgnoreCase("pcdelete")) {
+        if (label.equalsIgnoreCase("pc") &&
+                args.length == 2 && args[0].equalsIgnoreCase("delete")) {
             if (sender instanceof Player) {
                 Player player = (Player) sender;
-                String communityName = args[0];
+                String communityName = args[1];
                 Community community = plugin.getData().getCommunity(communityName);
                 if (community.getOwner().equals(player.getUniqueId())) {
                     plugin.getData().deleteCommunity(communityName);
