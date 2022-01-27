@@ -15,10 +15,14 @@ public class InvitePlayer extends SubCommand {
         execute();
     }
 
-    private void execute() {
+    private boolean execute() {
         Player player = (Player) getSender();
         Player player2;
         player2 = Bukkit.getPlayer(getArgs()[1]);
+        if (player2 == null) {
+            Message.sendPlaceholder(getPlugin(), getSender(), "player-not-found", getArgs()[1]);
+            return false;
+        }
         Community community = getPlugin().getData().getCommunity(player.getUniqueId());
         boolean senderOwnsCommunity = community.isOwner(player.getUniqueId());
         boolean receiverNotInCommunity = !community.getMembers().contains(player2.getUniqueId());
@@ -28,9 +32,9 @@ public class InvitePlayer extends SubCommand {
             Message.sendPlaceholder(getPlugin(), getSender(), "invite-send", player2.getName());
             Message.sendPlaceholder(getPlugin(), player2, "invite-receive", getSender().getName());
         } else {
-            if (player2 == null) Message.sendPlaceholder(getPlugin(), getSender(), "player-not-found", player2.getName());
             if (!senderOwnsCommunity) Message.send(getPlugin(), getSender(), "must-be-owner");
             if (!receiverNotInCommunity) Message.sendPlaceholder(getPlugin(), getSender(), "player-already-in-community", player2.getName());
         }
+        return true;
     }
 }

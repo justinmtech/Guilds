@@ -8,9 +8,9 @@ import tech.justinm.playercommunities.SubCommand;
 import tech.justinm.playercommunities.core.Community;
 import tech.justinm.playercommunities.util.Message;
 
-public class ProcessInvite extends SubCommand {
+public class AcceptInvite extends SubCommand {
 
-    public ProcessInvite(PlayerCommunities plugin, CommandSender sender, String[] args) {
+    public AcceptInvite(PlayerCommunities plugin, CommandSender sender, String[] args) {
         super(plugin, sender, args);
         execute();
     }

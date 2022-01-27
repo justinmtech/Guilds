@@ -75,7 +75,7 @@ public class CommandHandler implements CommandExecutor {
             }
         } else if (args[0].equalsIgnoreCase("accept")) {
                 if (args.length == 2) {
-                    new ProcessInvite(plugin, sender, args);
+                    new AcceptInvite(plugin, sender, args);
                 } else {
                     //syntax msg
                 }
