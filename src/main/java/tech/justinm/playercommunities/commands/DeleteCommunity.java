@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import tech.justinm.playercommunities.PlayerCommunities;
 import tech.justinm.playercommunities.SubCommand;
 import tech.justinm.playercommunities.core.Community;
+import tech.justinm.playercommunities.util.Message;
 
 public class DeleteCommunity extends SubCommand {
 
@@ -19,9 +20,9 @@ public class DeleteCommunity extends SubCommand {
         Community community = getPlugin().getData().getCommunity(communityName);
         if (community.getOwner().equals(player.getUniqueId())) {
             getPlugin().getData().deleteCommunity(communityName);
-            player.sendMessage("You deleted your community!");
+            Message.send(getPlugin(), getSender(), "delete-community");
         } else {
-            player.sendMessage("You must be the owner of a community to delete it!");
+            Message.send(getPlugin(), getSender(), "must-be-owner");
         }
     }
 }

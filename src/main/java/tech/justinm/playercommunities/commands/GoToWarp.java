@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import tech.justinm.playercommunities.PlayerCommunities;
 import tech.justinm.playercommunities.SubCommand;
 import tech.justinm.playercommunities.core.Community;
+import tech.justinm.playercommunities.util.Message;
 
 public class GoToWarp extends SubCommand {
 
@@ -22,8 +23,9 @@ public class GoToWarp extends SubCommand {
             if (community.getWarps().containsKey(warpName)) {
                 player.teleport(community.getWarps().get(warpName));
                 player.sendMessage("You were teleported to " + warpName + "!");
+                Message.sendPlaceholder(getPlugin(), getSender(), "warp", warpName);
             } else {
-                player.sendMessage("Error!");
+                Message.sendPlaceholder(getPlugin(), getSender(), "warp-error", warpName);
             }
         } catch(NullPointerException e) {
             e.printStackTrace();

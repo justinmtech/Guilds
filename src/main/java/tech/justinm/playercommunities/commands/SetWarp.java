@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import tech.justinm.playercommunities.PlayerCommunities;
 import tech.justinm.playercommunities.SubCommand;
 import tech.justinm.playercommunities.core.Community;
+import tech.justinm.playercommunities.util.Message;
 
 public class SetWarp extends SubCommand {
 
@@ -20,13 +21,13 @@ public class SetWarp extends SubCommand {
             Community community = getPlugin().getData().getCommunity(player.getUniqueId());
             if (community.isOwner(player.getUniqueId())) {
                 community.getWarps().put(warpName, player.getLocation());
-                player.sendMessage("You set a warp called " + warpName + " at your location!");
+                Message.sendPlaceholder(getPlugin(), getSender(), "set-warp", warpName);
             } else {
-                player.sendMessage("Something went wrong!");
+                Message.sendPlaceholder(getPlugin(), getSender(), "must-be-owner", community.getName());
             }
         } catch (NullPointerException e) {
             e.printStackTrace();
-            player.sendMessage("Something went wrong!");
+            Message.send(getPlugin(), getSender(), "generic-error");
         }
     }
 }

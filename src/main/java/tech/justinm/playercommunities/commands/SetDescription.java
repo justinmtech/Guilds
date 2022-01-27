@@ -4,6 +4,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import tech.justinm.playercommunities.PlayerCommunities;
 import tech.justinm.playercommunities.SubCommand;
+import tech.justinm.playercommunities.util.Message;
 
 public class SetDescription extends SubCommand {
 
@@ -20,10 +21,10 @@ public class SetDescription extends SubCommand {
                 desc.append(arg).append(" ");
             }
             getPlugin().getData().getCommunity(player.getUniqueId()).setDescription(desc.toString().trim());
-            player.sendMessage("Description set to: " + desc);
+            Message.sendPlaceholder(getPlugin(), getSender(), "set-description", desc.toString());
         } catch (NullPointerException e) {
             e.printStackTrace();
-            player.sendMessage("An error occurred!");
+            Message.send(getPlugin(), getSender(), "generic-error");
         }
     }
 }

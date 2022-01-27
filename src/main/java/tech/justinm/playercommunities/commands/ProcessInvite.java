@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import tech.justinm.playercommunities.PlayerCommunities;
 import tech.justinm.playercommunities.SubCommand;
 import tech.justinm.playercommunities.core.Community;
+import tech.justinm.playercommunities.util.Message;
 
 public class ProcessInvite extends SubCommand {
 
@@ -24,11 +25,11 @@ public class ProcessInvite extends SubCommand {
         if (invited && communityExists) {
             community.getMembers().add(player2.getUniqueId());
             player2.sendMessage("You joined " + community.getName() + "!");
-            if (Bukkit.getPlayer(community.getOwner()) != null) Bukkit.getPlayer(community.getOwner()).sendMessage(player2.getName() + " joined your community!");
+            Message.sendPlaceholder(getPlugin(), getSender(), "invite-accepted", community.getName());
+            if (Bukkit.getPlayer(community.getOwner()) != null) Message.sendPlaceholder(getPlugin(), Bukkit.getPlayer(community.getOwner()), "player-joined-community", getSender().getName());
         } else {
-            if (communityName == null) player2.sendMessage("Please use the correct syntax! /pcaccept <community>");
-            if (!invited) player2.sendMessage("You do not have a pending invite from " + communityName + ".");
             if (!communityExists) player2.sendMessage(communityName + " does not exist anymore!");
+            else Message.sendPlaceholder(getPlugin(), getSender(), "no-invite", communityName);
         }
     }
 }

@@ -1,9 +1,11 @@
 package tech.justinm.playercommunities.commands;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import tech.justinm.playercommunities.PlayerCommunities;
 import tech.justinm.playercommunities.SubCommand;
+import tech.justinm.playercommunities.util.Message;
 
 public class CreateCommunity extends SubCommand {
 
@@ -16,6 +18,6 @@ public class CreateCommunity extends SubCommand {
         Player player = (Player) getSender();
         String name = getArgs()[1];
         getPlugin().getData().createCommunity(player.getUniqueId(), name);
-        player.sendMessage("You created a community!");
+        Message.send(getPlugin(), player, "create-community");
     }
 }

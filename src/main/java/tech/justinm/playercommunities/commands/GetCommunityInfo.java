@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import tech.justinm.playercommunities.PlayerCommunities;
 import tech.justinm.playercommunities.SubCommand;
 import tech.justinm.playercommunities.core.Community;
+import tech.justinm.playercommunities.util.Message;
 
 public class GetCommunityInfo extends SubCommand {
 
@@ -21,7 +22,7 @@ public class GetCommunityInfo extends SubCommand {
             player.sendMessage(community.toString());
         } catch (NullPointerException e) {
             e.printStackTrace();
-            player.sendMessage(getArgs()[0] + " not found!");
+            Message.sendPlaceholder(getPlugin(), getSender(), "community-not-found", getArgs()[0]);
             }
     }
 }

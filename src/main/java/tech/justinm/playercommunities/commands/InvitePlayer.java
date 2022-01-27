@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import tech.justinm.playercommunities.PlayerCommunities;
 import tech.justinm.playercommunities.SubCommand;
 import tech.justinm.playercommunities.core.Community;
+import tech.justinm.playercommunities.util.Message;
 
 public class InvitePlayer extends SubCommand {
 
@@ -24,12 +25,12 @@ public class InvitePlayer extends SubCommand {
 
         if (player2 != null && senderOwnsCommunity && receiverNotInCommunity) {
             getPlugin().getData().createInvite(player2.getUniqueId(), community.getName());
-            player.sendMessage("You sent " + player2.getName() + " an invite!");
-            player2.sendMessage("You received a community invite from " + player + "! Type /pcaccept <player> to accept.");
+            Message.sendPlaceholder(getPlugin(), getSender(), "invite-send", player2.getName());
+            Message.sendPlaceholder(getPlugin(), player2, "invite-receive", getSender().getName());
         } else {
-            if (player2 == null) player.sendMessage("Player not found!");
-            if (!senderOwnsCommunity) player.sendMessage("You must be a community owner to invite players!");
-            if (!receiverNotInCommunity) player.sendMessage("That player is already in your community!");
+            if (player2 == null) Message.sendPlaceholder(getPlugin(), getSender(), "player-not-found", player2.getName());
+            if (!senderOwnsCommunity) Message.send(getPlugin(), getSender(), "must-be-owner");
+            if (!receiverNotInCommunity) Message.sendPlaceholder(getPlugin(), getSender(), "player-already-in-community", player2.getName());
         }
     }
 }
