@@ -1,44 +1,32 @@
 package tech.justinm.playercommunities.commands;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import tech.justinm.playercommunities.PlayerCommunities;
+import tech.justinm.playercommunities.SubCommand;
 import tech.justinm.playercommunities.core.Community;
 
-public class GoToWarp implements CommandExecutor {
-    private final PlayerCommunities plugin;
+public class GoToWarp extends SubCommand {
 
-    public GoToWarp(PlayerCommunities plugin) {
-        this.plugin = plugin;
+    public GoToWarp(PlayerCommunities plugin, CommandSender sender, String[] args) {
+        super(plugin, sender, args);
+        execute();
     }
 
-
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    private void execute() {
         try {
-            if (label.equalsIgnoreCase("pc") && args.length == 2 &&
-                args[0].equalsIgnoreCase("warp")) {
-                if (sender instanceof Player) {
-                    Player player = (Player) sender;
-                    String warpName = args[0];
+            Player player = (Player) getSender();
+            String warpName = getArgs()[0];
 
-                    Community community = plugin.getData().getCommunity(player.getUniqueId());
-                    if (community.getWarps().containsKey(warpName)) {
-                        player.teleport(community.getWarps().get(warpName));
-                        player.sendMessage("You were teleported to " + warpName + "!");
-                        return true;
-                    } else {
-                        player.sendMessage("Error!");
-                        return false;
-                    }
-                }
+            Community community = getPlugin().getData().getCommunity(player.getUniqueId());
+            if (community.getWarps().containsKey(warpName)) {
+                player.teleport(community.getWarps().get(warpName));
+                player.sendMessage("You were teleported to " + warpName + "!");
+            } else {
+                player.sendMessage("Error!");
             }
         } catch(NullPointerException e) {
             e.printStackTrace();
-            return false;
         }
-        return false;
     }
 }

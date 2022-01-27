@@ -6,39 +6,11 @@ authors: [ justinmtech ]
 description: A plugin that allows players to create their own goal-oriented communities to inspire cooperation and socializing.
 website: https://justinm.tech
 commands:
-  pccreate:
-    description: Create a new commmunity!
-    usage: "Usage:/pccreate <communityName>"
-
-  pclist:
-    description: List all communities!
-    usage: "Usage:/pclist"
-
-  pcdelete:
-    description: Delete your community!
-    usage: "Usage:/pcdelete <communityName>"
-
-  pcsetwarp:
-    description: Set a community warp!
-    usage: "Usage:/pcsetwarp <warpName>"
-
-  pcwarp:
-    description: Warp to a community warp!
-    usage: "Usage:/pcwarp <warpName>"
-
-  pcsetdesc:
-    description: Set your community's description!
-    usage: "Usage:/pcsetdesc <description>"
-
-  pcinfo:
-    description: View a community's public info.
-    usage: "Usage:/pcinfo <communityName>"
-
-  pcinvite:
-    description: Invite players to your community!
-    usage: "Usage:/pcinvite <player>"
-
-  pcaccept:
-    description: Accept an invite to another community!
-    usage: "Usage:/pcaccept <player>"
+  playercommunities:
+    description: Base command of Player Communities.
+    usage: ""
+    aliases:
+      - pc
+      - pcom
+      - pcoms
 

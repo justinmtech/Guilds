@@ -9,4 +9,15 @@ public class InputChecker {
         Matcher matcher = pattern.matcher(input);
         return matcher.find();
     }
+
+    public static boolean noSpecialCharacters(String[] args) {
+        for (String arg : args) {
+            Pattern pattern = Pattern.compile("^a-ZA-Z0-9");
+            Matcher matcher = pattern.matcher(arg);
+            if (matcher.find()) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

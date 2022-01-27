@@ -1,44 +1,35 @@
 package tech.justinm.playercommunities.commands;
 
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import tech.justinm.playercommunities.PlayerCommunities;
+import tech.justinm.playercommunities.SubCommand;
 import tech.justinm.playercommunities.core.Community;
 
-public class InvitePlayer implements CommandExecutor {
-    private final PlayerCommunities plugin;
+public class InvitePlayer extends SubCommand {
 
-    public InvitePlayer(PlayerCommunities plugin) {
-        this.plugin = plugin;
+    public InvitePlayer(PlayerCommunities plugin, CommandSender sender, String[] args) {
+        super(plugin, sender, args);
+        execute();
     }
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    private void execute() {
+        Player player = (Player) getSender();
+        Player player2;
+        player2 = Bukkit.getPlayer(getArgs()[1]);
+        Community community = getPlugin().getData().getCommunity(player.getUniqueId());
+        boolean senderOwnsCommunity = community.isOwner(player.getUniqueId());
+        boolean receiverNotInCommunity = !community.getMembers().contains(player2.getUniqueId());
 
-        if (label.equalsIgnoreCase("pc") && args.length == 2 && args[0].equalsIgnoreCase("invite")) {
-            if (sender instanceof Player) {
-                Player player = (Player) sender;
-                Player player2;
-                player2 = Bukkit.getPlayer(args[1]);
-                Community community = plugin.getData().getCommunity(player.getUniqueId());
-                boolean senderOwnsCommunity = community.isOwner(player.getUniqueId());
-                boolean receiverNotInCommunity = !community.getMembers().contains(player2.getUniqueId());
-
-                if (player2 != null && senderOwnsCommunity && receiverNotInCommunity) {
-                    plugin.getData().createInvite(player2.getUniqueId(), community.getName());
-                    player.sendMessage("You sent " + player2.getName() + " an invite!");
-                    player2.sendMessage("You received a community invite from " + player + "! Type /pcaccept <player> to accept.");
-                } else {
-                    if (player2 == null) player.sendMessage("Player not found!");
-                    if (!senderOwnsCommunity) player.sendMessage("You must be a community owner to invite players!");
-                    if (!receiverNotInCommunity) player.sendMessage("That player is already in your community!");
-                }
-                return true;
-            }
+        if (player2 != null && senderOwnsCommunity && receiverNotInCommunity) {
+            getPlugin().getData().createInvite(player2.getUniqueId(), community.getName());
+            player.sendMessage("You sent " + player2.getName() + " an invite!");
+            player2.sendMessage("You received a community invite from " + player + "! Type /pcaccept <player> to accept.");
+        } else {
+            if (player2 == null) player.sendMessage("Player not found!");
+            if (!senderOwnsCommunity) player.sendMessage("You must be a community owner to invite players!");
+            if (!receiverNotInCommunity) player.sendMessage("That player is already in your community!");
         }
-        return false;
     }
 }

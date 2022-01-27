@@ -1,31 +1,21 @@
 package tech.justinm.playercommunities.commands;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import tech.justinm.playercommunities.PlayerCommunities;
+import tech.justinm.playercommunities.SubCommand;
 
-public class CreateCommunity implements CommandExecutor {
-    private final PlayerCommunities plugin;
+public class CreateCommunity extends SubCommand {
 
-    public CreateCommunity(PlayerCommunities plugin) {
-        this.plugin = plugin;
+    public CreateCommunity(PlayerCommunities plugin, CommandSender sender, String[] args) {
+        super(plugin, sender, args);
+        execute();
     }
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-
-        if (label.equalsIgnoreCase("pc") &&
-                args.length == 2 && args[0].equalsIgnoreCase("create")) {
-            if (sender instanceof Player) {
-                Player player = (Player) sender;
-                String name = args[1];
-                plugin.getData().createCommunity(player.getUniqueId(), name);
-                player.sendMessage("You created a community!");
-                return true;
-            }
-        }
-        return false;
+    public void execute() {
+        Player player = (Player) getSender();
+        String name = getArgs()[1];
+        getPlugin().getData().createCommunity(player.getUniqueId(), name);
+        player.sendMessage("You created a community!");
     }
 }

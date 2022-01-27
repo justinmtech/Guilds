@@ -1,7 +1,6 @@
 package tech.justinm.playercommunities;
 
 import org.bukkit.plugin.java.JavaPlugin;
-import tech.justinm.playercommunities.commands.*;
 import tech.justinm.playercommunities.persistence.FileManager;
 import tech.justinm.playercommunities.persistence.ManageData;
 
@@ -14,15 +13,7 @@ public final class PlayerCommunities extends JavaPlugin {
         data.setup();
         data.loadAllCommunities();
 
-        this.getCommand("pccreate").setExecutor(new CreateCommunity(this));
-        this.getCommand("pclist").setExecutor(new ListCommunities(this));
-        this.getCommand("pcdelete").setExecutor(new DeleteCommunity(this));
-        this.getCommand("pcsetwarp").setExecutor(new SetWarp(this));
-        this.getCommand("pcwarp").setExecutor(new GoToWarp(this));
-        this.getCommand("pcsetdesc").setExecutor(new SetDescription(this));
-        this.getCommand("pcinfo").setExecutor(new GetCommunityInfo(this));
-        this.getCommand("pcinvite").setExecutor(new InvitePlayer(this));
-        this.getCommand("pcaccept").setExecutor(new ProcessInvite(this));
+        this.getCommand("playercommunities").setExecutor(new CommandHandler(this));
 
         System.out.println("PlayerCommunities enabled!");
     }
