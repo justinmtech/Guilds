@@ -14,13 +14,17 @@ import java.util.*;
 
 public class FileManager implements ManageData {
     private final PlayerCommunities plugin;
-    private final List<Community> communities;
+    private final List<Community> communityList;
+    private final Map<String, Community> communitiesByName;
+    private final Map<UUID, String> communitiesByUuid;
     private final Map<UUID, String> invites;
 
     public FileManager(PlayerCommunities plugin) {
         this.plugin = plugin;
-        this.communities = new LinkedList<>();
         this.invites = new HashMap<>();
+        this.communitiesByName = new HashMap<>();
+        this.communitiesByUuid = new HashMap<>();
+        this.communityList = new ArrayList<>();
     }
 
 
@@ -34,30 +38,34 @@ public class FileManager implements ManageData {
 
     @Override
     public Community getCommunity(String name) {
-        return communities.stream().filter(c -> c.getName().equalsIgnoreCase(name)).findAny().orElseThrow(NullPointerException::new);
+        return communitiesByName.get(name);
     }
 
     @Override
     public Community getCommunity(UUID playerUuid) {
-        return communities.stream().filter(c -> c.getMembers().contains(playerUuid)).findAny().orElseThrow(NullPointerException::new);
+        return communitiesByName.get(communitiesByUuid.get(playerUuid));
     }
 
     @Override
     public List<Community> getAllCommunities() {
-        return communities;
+        return communityList;
     }
 
     @Override
     public void createCommunity(UUID owner, String name) {
-        this.communities.add(new Community(owner, name));
+        Community community = new Community(owner, name);
+        this.communityList.add(community);
+        this.communitiesByUuid.put(owner, name);
+        this.communitiesByName.put(name, community);
     }
 
+
     @Override
-    public void saveAllCommunities(List<Community> communities) {
+    public void saveAllCommunities() {
         FileWriter file = null;
 
         JSONArray communitiesArray = new JSONArray();
-        for (Community community : communities) {
+        for (Community community : communityList) {
             JSONObject communityObject = new JSONObject();
             communityObject.put("community", community);
             communitiesArray.add(communityObject);
@@ -93,17 +101,28 @@ public class FileManager implements ManageData {
         JSONObject community = (JSONObject) communities.get("community");
 
         String name = (String) community.get("name");
-        UUID ownerId = (UUID) community.get("owner");
+        String ownerId = (String) community.get("owner");
         String description = (String) community.get("description");
-        List<UUID> members = (List<UUID>) community.get("members");
+        List<String> members = (List<String>) community.get("members");
         List<Object> warps = (List<Object>) community.get("warps");
 
-        this.communities.add(new Community(name, ownerId, description, members, warps));
+        List<UUID> memberUuids = new ArrayList<>();
+        for (String member : members) {
+            memberUuids.add(UUID.fromString(member));
+        }
+        Community communityObject = new Community(name, UUID.fromString(ownerId), description, memberUuids, warps);
+        this.communityList.add(communityObject);
+        this.communitiesByName.put(name, communityObject);
+        for (UUID member : memberUuids) {
+        this.communitiesByUuid.put(member, name);
+        }
     }
 
     @Override
-    public void deleteCommunity(String communityName) {
-        communities.remove(communityName);
+    public void deleteCommunity(String communityName) {;
+        communityList.removeIf(c -> c.getName().equals(communityName));
+        communitiesByUuid.remove(communitiesByName.get(communityName).getOwner());
+        communitiesByName.remove(communityName);
     }
 
     @Override

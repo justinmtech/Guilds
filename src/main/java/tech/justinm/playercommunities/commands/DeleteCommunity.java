@@ -14,15 +14,20 @@ public class DeleteCommunity extends SubCommand {
         execute();
     }
 
-    public void execute() {
+    public boolean execute() {
         Player player = (Player) getSender();
         String communityName = getArgs()[1];
-        Community community = getPlugin().getData().getCommunity(communityName);
-        if (community.getOwner().equals(player.getUniqueId())) {
-            getPlugin().getData().deleteCommunity(communityName);
-            Message.send(getPlugin(), getSender(), "delete-community");
-        } else {
-            Message.send(getPlugin(), getSender(), "must-be-owner");
+        try {
+            Community community = getPlugin().getData().getCommunity(communityName);
+            if (community.getOwner().equals(player.getUniqueId())) {
+                getPlugin().getData().deleteCommunity(communityName);
+                Message.send(getPlugin(), getSender(), "delete-community");
+            } else {
+                Message.send(getPlugin(), getSender(), "must-be-owner");
+            }
+        } catch (NullPointerException e) {
+            return false;
         }
+        return true;
     }
 }

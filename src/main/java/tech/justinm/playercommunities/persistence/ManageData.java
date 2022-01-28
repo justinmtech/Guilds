@@ -11,7 +11,7 @@ public interface ManageData {
     Community getCommunity(String name);
     List<Community> getAllCommunities();
     void createCommunity(UUID owner, String name);
-    void saveAllCommunities(List<Community> communities);
+    void saveAllCommunities();
     void loadAllCommunities();
     void deleteCommunity(String communityName);
     String getInvite(UUID receiver);

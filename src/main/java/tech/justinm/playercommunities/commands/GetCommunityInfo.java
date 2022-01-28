@@ -21,7 +21,6 @@ public class GetCommunityInfo extends SubCommand {
             Community community = getPlugin().getData().getCommunity(communityName);
             player.sendMessage(community.toString());
         } catch (NullPointerException e) {
-            e.printStackTrace();
             Message.sendPlaceholder(getPlugin(), getSender(), "community-not-found", getArgs()[0]);
             }
     }

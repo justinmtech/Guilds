@@ -101,9 +101,13 @@ public class Community implements Comparable<Community> {
     public String toString() {
         JSONObject json = new JSONObject();
         json.put("name", name);
-        json.put("owner", owner);
+        json.put("owner", owner.toString());
         json.put("description", description);
-        json.put("members", members);
+        JSONArray jsonArray = new JSONArray();
+        for (UUID member : members) {
+            jsonArray.add(member.toString());
+        }
+        json.put("members", jsonArray);
         JSONArray warpArray = new JSONArray();
         for (String key : warps.keySet()) {
             Location location = warps.get(key);

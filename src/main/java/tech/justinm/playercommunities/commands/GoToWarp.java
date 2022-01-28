@@ -17,12 +17,11 @@ public class GoToWarp extends SubCommand {
     private void execute() {
         try {
             Player player = (Player) getSender();
-            String warpName = getArgs()[0];
+            String warpName = getArgs()[1];
 
             Community community = getPlugin().getData().getCommunity(player.getUniqueId());
             if (community.getWarps().containsKey(warpName)) {
                 player.teleport(community.getWarps().get(warpName));
-                player.sendMessage("You were teleported to " + warpName + "!");
                 Message.sendPlaceholder(getPlugin(), getSender(), "warp", warpName);
             } else {
                 Message.sendPlaceholder(getPlugin(), getSender(), "warp-error", warpName);

@@ -20,7 +20,7 @@ public final class PlayerCommunities extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        data.saveAllCommunities(data.getAllCommunities());
+        data.saveAllCommunities();
         data.getAllCommunities().clear();
 
         System.out.println("PlayerCommunities disabled!");
