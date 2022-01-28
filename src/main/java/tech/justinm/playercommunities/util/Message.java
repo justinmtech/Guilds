@@ -13,6 +13,14 @@ public class Message {
         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("messages." + messagePath).replace("%placeholder%", placeholder)));
     }
 
+    public static void sendCommunityInfo(PlayerCommunities plugin, CommandSender sender, String messagePath, String[] placeholder) {
+        sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                plugin.getConfig().getString("messages." + messagePath)
+                        .replace("%number%", placeholder[0])
+                        .replace("%communityName%", placeholder[1])
+                        .replace("%members%", placeholder[2])));
+    }
+
     public static void sendRaw(PlayerCommunities plugin, CommandSender sender, String message) {
         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
     }

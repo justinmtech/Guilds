@@ -15,3 +15,5 @@ messages:
   player-joined-commnity: "&a%placeholder% joined your community!"
   set-description: "&aCommunity description set to: &6%placeholder%"
   generic-error: "&cAn error occurred!"
+  community-list-header: "&6&lCommunities"
+  community-list-line: "#&e%number% Name: %communityName% Members: %members%"
