@@ -17,3 +17,4 @@ messages:
   generic-error: "&cAn error occurred!"
   community-list-header: "&6&lCommunities"
   community-list-line: "#&e%number% Name: %communityName% Members: %members%"
+  community-already-exists: "&cA community with that name already exists!"
