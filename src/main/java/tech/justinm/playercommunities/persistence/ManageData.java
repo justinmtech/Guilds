@@ -17,5 +17,5 @@ public interface ManageData {
     String getInvite(UUID receiver);
     void deleteInvite(UUID receiver);
     void createInvite(UUID receiver, String communityName);
-
+    void clearCache();
 }

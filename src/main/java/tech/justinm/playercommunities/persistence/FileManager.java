@@ -136,6 +136,13 @@ public class FileManager implements ManageData {
     }
 
     @Override
+    public void clearCache() {
+        communityList.clear();
+        communitiesByName.clear();
+        communitiesByUuid.clear();
+    }
+
+    @Override
     public void deleteInvite(UUID receiver) {
         invites.remove(receiver);
     }
