@@ -140,6 +140,7 @@ public class FileManager implements ManageData {
         communityList.clear();
         communitiesByName.clear();
         communitiesByUuid.clear();
+        invites.clear();
     }
 
     @Override
