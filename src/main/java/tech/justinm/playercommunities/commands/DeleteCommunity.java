@@ -16,11 +16,10 @@ public class DeleteCommunity extends SubCommand {
 
     public boolean execute() {
         Player player = (Player) getSender();
-        String communityName = getArgs()[1];
         try {
-            Community community = getPlugin().getData().getCommunity(communityName);
+            Community community = getPlugin().getData().getCommunity(player.getUniqueId());
             if (community.getOwner().equals(player.getUniqueId())) {
-                getPlugin().getData().deleteCommunity(communityName);
+                getPlugin().getData().deleteCommunity(community.getName());
                 Message.send(getPlugin(), getSender(), "delete-community");
             } else {
                 Message.send(getPlugin(), getSender(), "must-be-owner");

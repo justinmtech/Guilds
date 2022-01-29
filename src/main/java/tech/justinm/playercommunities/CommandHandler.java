@@ -30,6 +30,7 @@ public class CommandHandler implements CommandExecutor {
                         }
                     }
                 }
+                Message.sendHelp(plugin, sender, "help", label);
             }
         }
         return true;
@@ -43,7 +44,7 @@ public class CommandHandler implements CommandExecutor {
                 Message.sendPlaceholder(plugin, sender, "syntax.create", label);
             }
         } else if (args[0].equalsIgnoreCase("delete")) {
-            if (args.length == 2) {
+            if (args.length == 1) {
                 new DeleteCommunity(plugin, sender, args);
             } else {
                 Message.sendPlaceholder(plugin, sender, "syntax.delete", label);

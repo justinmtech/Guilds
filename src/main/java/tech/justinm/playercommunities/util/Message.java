@@ -2,6 +2,7 @@ package tech.justinm.playercommunities.util;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import tech.justinm.playercommunities.PlayerCommunities;
 
@@ -16,6 +17,14 @@ public class Message {
 
     public static void sendPlaceholder(PlayerCommunities plugin, Player sender, String messagePath, String placeholder) {
         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("messages." + messagePath).replace("%placeholder%", placeholder)));
+    }
+
+    public static void sendHelp(PlayerCommunities plugin, CommandSender sender, String messagePath, String placeholder) {
+        ConfigurationSection section = plugin.getConfig().getConfigurationSection(messagePath);
+        int size = section.getKeys(false).size();
+        for (String key : section.getKeys(false)) {
+        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString(messagePath + key).replace("%placeholder%", placeholder)));
+        }
     }
 
     public static void sendCommunityInfo(PlayerCommunities plugin, CommandSender sender, String messagePath, String[] placeholder) {
