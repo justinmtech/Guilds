@@ -44,11 +44,11 @@ public class CommandHandler implements CommandExecutor {
             } else {
                 Message.sendPlaceholder(plugin, sender, "syntax.create", label);
             }
-        } else if (args[0].equalsIgnoreCase("delete")) {
+        } else if (args[0].equalsIgnoreCase("disband")) {
             if (args.length == 1) {
-                new DeleteCommunity(plugin, sender, args);
+                new DisbandCommunity(plugin, sender, args);
             } else {
-                Message.sendPlaceholder(plugin, sender, "syntax.delete", label);
+                Message.sendPlaceholder(plugin, sender, "syntax.disband", label);
             }
         } else if (args[0].equalsIgnoreCase("warp")) {
             if (args.length == 2) {

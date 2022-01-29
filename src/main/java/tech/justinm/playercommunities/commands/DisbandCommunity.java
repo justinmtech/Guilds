@@ -7,9 +7,9 @@ import tech.justinm.playercommunities.SubCommand;
 import tech.justinm.playercommunities.core.Community;
 import tech.justinm.playercommunities.util.Message;
 
-public class DeleteCommunity extends SubCommand {
+public class DisbandCommunity extends SubCommand {
 
-    public DeleteCommunity(PlayerCommunities plugin, CommandSender sender, String[] args) {
+    public DisbandCommunity(PlayerCommunities plugin, CommandSender sender, String[] args) {
         super(plugin, sender, args);
         execute();
     }
@@ -20,7 +20,7 @@ public class DeleteCommunity extends SubCommand {
             Community community = getPlugin().getData().getCommunity(player.getUniqueId());
             if (community.getOwner().equals(player.getUniqueId())) {
                 getPlugin().getData().deleteCommunity(community.getName());
-                Message.send(getPlugin(), getSender(), "delete-community");
+                Message.send(getPlugin(), getSender(), "disband-community");
             } else {
                 Message.send(getPlugin(), getSender(), "must-be-owner");
             }

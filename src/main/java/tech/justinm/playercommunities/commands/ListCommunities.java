@@ -17,9 +17,13 @@ public class ListCommunities extends SubCommand {
         execute();
     }
 
-    private void execute() {
+    private boolean execute() {
         List<Community> communityList = getPlugin().getData().getAllCommunities();
         Collections.sort(communityList);
+        if (communityList.size() == 0) {
+            Message.send(getPlugin(), getSender(), "no-communities");
+            return false;
+        }
         Message.send(getPlugin(), getSender(), "community-list-header");
         int listSize = Math.min(communityList.size(), 10);
         for (int i = 0; i < listSize; i++) {
@@ -27,5 +31,6 @@ public class ListCommunities extends SubCommand {
             String[] placeholders = {String.valueOf(i + 1), community.getName(), String.valueOf(community.getMembers().size())};
             Message.sendCommunityInfo(getPlugin(), getSender(), "community-list-line", placeholders);
         }
+        return true;
     }
 }
