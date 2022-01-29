@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import tech.justinm.playercommunities.commands.*;
 import tech.justinm.playercommunities.util.InputChecker;
+import tech.justinm.playercommunities.util.Message;
 
 public class CommandHandler implements CommandExecutor {
     private final PlayerCommunities plugin;
@@ -20,10 +21,10 @@ public class CommandHandler implements CommandExecutor {
             if (sender instanceof Player) {
                 if (args.length > 0) {
                     if (InputChecker.noSpecialCharacters(args)) {
-                        parseSubCommand(sender, args);
+                        parseSubCommand(sender, args, label);
                     } else {
                         if (args[0].equalsIgnoreCase("setdesc")) {
-                            parseSubCommand(sender, args);
+                            parseSubCommand(sender, args, label);
                         } else {
                         sender.sendMessage("Special characters are not allowed in this command!");
                         }
@@ -34,30 +35,30 @@ public class CommandHandler implements CommandExecutor {
         return true;
     }
 
-    private void parseSubCommand(CommandSender sender, String[] args) {
+    private void parseSubCommand(CommandSender sender, String[] args, String label) {
         if (args[0].equalsIgnoreCase("create")) {
             if (args.length == 2) {
                 new CreateCommunity(plugin, sender, args);
             } else {
-                //syntax message
+                Message.sendPlaceholder(plugin, sender, "syntax.create", label);
             }
         } else if (args[0].equalsIgnoreCase("delete")) {
             if (args.length == 2) {
                 new DeleteCommunity(plugin, sender, args);
             } else {
-                //syntax message
+                Message.sendPlaceholder(plugin, sender, "syntax.delete", label);
             }
         } else if (args[0].equalsIgnoreCase("warp")) {
             if (args.length == 2) {
                 new GoToWarp(plugin, sender, args);
             } else {
-                //syntax message
+                Message.sendPlaceholder(plugin, sender, "syntax.warp", label);
             }
         } else if (args[0].equalsIgnoreCase("invite")) {
             if (args.length == 2) {
                 new InvitePlayer(plugin, sender, args);
             } else {
-                //syntax msg
+                Message.sendPlaceholder(plugin, sender, "syntax.invite", label);
             }
         } else if (args[0].equalsIgnoreCase("list")) {
             new ListCommunities(plugin, sender, args);
@@ -65,19 +66,25 @@ public class CommandHandler implements CommandExecutor {
             if (args.length >= 2) {
                 new SetDescription(plugin, sender, args);
             } else {
-                //syntax msg
+                Message.sendPlaceholder(plugin, sender, "syntax.setdesc", label);
             }
         } else if (args[0].equalsIgnoreCase("setwarp")) {
             if (args.length == 2) {
                 new SetWarp(plugin, sender, args);
             } else {
-                //syntax msg
+                Message.sendPlaceholder(plugin, sender, "syntax.setwarp", label);
+            }
+        } else if (args[0].equalsIgnoreCase("leave")) {
+            if (args.length == 1) {
+                new LeaveCommunity(plugin, sender, args);
+            } else {
+                Message.sendPlaceholder(plugin, sender, "syntax.leave", label);
             }
         } else if (args[0].equalsIgnoreCase("accept")) {
                 if (args.length == 2) {
                     new AcceptInvite(plugin, sender, args);
                 } else {
-                    //syntax msg
+                    Message.sendPlaceholder(plugin, sender, "syntax.accept", label);
                 }
         } else if (args.length == 1) {
             new GetCommunityInfo(plugin, sender, args);
