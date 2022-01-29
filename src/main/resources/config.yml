@@ -1,3 +1,5 @@
+settings:
+  guild-cost: 50000
 messages:
   create-guild: "&aYou created a new guild!"
   disband-guild: "&cYou disbanded your guild!"
@@ -28,6 +30,7 @@ messages:
   guild-set-name: "&aGuild name updated: %placeholder%"
   no-guilds: "&cNo guilds have been made yet!"
   no-special-characters: "&cSpecial characters are not allowed in this command!"
+  guild-create-insufficient-funds: "&cYou need $%placeholder% to create a Guild."
   syntax:
     create: "&cUsage: /%placeholder% create <name>"
     disband: "&cUsage: /%placeholder% disband"

@@ -10,10 +10,9 @@ commands:
     description: Base command of Guilds.
     usage: ""
     aliases:
-      - pc
-      - pcom
-      - pcoms
       - guild
       - guilds
       - g
+depend:
+  - Vault
 
