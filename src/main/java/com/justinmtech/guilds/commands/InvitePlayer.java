@@ -1,17 +1,17 @@
-package tech.justinm.playercommunities.commands;
+package com.justinmtech.guilds.commands;
 
+import com.justinmtech.guilds.SubCommand;
+import com.justinmtech.guilds.core.Role;
+import com.justinmtech.guilds.util.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import tech.justinm.playercommunities.PlayerCommunities;
-import tech.justinm.playercommunities.SubCommand;
-import tech.justinm.playercommunities.core.Community;
-import tech.justinm.playercommunities.core.Role;
-import tech.justinm.playercommunities.util.Message;
+import com.justinmtech.guilds.Guilds;
+import com.justinmtech.guilds.core.Guild;
 
 public class InvitePlayer extends SubCommand {
 
-    public InvitePlayer(PlayerCommunities plugin, CommandSender sender, String[] args) {
+    public InvitePlayer(Guilds plugin, CommandSender sender, String[] args) {
         super(plugin, sender, args);
         execute();
     }
@@ -20,9 +20,9 @@ public class InvitePlayer extends SubCommand {
         Player player = (Player) getSender();
         Player player2;
         player2 = Bukkit.getPlayer(getArgs()[1]);
-        Community community = getPlugin().getData().getCommunity(player.getUniqueId());
+        Guild guild = getPlugin().getData().getGuild(player.getUniqueId());
 
-        if (community == null) {
+        if (guild == null) {
             Message.send(getPlugin(), getSender(), "must-be-owner");
             return false;
         }
@@ -37,19 +37,19 @@ public class InvitePlayer extends SubCommand {
             return false;
         }
 
-        if (community.getMembers().get(player.getUniqueId()) != Role.LEADER) {
+        if (guild.getMembers().get(player.getUniqueId()) != Role.LEADER) {
             Message.send(getPlugin(), getSender(), "must-be-owner");
             return false;
         }
 
-        if (community.getMembers().get(player2.getUniqueId()) != null) {
-            Message.sendPlaceholder(getPlugin(), getSender(), "player-already-in-community", player2.getName());
+        if (guild.getMembers().get(player2.getUniqueId()) != null) {
+            Message.sendPlaceholder(getPlugin(), getSender(), "player-already-in-guild", player2.getName());
             return false;
         }
 
-        getPlugin().getData().createInvite(player2.getUniqueId(), community.getName());
+        getPlugin().getData().createInvite(player2.getUniqueId(), guild.getName());
         Message.sendPlaceholder(getPlugin(), getSender(), "invite-send", player2.getName());
-        Message.sendPlaceholder(getPlugin(), player2, "invite-receive", community.getName());
+        Message.sendPlaceholder(getPlugin(), player2, "invite-receive", guild.getName());
         return true;
     }
 }

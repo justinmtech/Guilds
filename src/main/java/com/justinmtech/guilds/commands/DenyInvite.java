@@ -1,13 +1,13 @@
-package tech.justinm.playercommunities.commands;
+package com.justinmtech.guilds.commands;
 
+import com.justinmtech.guilds.util.Message;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import tech.justinm.playercommunities.PlayerCommunities;
-import tech.justinm.playercommunities.SubCommand;
-import tech.justinm.playercommunities.util.Message;
+import com.justinmtech.guilds.Guilds;
+import com.justinmtech.guilds.SubCommand;
 
 public class DenyInvite extends SubCommand {
-    public DenyInvite(PlayerCommunities plugin, CommandSender sender, String[] args) {
+    public DenyInvite(Guilds plugin, CommandSender sender, String[] args) {
         super(plugin, sender, args);
         execute();
     }

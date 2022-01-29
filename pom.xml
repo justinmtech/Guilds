@@ -4,14 +4,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>tech.justinm</groupId>
-    <artifactId>PlayerCommunities</artifactId>
+    <groupId>com.justinmtech</groupId>
+    <artifactId>Guilds</artifactId>
     <version>1.0</version>
     <packaging>jar</packaging>
 
-    <name>PlayerCommunities</name>
+    <name>Guilds</name>
 
-    <description>A plugin that allows players to create their own goal-oriented communities to inspire cooperation and
+    <description>A plugin that allows players to create their guilds to inspire cooperation and
         socializing.
     </description>
     <properties>

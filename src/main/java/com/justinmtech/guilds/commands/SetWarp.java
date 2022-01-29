@@ -1,0 +1,33 @@
+package com.justinmtech.guilds.commands;
+
+import com.justinmtech.guilds.SubCommand;
+import com.justinmtech.guilds.util.Message;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import com.justinmtech.guilds.Guilds;
+import com.justinmtech.guilds.core.Guild;
+
+public class SetWarp extends SubCommand {
+
+    public SetWarp(Guilds plugin, CommandSender sender, String[] args) {
+        super(plugin, sender, args);
+        execute();
+    }
+
+    private void execute() {
+        Player player = (Player) getSender();
+        try {
+            String warpName = getArgs()[1];
+            Guild guild = getPlugin().getData().getGuild(player.getUniqueId());
+            if (guild.isOwner(player.getUniqueId())) {
+                guild.getWarps().put(warpName, player.getLocation());
+                Message.sendPlaceholder(getPlugin(), getSender(), "set-warp", warpName);
+            } else {
+                Message.sendPlaceholder(getPlugin(), getSender(), "must-be-owner", guild.getName());
+            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            Message.send(getPlugin(), getSender(), "generic-error");
+        }
+    }
+}

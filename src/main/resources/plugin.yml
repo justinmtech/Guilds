@@ -1,16 +1,19 @@
-name: PlayerCommunities
+name: Guilds
 version: '${project.version}'
-main: tech.justinm.playercommunities.PlayerCommunities
+main: com.justinmtech.guilds.Guilds
 api-version: 1.17
 authors: [ justinmtech ]
 description: A plugin that allows players to create their own goal-oriented communities to inspire cooperation and socializing.
 website: https://justinm.tech
 commands:
-  playercommunities:
-    description: Base command of Player Communities.
+  guilds:
+    description: Base command of Guilds.
     usage: ""
     aliases:
       - pc
       - pcom
       - pcoms
+      - guild
+      - guilds
+      - g
 

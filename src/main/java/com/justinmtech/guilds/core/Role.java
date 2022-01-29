@@ -1,4 +1,4 @@
-package tech.justinm.playercommunities.core;
+package com.justinmtech.guilds.core;
 
 public enum Role {
     MEMBER,

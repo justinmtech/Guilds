@@ -1,4 +1,4 @@
-package tech.justinm.playercommunities.core;
+package com.justinmtech.guilds.core;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -10,14 +10,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class Community implements Comparable<Community> {
+public class Guild implements Comparable<Guild> {
     private String name;
     private UUID owner;
     private String description;
     private final Map<UUID, Role> members;
     private final Map<String, Location> warps;
 
-    public Community(UUID owner, String name) {
+    public Guild(UUID owner, String name) {
         this.owner = owner;
         this.name = name;
         this.members = new HashMap<>();
@@ -26,7 +26,7 @@ public class Community implements Comparable<Community> {
         this.description = "A new community!";
     }
 
-    public Community(String name, UUID ownerId, String description, List<Object> memberObjects, Object warps) {
+    public Guild(String name, UUID ownerId, String description, List<Object> memberObjects, Object warps) {
         this.members = new HashMap<>();
         this.warps = new HashMap<>();
         this.name = name;
@@ -137,7 +137,7 @@ public class Community implements Comparable<Community> {
     }
 
     @Override
-    public int compareTo(Community o) {
+    public int compareTo(Guild o) {
         if (members.size() > o.getMembers().size()) return 1;
         return -1;
     }

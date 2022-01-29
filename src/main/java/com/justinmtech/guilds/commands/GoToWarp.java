@@ -1,15 +1,15 @@
-package tech.justinm.playercommunities.commands;
+package com.justinmtech.guilds.commands;
 
+import com.justinmtech.guilds.util.Message;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import tech.justinm.playercommunities.PlayerCommunities;
-import tech.justinm.playercommunities.SubCommand;
-import tech.justinm.playercommunities.core.Community;
-import tech.justinm.playercommunities.util.Message;
+import com.justinmtech.guilds.Guilds;
+import com.justinmtech.guilds.SubCommand;
+import com.justinmtech.guilds.core.Guild;
 
 public class GoToWarp extends SubCommand {
 
-    public GoToWarp(PlayerCommunities plugin, CommandSender sender, String[] args) {
+    public GoToWarp(Guilds plugin, CommandSender sender, String[] args) {
         super(plugin, sender, args);
         execute();
     }
@@ -19,9 +19,9 @@ public class GoToWarp extends SubCommand {
             Player player = (Player) getSender();
             String warpName = getArgs()[1];
 
-            Community community = getPlugin().getData().getCommunity(player.getUniqueId());
-            if (community.getWarps().containsKey(warpName)) {
-                player.teleport(community.getWarps().get(warpName));
+            Guild guild = getPlugin().getData().getGuild(player.getUniqueId());
+            if (guild.getWarps().containsKey(warpName)) {
+                player.teleport(guild.getWarps().get(warpName));
                 Message.sendPlaceholder(getPlugin(), getSender(), "warp", warpName);
             } else {
                 Message.sendPlaceholder(getPlugin(), getSender(), "warp-error", warpName);

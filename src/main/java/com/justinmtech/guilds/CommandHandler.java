@@ -1,23 +1,23 @@
-package tech.justinm.playercommunities;
+package com.justinmtech.guilds;
 
+import com.justinmtech.guilds.commands.*;
+import com.justinmtech.guilds.util.InputChecker;
+import com.justinmtech.guilds.util.Message;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import tech.justinm.playercommunities.commands.*;
-import tech.justinm.playercommunities.util.InputChecker;
-import tech.justinm.playercommunities.util.Message;
 
 public class CommandHandler implements CommandExecutor {
-    private final PlayerCommunities plugin;
+    private final Guilds plugin;
 
-    public CommandHandler(PlayerCommunities plugin) {
+    public CommandHandler(Guilds plugin) {
         this.plugin = plugin;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (command.getName().equalsIgnoreCase("playercommunities")) {
+        if (command.getName().equalsIgnoreCase("guilds")) {
             if (sender instanceof Player) {
                 if (args.length > 0) {
                     if (InputChecker.noSpecialCharacters(args)) {
@@ -40,13 +40,13 @@ public class CommandHandler implements CommandExecutor {
     private void parseSubCommand(CommandSender sender, String[] args, String label) {
         if (args[0].equalsIgnoreCase("create")) {
             if (args.length == 2) {
-                new CreateCommunity(plugin, sender, args);
+                new CreateGuild(plugin, sender, args);
             } else {
                 Message.sendPlaceholder(plugin, sender, "syntax.create", label);
             }
         } else if (args[0].equalsIgnoreCase("disband")) {
             if (args.length == 1) {
-                new DisbandCommunity(plugin, sender, args);
+                new DisbandGuild(plugin, sender, args);
             } else {
                 Message.sendPlaceholder(plugin, sender, "syntax.disband", label);
             }
@@ -75,7 +75,7 @@ public class CommandHandler implements CommandExecutor {
                 Message.sendPlaceholder(plugin, sender, "syntax.deny-invite", label);
             }
         } else if (args[0].equalsIgnoreCase("list")) {
-            new ListCommunities(plugin, sender, args);
+            new ListGuilds(plugin, sender, args);
         } else if (args[0].equalsIgnoreCase("setdesc")) {
             if (args.length >= 2) {
                 new SetDescription(plugin, sender, args);
@@ -90,7 +90,7 @@ public class CommandHandler implements CommandExecutor {
             }
         } else if (args[0].equalsIgnoreCase("leave")) {
             if (args.length == 1) {
-                new LeaveCommunity(plugin, sender, args);
+                new LeaveGuild(plugin, sender, args);
             } else {
                 Message.sendPlaceholder(plugin, sender, "syntax.leave", label);
             }
@@ -101,7 +101,7 @@ public class CommandHandler implements CommandExecutor {
                     Message.sendPlaceholder(plugin, sender, "syntax.accept-invite", label);
                 }
         } else if (args.length == 1) {
-            new GetCommunityInfo(plugin, sender, args);
+            new GetGuildInfo(plugin, sender, args);
         }
     }
 }

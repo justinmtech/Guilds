@@ -1,19 +1,19 @@
-package tech.justinm.playercommunities;
+package com.justinmtech.guilds;
 
 import org.bukkit.command.CommandSender;
 
 public class SubCommand {
-    private final PlayerCommunities plugin;
+    private final Guilds plugin;
     private final CommandSender sender;
     private final String[] args;
 
-    public SubCommand(PlayerCommunities plugin, CommandSender sender, String[] args) {
+    public SubCommand(Guilds plugin, CommandSender sender, String[] args) {
         this.plugin = plugin;
         this.sender = sender;
         this.args = args;
     }
 
-    public PlayerCommunities getPlugin() {
+    public Guilds getPlugin() {
         return plugin;
     }
 

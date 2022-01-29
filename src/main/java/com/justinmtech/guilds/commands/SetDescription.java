@@ -1,14 +1,14 @@
-package tech.justinm.playercommunities.commands;
+package com.justinmtech.guilds.commands;
 
+import com.justinmtech.guilds.SubCommand;
+import com.justinmtech.guilds.util.Message;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import tech.justinm.playercommunities.PlayerCommunities;
-import tech.justinm.playercommunities.SubCommand;
-import tech.justinm.playercommunities.util.Message;
+import com.justinmtech.guilds.Guilds;
 
 public class SetDescription extends SubCommand {
 
-    public SetDescription(PlayerCommunities plugin, CommandSender sender, String[] args) {
+    public SetDescription(Guilds plugin, CommandSender sender, String[] args) {
         super(plugin, sender, args);
         execute();
     }
@@ -20,7 +20,7 @@ public class SetDescription extends SubCommand {
             for (String arg : getArgs()) {
                 desc.append(arg).append(" ");
             }
-            getPlugin().getData().getCommunity(player.getUniqueId()).setDescription(desc.toString().trim());
+            getPlugin().getData().getGuild(player.getUniqueId()).setDescription(desc.toString().trim());
             Message.sendPlaceholder(getPlugin(), getSender(), "set-description", desc.toString());
         } catch (NullPointerException e) {
             e.printStackTrace();

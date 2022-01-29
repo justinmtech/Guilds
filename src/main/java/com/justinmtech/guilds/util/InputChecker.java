@@ -1,4 +1,4 @@
-package tech.justinm.playercommunities.util;
+package com.justinmtech.guilds.util;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
