@@ -2,37 +2,44 @@ package tech.justinm.playercommunities.core;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class Community implements Comparable<Community> {
     private String name;
     private UUID owner;
     private String description;
-    private Map<UUID, Role> members;
-    private Map<String, Location> warps;
+    private final Map<UUID, Role> members;
+    private final Map<String, Location> warps;
 
     public Community(UUID owner, String name) {
         this.owner = owner;
         this.name = name;
         this.members = new HashMap<>();
-        members.put(owner, Role.OWNER);
+        members.put(owner, Role.LEADER);
         this.warps = new HashMap<>();
+        this.description = "A new community!";
     }
 
-    public Community(String name, UUID ownerId, String description, List<String> memberObjects, Object warps) {
+    public Community(String name, UUID ownerId, String description, List<Object> memberObjects, Object warps) {
         this.members = new HashMap<>();
         this.warps = new HashMap<>();
         this.name = name;
         this.owner = ownerId;
         this.description = description;
-        for (String object : memberObjects) {
-
-        }
+        memberObjects.forEach(member -> _addMember((JSONObject) member));
         ((JSONArray) warps).forEach(warp -> _addWarps((JSONObject) warp));
+    }
+
+    private void _addMember(JSONObject member) {
+        String id = (String) member.get("player");
+        String role = (String) member.get("role");
+        this.members.put(UUID.fromString(id), Role.valueOf(role));
     }
 
     private void _addWarps(JSONObject warp) {
@@ -100,7 +107,7 @@ public class Community implements Comparable<Community> {
         JSONArray jsonArray = new JSONArray();
         for (UUID member : members.keySet()) {
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("player", member);
+            jsonObject.put("player", member.toString());
             jsonObject.put("role", members.get(member).toString());
             jsonArray.add(jsonObject);
         }

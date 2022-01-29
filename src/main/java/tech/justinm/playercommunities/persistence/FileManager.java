@@ -107,12 +107,15 @@ public class FileManager implements ManageData {
         List<Object> members = (List<Object>) community.get("members");
         List<Object> warps = (List<Object>) community.get("warps");
 
-        Community communityObject = new Community(name, UUID.fromString(ownerId), description, memberUuids, warps);
+        Community communityObject = new Community(name, UUID.fromString(ownerId), description, members, warps);
         this.communityList.add(communityObject);
         this.communitiesByName.put(name, communityObject);
-        for (UUID member : memberUuids.keySet()) {
-        this.communitiesByUuid.put(member, name);
-        }
+        members.forEach(member -> _addMember((JSONObject) member, name));
+    }
+
+    private void _addMember(JSONObject member, String name) {
+        String id = (String) member.get("player");
+        this.communitiesByUuid.put(UUID.fromString(id), name);
     }
 
     @Override

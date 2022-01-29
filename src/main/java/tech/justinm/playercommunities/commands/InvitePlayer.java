@@ -41,10 +41,10 @@ public class InvitePlayer extends SubCommand {
             return false;
         }
 
-        if (community.getMembers().contains(player2.getUniqueId())) {
+/*        if (community.getMembers().contains(player2.getUniqueId())) {
             Message.sendPlaceholder(getPlugin(), getSender(), "player-already-in-community", player2.getName());
             return false;
-        }
+        }*/
 
         getPlugin().getData().createInvite(player2.getUniqueId(), community.getName());
         Message.sendPlaceholder(getPlugin(), getSender(), "invite-send", player2.getName());
