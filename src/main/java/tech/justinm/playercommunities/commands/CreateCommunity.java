@@ -18,8 +18,12 @@ public class CreateCommunity extends SubCommand {
         Player player = (Player) getSender();
         String name = getArgs()[1];
         if (getPlugin().getData().getCommunity(name) == null) {
-        getPlugin().getData().createCommunity(player.getUniqueId(), name);
-        Message.send(getPlugin(), player, "create-community");
+            if (getPlugin().getData().getCommunity(player.getUniqueId()) == null) {
+                getPlugin().getData().createCommunity(player.getUniqueId(), name);
+                Message.send(getPlugin(), player, "create-community");
+            } else {
+                Message.send(getPlugin(), getSender(), "already-in-community");
+            }
         } else {
             Message.send(getPlugin(), getSender(), "community-already-exists");
         }

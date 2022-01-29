@@ -126,6 +126,18 @@ public class FileManager implements ManageData {
     }
 
     @Override
+    public void addMember(UUID member, String communityName) {
+        getCommunity(communityName).getMembers().add(member);
+        communitiesByUuid.put(member, communityName);
+    }
+
+    @Override
+    public void removeMember(UUID member) {
+        getCommunity(member).getMembers().remove(member);
+        communitiesByUuid.remove(member);
+    }
+
+    @Override
     public String getInvite(UUID receiver) {
         return invites.get(receiver);
     }

@@ -2,6 +2,7 @@ package tech.justinm.playercommunities.util;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import tech.justinm.playercommunities.PlayerCommunities;
 
 public class Message {
@@ -10,6 +11,10 @@ public class Message {
     }
 
     public static void sendPlaceholder(PlayerCommunities plugin, CommandSender sender, String messagePath, String placeholder) {
+        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("messages." + messagePath).replace("%placeholder%", placeholder)));
+    }
+
+    public static void sendPlaceholder(PlayerCommunities plugin, Player sender, String messagePath, String placeholder) {
         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("messages." + messagePath).replace("%placeholder%", placeholder)));
     }
 
