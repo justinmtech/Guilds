@@ -26,11 +26,12 @@ public class CommandHandler implements CommandExecutor {
                         if (args[0].equalsIgnoreCase("setdesc")) {
                             parseSubCommand(sender, args, label);
                         } else {
-                        sender.sendMessage("Special characters are not allowed in this command!");
+                        Message.send(plugin, sender, "no-special-characters");
                         }
                     }
-                }
+                } else {
                 Message.sendHelp(plugin, sender, "help", label);
+                }
             }
         }
         return true;
@@ -55,11 +56,23 @@ public class CommandHandler implements CommandExecutor {
             } else {
                 Message.sendPlaceholder(plugin, sender, "syntax.warp", label);
             }
+        } else if (args[0].equalsIgnoreCase("setname")) {
+            if (args.length == 2) {
+                new SetName(plugin, sender, args);
+            } else {
+                Message.sendPlaceholder(plugin, sender, "syntax.setname", label);
+            }
         } else if (args[0].equalsIgnoreCase("invite")) {
             if (args.length == 2) {
                 new InvitePlayer(plugin, sender, args);
             } else {
                 Message.sendPlaceholder(plugin, sender, "syntax.invite", label);
+            }
+        } else if (args[0].equalsIgnoreCase("deny")) {
+            if (args.length == 2) {
+                new DenyInvite(plugin, sender, args);
+            } else {
+                Message.sendPlaceholder(plugin, sender, "syntax.deny-invite", label);
             }
         } else if (args[0].equalsIgnoreCase("list")) {
             new ListCommunities(plugin, sender, args);
@@ -85,7 +98,7 @@ public class CommandHandler implements CommandExecutor {
                 if (args.length == 2) {
                     new AcceptInvite(plugin, sender, args);
                 } else {
-                    Message.sendPlaceholder(plugin, sender, "syntax.accept", label);
+                    Message.sendPlaceholder(plugin, sender, "syntax.accept-invite", label);
                 }
         } else if (args.length == 1) {
             new GetCommunityInfo(plugin, sender, args);

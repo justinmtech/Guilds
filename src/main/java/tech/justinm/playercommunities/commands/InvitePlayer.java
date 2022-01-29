@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import tech.justinm.playercommunities.PlayerCommunities;
 import tech.justinm.playercommunities.SubCommand;
 import tech.justinm.playercommunities.core.Community;
+import tech.justinm.playercommunities.core.Role;
 import tech.justinm.playercommunities.util.Message;
 
 public class InvitePlayer extends SubCommand {
@@ -36,15 +37,15 @@ public class InvitePlayer extends SubCommand {
             return false;
         }
 
-        if (!community.isOwner(player.getUniqueId())) {
+        if (community.getMembers().get(player.getUniqueId()) != Role.LEADER) {
             Message.send(getPlugin(), getSender(), "must-be-owner");
             return false;
         }
 
-/*        if (community.getMembers().contains(player2.getUniqueId())) {
+        if (community.getMembers().get(player2.getUniqueId()) != null) {
             Message.sendPlaceholder(getPlugin(), getSender(), "player-already-in-community", player2.getName());
             return false;
-        }*/
+        }
 
         getPlugin().getData().createInvite(player2.getUniqueId(), community.getName());
         Message.sendPlaceholder(getPlugin(), getSender(), "invite-send", player2.getName());

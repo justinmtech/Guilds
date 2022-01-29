@@ -19,19 +19,24 @@ public class AcceptInvite extends SubCommand {
         Player player2 = (Player) getSender();
         String communityName = getArgs()[1];
         boolean noCommunity = getPlugin().getData().getCommunity(player2.getUniqueId()) == null;
-        boolean invited = getPlugin().getData().getInvite(player2.getUniqueId()).equalsIgnoreCase(communityName);
+        try {
+            boolean invited = getPlugin().getData().getInvite(player2.getUniqueId(), communityName) != null;
+        } catch (NullPointerException e) {
+            Message.sendPlaceholder(getPlugin(), getSender(), "no-invite", communityName);
+            return false;
+        }
         Community community = getPlugin().getData().getCommunity(communityName);
         boolean communityExists = getPlugin().getData().getCommunity(communityName) != null;
 
-        if (invited && communityExists && noCommunity) {
+        if (communityExists && noCommunity) {
             getPlugin().getData().addMember(player2.getUniqueId(), communityName);
             Message.sendPlaceholder(getPlugin(), getSender(), "invite-accepted", community.getName());
+            getPlugin().getData().deleteInvite(player2.getUniqueId(), communityName);
             if (Bukkit.getPlayer(community.getOwner()) != null) {
                 Message.sendPlaceholder(getPlugin(), Bukkit.getPlayer(community.getOwner()), "player-joined-community", player2.getName());
             }
         } else {
             if (!communityExists) player2.sendMessage(communityName + " does not exist anymore!");
-            else if (!invited) Message.sendPlaceholder(getPlugin(), getSender(), "no-invite", communityName);
             else Message.send(getPlugin(), getSender(), "already-in-community");
         }
         return true;

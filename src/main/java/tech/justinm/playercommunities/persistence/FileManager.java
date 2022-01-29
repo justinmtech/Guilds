@@ -19,7 +19,7 @@ public class FileManager implements ManageData {
     private final List<Community> communityList;
     private final Map<String, Community> communitiesByName;
     private final Map<UUID, String> communitiesByUuid;
-    private final Map<UUID, String> invites;
+    private final Map<UUID, List<String>> invites;
 
     public FileManager(PlayerCommunities plugin) {
         this.plugin = plugin;
@@ -143,13 +143,26 @@ public class FileManager implements ManageData {
     }
 
     @Override
-    public String getInvite(UUID receiver) {
-        return invites.get(receiver);
+    public String getInvite(UUID receiver, String name) {
+        return invites.get(receiver).stream().filter(i -> i.equalsIgnoreCase(name)).findFirst().orElseThrow(NullPointerException::new);
     }
 
     @Override
     public void createInvite(UUID receiver, String communityName) {
-        invites.put(receiver, communityName);
+        List<String> inviteList;
+        try {
+            inviteList = getInvites(receiver);
+            inviteList.add(communityName);
+        } catch (Exception e) {
+            inviteList = new ArrayList<>();
+            inviteList.add(communityName);
+        }
+        try {
+        invites.put(receiver, inviteList);
+        } catch (Exception e) {
+            inviteList = new ArrayList<>();
+            inviteList.add(communityName);
+        }
     }
 
     @Override
@@ -161,7 +174,12 @@ public class FileManager implements ManageData {
     }
 
     @Override
-    public void deleteInvite(UUID receiver) {
-        invites.remove(receiver);
+    public void deleteInvite(UUID receiver, String name) {
+        invites.get(receiver).removeIf(i -> i.equalsIgnoreCase(name));
+    }
+
+    @Override
+    public List<String> getInvites(UUID receiver) {
+        return invites.get(receiver);
     }
 }
