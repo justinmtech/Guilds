@@ -6,6 +6,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import tech.justinm.playercommunities.PlayerCommunities;
 import tech.justinm.playercommunities.core.Community;
+import tech.justinm.playercommunities.core.Role;
 
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -103,17 +104,13 @@ public class FileManager implements ManageData {
         String name = (String) community.get("name");
         String ownerId = (String) community.get("owner");
         String description = (String) community.get("description");
-        List<String> members = (List<String>) community.get("members");
+        List<Object> members = (List<Object>) community.get("members");
         List<Object> warps = (List<Object>) community.get("warps");
 
-        List<UUID> memberUuids = new ArrayList<>();
-        for (String member : members) {
-            memberUuids.add(UUID.fromString(member));
-        }
         Community communityObject = new Community(name, UUID.fromString(ownerId), description, memberUuids, warps);
         this.communityList.add(communityObject);
         this.communitiesByName.put(name, communityObject);
-        for (UUID member : memberUuids) {
+        for (UUID member : memberUuids.keySet()) {
         this.communitiesByUuid.put(member, name);
         }
     }
@@ -127,7 +124,7 @@ public class FileManager implements ManageData {
 
     @Override
     public void addMember(UUID member, String communityName) {
-        getCommunity(communityName).getMembers().add(member);
+        getCommunity(communityName).getMembers().put(member, Role.MEMBER);
         communitiesByUuid.put(member, communityName);
     }
 

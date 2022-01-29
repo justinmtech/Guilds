@@ -12,24 +12,26 @@ public class Community implements Comparable<Community> {
     private String name;
     private UUID owner;
     private String description;
-    private List<UUID> members;
+    private Map<UUID, Role> members;
     private Map<String, Location> warps;
 
     public Community(UUID owner, String name) {
         this.owner = owner;
         this.name = name;
-        this.members = new LinkedList<>();
-        members.add(owner);
+        this.members = new HashMap<>();
+        members.put(owner, Role.OWNER);
         this.warps = new HashMap<>();
     }
 
-    public Community(String name, UUID ownerId, String description, List<UUID> memberUuids, Object warps) {
-        this.members = new LinkedList<>();
+    public Community(String name, UUID ownerId, String description, List<String> memberObjects, Object warps) {
+        this.members = new HashMap<>();
         this.warps = new HashMap<>();
         this.name = name;
         this.owner = ownerId;
         this.description = description;
-        this.members = memberUuids;
+        for (String object : memberObjects) {
+
+        }
         ((JSONArray) warps).forEach(warp -> _addWarps((JSONObject) warp));
     }
 
@@ -61,7 +63,7 @@ public class Community implements Comparable<Community> {
         this.description = description;
     }
 
-    public List<UUID> getMembers() {
+    public Map<UUID, Role> getMembers() {
         return members;
     }
 
@@ -70,15 +72,11 @@ public class Community implements Comparable<Community> {
     }
 
     public boolean containsMember(UUID playerUuid) {
-        return members.contains(playerUuid);
+        return members.containsKey(playerUuid);
     }
 
     public boolean containsWarp(String name) {
         return warps.get(name) != null;
-    }
-
-    public void setMembers(List<UUID> members) {
-        this.members = members;
     }
 
     public UUID getOwner() {
@@ -93,10 +91,6 @@ public class Community implements Comparable<Community> {
         return warps;
     }
 
-    public void setWarps(Map<String, Location> warps) {
-        this.warps = warps;
-    }
-
     @Override
     public String toString() {
         JSONObject json = new JSONObject();
@@ -104,8 +98,11 @@ public class Community implements Comparable<Community> {
         json.put("owner", owner.toString());
         json.put("description", description);
         JSONArray jsonArray = new JSONArray();
-        for (UUID member : members) {
-            jsonArray.add(member.toString());
+        for (UUID member : members.keySet()) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("player", member);
+            jsonObject.put("role", members.get(member).toString());
+            jsonArray.add(jsonObject);
         }
         json.put("members", jsonArray);
         JSONArray warpArray = new JSONArray();
