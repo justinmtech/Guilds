@@ -23,7 +23,7 @@ public class Guild implements Comparable<Guild> {
         this.members = new HashMap<>();
         members.put(owner, Role.LEADER);
         this.warps = new HashMap<>();
-        this.description = "A new community!";
+        this.description = "A new guild!";
     }
 
     public Guild(String name, UUID ownerId, String description, List<Object> memberObjects, Object warps) {
