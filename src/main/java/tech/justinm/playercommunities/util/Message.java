@@ -21,9 +21,12 @@ public class Message {
 
     public static void sendHelp(PlayerCommunities plugin, CommandSender sender, String messagePath, String placeholder) {
         ConfigurationSection section = plugin.getConfig().getConfigurationSection(messagePath);
-        int size = section.getKeys(false).size();
         for (String key : section.getKeys(false)) {
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString(messagePath + key).replace("%placeholder%", placeholder)));
+            if (key.equals("header")) {
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString(messagePath + "." + key)));
+            } else {
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString(messagePath + "." + key).replace("%placeholder%", placeholder)));
+            }
         }
     }
 

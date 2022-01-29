@@ -8,6 +8,7 @@ import tech.justinm.playercommunities.PlayerCommunities;
 import tech.justinm.playercommunities.core.Community;
 import tech.justinm.playercommunities.core.Role;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -33,6 +34,10 @@ public class FileManager implements ManageData {
     public void setup() {
         if (!plugin.getDataFolder().exists()) {
             plugin.getDataFolder().mkdir();
+            plugin.saveDefaultConfig();
+        }
+        File config = new File(plugin.getDataFolder(), "config.yml");
+        if (!config.exists()) {
             plugin.saveDefaultConfig();
         }
     }
