@@ -2,6 +2,7 @@ package com.justinmtech.guilds.persistence;
 
 import com.justinmtech.guilds.core.Guild;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public interface ManageData {
@@ -20,4 +21,5 @@ public interface ManageData {
     List<String> getInvites(UUID receiver);
     void createInvite(UUID receiver, String communityName);
     void clearCache();
+    Map<UUID, Double> getTransactionConfirmations();
 }

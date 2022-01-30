@@ -15,14 +15,14 @@ public class GetGuildInfo extends SubCommand {
     }
 
     private void execute() {
-        Player player = (Player) getSender();
+        Guild guild = null;
         try {
             String guildName = getArgs()[0];
-            Guild guild = getPlugin().getData().getGuild(guildName);
-            Message.sendGuildInfo(getPlugin(), getSender(), "messages.guild-info", guild);
+            guild = getPlugin().getData().getGuild(guildName);
         } catch (NullPointerException e) {
             Message.sendPlaceholder(getPlugin(), getSender(), "guild-not-found", getArgs()[0]);
         }
+        Message.sendGuildInfo(getPlugin(), getSender(), "messages.guild-info", guild);
 
     }
 }

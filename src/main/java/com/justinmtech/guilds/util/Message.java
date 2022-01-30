@@ -15,12 +15,16 @@ public class Message {
         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("messages." + messagePath)));
     }
 
-    public static void sendPath(Guilds plugin, CommandSender sender, String messagePath) {
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString(messagePath)));
-    }
-
     public static void sendPlaceholder(Guilds plugin, CommandSender sender, String messagePath, String placeholder) {
         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("messages." + messagePath).replace("%placeholder%", placeholder)));
+    }
+
+    public static void sendPlaceholders(Guilds plugin, CommandSender sender, String messagePath, String[] placeholders) {
+        String output = plugin.getConfig().getString("messages." + messagePath);
+        for (String placeholder : placeholders) {
+            output = output.replace("%placeholder%", placeholder);
+        }
+        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', output));
     }
 
     public static void sendPlaceholderPath(Guilds plugin, CommandSender sender, String messagePath, String placeholder) {
@@ -72,7 +76,7 @@ public class Message {
                 case "online" :
                     int online = 0;
                     for (UUID member : guild.getMembers().keySet()) {
-                        if (Bukkit.getPlayer(member).isOnline()) online++;
+                        if (Bukkit.getPlayer(member) != null) online++;
                     }
                     sendPlaceholderPath(plugin, sender, messagePath + "." + key, online + "/"  + guild.getMembers().size());
                     break;

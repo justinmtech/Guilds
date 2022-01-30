@@ -20,6 +20,7 @@ public class FileManager implements ManageData {
     private final Map<String, Guild> guildsByName;
     private final Map<UUID, String> guildsByUuid;
     private final Map<UUID, List<String>> invites;
+    private Map<UUID, Double> transactionConfirmations;
 
     public FileManager(Guilds plugin) {
         this.plugin = plugin;
@@ -27,8 +28,13 @@ public class FileManager implements ManageData {
         this.guildsByName = new HashMap<>();
         this.guildsByUuid = new HashMap<>();
         this.guildList = new ArrayList<>();
+        this.transactionConfirmations = new HashMap<>();
     }
 
+    @Override
+    public Map<UUID, Double> getTransactionConfirmations() {
+        return transactionConfirmations;
+    }
 
     @Override
     public void setup() {
@@ -183,3 +189,7 @@ public class FileManager implements ManageData {
         return invites.get(receiver);
     }
 }
+
+
+
+

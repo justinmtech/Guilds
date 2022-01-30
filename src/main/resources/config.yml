@@ -1,5 +1,15 @@
 settings:
   guild-cost: 50000
+  upgrade-costs:
+    level-2: 5000
+    level-3: 10000
+    level-4: 25000
+    level-5: 50000
+    level-6: 100000
+    level-7: 250000
+    level-8: 500000
+    level-9: 1000000
+    level-10: 2000000
 messages:
   create-guild: "&aYou created a new guild!"
   disband-guild: "&cYou disbanded your guild!"
@@ -31,6 +41,10 @@ messages:
   no-guilds: "&cNo guilds have been made yet!"
   no-special-characters: "&cSpecial characters are not allowed in this command!"
   guild-create-insufficient-funds: "&cYou need $%placeholder% to create a Guild."
+  already-max-level: "&cYour guild is already the max level!"
+  upgrade-confirm: "&cDo you want to upgrade your guild for %placeholder%? Type /%placeholder% confirm to confirm."
+  guild-level-up: "&aYour guild is now level %placeholder%!"
+  no-confirmation: "&cNo pending confirmation found.."
   guild-info:
     header: "&8&m------&r &6&l%placeholder% &8&m-------"
     leader: "&eLeader: %placeholder%"
@@ -54,6 +68,8 @@ messages:
     setdesc: "&Usage: /%placeholder% setdesc <description>"
     leave: "&Usage: /%placeholder% leave"
     setname: "&cUsage: /%placeholder% setname <name>"
+    confirm: "&cUsage: /%placeholder% confirm"
+    upgrade: "&cUsage: /%placeholder% upgrade"
 
 help:
   header: "&6&lGuilds Help"

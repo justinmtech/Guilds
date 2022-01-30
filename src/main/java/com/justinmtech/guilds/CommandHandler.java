@@ -88,6 +88,18 @@ public class CommandHandler implements CommandExecutor {
             } else {
                 Message.sendPlaceholder(plugin, sender, "syntax.setwarp", label);
             }
+        } else if (args[0].equalsIgnoreCase("upgrade")) {
+            if (args.length == 1) {
+                new Upgrade(plugin, sender, args, label);
+            } else {
+                Message.sendPlaceholder(plugin, sender, "syntax.upgrade", label);
+            }
+        } else if (args[0].equalsIgnoreCase("confirm")) {
+            if (args.length == 1) {
+                new Confirmation(plugin, sender, args);
+            } else {
+                Message.sendPlaceholder(plugin, sender, "syntax.confirm", label);
+            }
         } else if (args[0].equalsIgnoreCase("leave")) {
             if (args.length == 1) {
                 new LeaveGuild(plugin, sender, args);
