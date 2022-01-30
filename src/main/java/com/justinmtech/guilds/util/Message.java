@@ -89,6 +89,9 @@ public class Message {
                     }
                     sendRaw(plugin, sender, string.toString());
                     break;
+                case "bottom" :
+                    send(plugin, sender, messagePath + "." + key);
+                    break;
             }
         }
     }
