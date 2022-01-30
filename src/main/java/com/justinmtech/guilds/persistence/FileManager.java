@@ -110,9 +110,9 @@ public class FileManager implements ManageData {
         String description = (String) guild.getOrDefault("description", "No description set!");
         List<Object> members = (List<Object>) guild.getOrDefault("members", new ArrayList<>());
         List<Object> warps = (List<Object>) guild.getOrDefault("warps", new ArrayList<>());
-        int level = (int) guild.getOrDefault("level", 1);
+        long level = (long) guild.getOrDefault("level", 1);
 
-        Guild guildObject = new Guild(name, UUID.fromString(ownerId), description, members, warps, level);
+        Guild guildObject = new Guild(name, UUID.fromString(ownerId), description, members, warps, (int) level);
         this.guildList.add(guildObject);
         this.guildsByName.put(name, guildObject);
         members.forEach(member -> _addMember((JSONObject) member, name));

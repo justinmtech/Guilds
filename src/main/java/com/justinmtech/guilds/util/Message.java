@@ -15,6 +15,10 @@ public class Message {
         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("messages." + messagePath)));
     }
 
+    public static void sendPath(Guilds plugin, CommandSender sender, String messagePath) {
+        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString(messagePath)));
+    }
+
     public static void sendPlaceholder(Guilds plugin, CommandSender sender, String messagePath, String placeholder) {
         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("messages." + messagePath).replace("%placeholder%", placeholder)));
     }
@@ -54,27 +58,33 @@ public class Message {
                     sendPlaceholderPath(plugin, sender, messagePath + "." + key, guild.getName());
                     break;
                 case "leader" :
-                    sendPlaceholderPath(plugin, sender, messagePath + "." + key, guild.getOwner().toString());
+                    sendPlaceholderPath(plugin, sender, messagePath + "." + key, Bukkit.getOfflinePlayer(guild.getOwner()).getName());
                     break;
                 case "description" :
                     sendPlaceholderPath(plugin, sender, messagePath + "." + key, guild.getDescription());
                     break;
                 case "level" :
-                    sendPlaceholderPath(plugin, sender, messagePath + "." + key, String.valueOf(guild.getLevel()));
+                    sendPlaceholderPath(plugin, sender, messagePath + "." + key, guild.getLevel() + "/" + guild.getMaxLevel());
                     break;
                 case "size" :
-                    sendPlaceholderPath(plugin, sender, messagePath + "." + key, String.valueOf(guild.getMembers().size()));
+                    sendPlaceholderPath(plugin, sender, messagePath + "." + key, guild.getMembers().size() + "/" + guild.getMaxMembers());
+                    break;
+                case "online" :
+                    int online = 0;
+                    for (UUID member : guild.getMembers().keySet()) {
+                        if (Bukkit.getPlayer(member).isOnline()) online++;
+                    }
+                    sendPlaceholderPath(plugin, sender, messagePath + "." + key, online + "/"  + guild.getMembers().size());
                     break;
                 case "members" :
-                    send(plugin, sender, messagePath + "." + key);
-                    break;
-                case "member-color" :
+                    StringBuilder string = new StringBuilder();
+                    string.append(plugin.getConfig().getString(messagePath + "." + key) + " ");
                     for (UUID member : guild.getMembers().keySet()) {
-                        StringBuilder string = new StringBuilder();
                         string.append(ChatColor.translateAlternateColorCodes('&', section.getString("member-color")) +
                                 Bukkit.getOfflinePlayer(member).getName() + " ");
                     }
-                    send(plugin, sender, messagePath + "." + key);
+                    sendRaw(plugin, sender, string.toString());
+                    break;
             }
         }
     }

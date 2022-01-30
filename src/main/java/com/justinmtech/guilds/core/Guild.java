@@ -109,6 +109,18 @@ public class Guild implements Comparable<Guild> {
         this.level = level;
     }
 
+    public int getMaxWarps() {
+        return level;
+    }
+
+    public int getMaxMembers() {
+        return level * 3;
+    }
+
+    public int getMaxLevel() {
+        return 10;
+    }
+
     @Override
     public String toString() {
         JSONObject json = new JSONObject();
