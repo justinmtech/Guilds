@@ -46,7 +46,7 @@ messages:
   guild-level-up: "&aYour guild is now level %placeholder%!"
   no-confirmation: "&cNo pending confirmation found.."
   guild-info:
-    header: "&8&m------&r &6&l%placeholder% &8&m-------"
+    header: "&8&m-------&r &6&l%placeholder% &8&m--------"
     leader: "&eLeader: %placeholder%"
     description: "&eDescription: %placeholder%"
     level: "&eLevel: %placeholder%"
@@ -54,7 +54,7 @@ messages:
     online: "&eOnline: %placeholder%"
     members: "&eMembers:"
     member-color: "&e"
-    bottom: "&8&m-----------------------"
+    bottom: "&8&m----------------------"
 
   syntax:
     create: "&cUsage: /%placeholder% create <name>"
