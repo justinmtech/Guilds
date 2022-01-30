@@ -1,12 +1,12 @@
 # Guilds
 A free, open-source plugin that allows players to create their own goal-oriented guilds to inspire cooperation and socializing. If you want to contribute to the project, feel free to make a pull request or add me on Discord at Jamm#0747.
 
-#Features
-• Organize Communities - Allow your players to create powerful social groups
-• Guild Warps - Set warps
-• Guild Levels & Upgrades - Upgrade your guild level to unlock new features
-• Economy Support - Customizable costs for creating and upgrading guilds
-• Fully Configurable - Easy to use, configure and modify
+# Features
+• Organize Groups - Allow your players to create powerful social groups <br>
+• Guild Warps - Set warps at guild areas<br>
+• Guild Levels & Upgrades - Upgrade your guild level to unlock new features <br>
+• Economy Support - Customizable costs for creating and upgrading guilds <br>
+• Fully Configurable - Easy to use, configure and modify <br>
 
 # Commands
   • /guilds - Displays help menu <br>
