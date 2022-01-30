@@ -17,7 +17,7 @@ messages:
   warp-error: "&cA warp named %placeholder% could not be found!"
   no-invite: "&cYou do not have a pending invite from %placeholder%."
   invite-send: "&dYou invited %placeholder% to your guild!"
-  invite-receive: "&dYou received an invite from %placeholder%! Enter /pc accept %placeholder% to accept."
+  invite-receive: "&dYou received an invite from %placeholder%! Enter /guilds accept %placeholder% to accept."
   invite-accepted: "&aYou accepted an invite from %placeholder%!"
   invite-denied: "&cYou denied the invite from %placeholder%."
   set-warp: "&aYou set a warp: %placeholder%!"
@@ -81,5 +81,6 @@ help:
   line-6: "&e/%placeholder% accept <guild> - Accept an invite"
   line-7: "&e/%placeholder% leave - Leave your guild"
   line-8: "&e/%placeholder% list - List the top guilds"
+  line-9: "&e/%plcaeholder% upgrade - Upgrade your guild"
 
 
