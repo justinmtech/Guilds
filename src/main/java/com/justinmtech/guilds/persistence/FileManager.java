@@ -65,7 +65,6 @@ public class FileManager implements ManageData {
         this.guildsByName.put(name, guild);
     }
 
-
     @Override
     public void saveAllGuilds() {
         FileWriter file = null;
@@ -108,11 +107,12 @@ public class FileManager implements ManageData {
 
         String name = (String) guild.get("name");
         String ownerId = (String) guild.get("owner");
-        String description = (String) guild.get("description");
-        List<Object> members = (List<Object>) guild.get("members");
-        List<Object> warps = (List<Object>) guild.get("warps");
+        String description = (String) guild.getOrDefault("description", "No description set!");
+        List<Object> members = (List<Object>) guild.getOrDefault("members", new ArrayList<>());
+        List<Object> warps = (List<Object>) guild.getOrDefault("warps", new ArrayList<>());
+        int level = (int) guild.getOrDefault("level", 1);
 
-        Guild guildObject = new Guild(name, UUID.fromString(ownerId), description, members, warps);
+        Guild guildObject = new Guild(name, UUID.fromString(ownerId), description, members, warps, level);
         this.guildList.add(guildObject);
         this.guildsByName.put(name, guildObject);
         members.forEach(member -> _addMember((JSONObject) member, name));

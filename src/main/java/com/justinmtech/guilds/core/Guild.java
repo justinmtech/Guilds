@@ -16,6 +16,7 @@ public class Guild implements Comparable<Guild> {
     private String description;
     private final Map<UUID, Role> members;
     private final Map<String, Location> warps;
+    private int level;
 
     public Guild(UUID owner, String name) {
         this.owner = owner;
@@ -24,9 +25,10 @@ public class Guild implements Comparable<Guild> {
         members.put(owner, Role.LEADER);
         this.warps = new HashMap<>();
         this.description = "A new guild!";
+        this.level = 1;
     }
 
-    public Guild(String name, UUID ownerId, String description, List<Object> memberObjects, Object warps) {
+    public Guild(String name, UUID ownerId, String description, List<Object> memberObjects, Object warps, int level) {
         this.members = new HashMap<>();
         this.warps = new HashMap<>();
         this.name = name;
@@ -34,6 +36,7 @@ public class Guild implements Comparable<Guild> {
         this.description = description;
         memberObjects.forEach(member -> _addMember((JSONObject) member));
         ((JSONArray) warps).forEach(warp -> _addWarps((JSONObject) warp));
+        this.level = level;
     }
 
     private void _addMember(JSONObject member) {
@@ -98,6 +101,14 @@ public class Guild implements Comparable<Guild> {
         return warps;
     }
 
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
     @Override
     public String toString() {
         JSONObject json = new JSONObject();
@@ -133,6 +144,7 @@ public class Guild implements Comparable<Guild> {
             warpArray.add(jsonObject);
         }
         json.put("warps", warpArray);
+        json.put("level", level);
         return json.toString();
     }
 

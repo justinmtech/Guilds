@@ -28,7 +28,7 @@ public class ListGuilds extends SubCommand {
         for (int i = 0; i < listSize; i++) {
             Guild guild = guildList.get(i);
             String[] placeholders = {String.valueOf(i + 1), guild.getName(), String.valueOf(guild.getMembers().size())};
-            Message.sendGuildInfo(getPlugin(), getSender(), "guild-list-line", placeholders);
+            Message.sendGuildList(getPlugin(), getSender(), "guild-list-line", placeholders);
         }
         return true;
     }

@@ -17,11 +17,12 @@ public class GetGuildInfo extends SubCommand {
     private void execute() {
         Player player = (Player) getSender();
         try {
-            String communityName = getArgs()[0];
-            Guild guild = getPlugin().getData().getGuild(communityName);
-            player.sendMessage(guild.toString());
+            String guildName = getArgs()[0];
+            Guild guild = getPlugin().getData().getGuild(guildName);
+            Message.sendGuildInfo(getPlugin(), getSender(), "messages.guild-info", guild);
         } catch (NullPointerException e) {
             Message.sendPlaceholder(getPlugin(), getSender(), "guild-not-found", getArgs()[0]);
-            }
+        }
+
     }
 }

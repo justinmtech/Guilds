@@ -31,6 +31,17 @@ messages:
   no-guilds: "&cNo guilds have been made yet!"
   no-special-characters: "&cSpecial characters are not allowed in this command!"
   guild-create-insufficient-funds: "&cYou need $%placeholder% to create a Guild."
+  guild-info:
+    header: "&8&m------&r &6&l%placeholder% &8&m-------"
+    leader: "&eLeader: %placeholder%"
+    description: "&eDescription: %placeholder%"
+    level: "&eLevel: %placeholder%"
+    size: "&eSize: %placeholder% members"
+    online: "&eOnline: %placeholder% members online"
+    members: "&eMembers:"
+    member-color: "&e"
+    bottom: "&8&m-----------------------"
+
   syntax:
     create: "&cUsage: /%placeholder% create <name>"
     disband: "&cUsage: /%placeholder% disband"
@@ -54,3 +65,5 @@ help:
   line-6: "&e/%placeholder% accept <guild> - Accept an invite"
   line-7: "&e/%placeholder% leave - Leave your guild"
   line-8: "&e/%placeholder% list - List the top guilds"
+
+
