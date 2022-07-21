@@ -9,6 +9,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
 
+import java.util.Optional;
+
 public class Upgrade extends SubCommand {
     private final String label;
     public Upgrade(Guilds plugin, CommandSender sender, String[] args, String label) {
@@ -17,35 +19,30 @@ public class Upgrade extends SubCommand {
         execute();
     }
 
+    //TODO Transaction confirmations
     private void execute() {
-        //check if player
         if (getSender() instanceof Player) {
             Player player = (Player) getSender();
-            //check if in guild
-            Guild guild = getPlugin().getData().getGuild(player.getUniqueId());
-            double upgradeCost = getPlugin().getConfig().getDouble("settings.upgrade-costs.level-" + guild.getLevel() + 1);
-            if (guild == null) {
+            Optional<Guild> guild = getPlugin().getDb().getGuild(player.getUniqueId());
+            if (guild.isEmpty()) {
                 Message.send(getPlugin(), getSender(), "not-in-guild");
-            } else if (!guild.isOwner(player.getUniqueId())) {
+                return;
+            }
+            double upgradeCost = getPlugin().getConfig().getDouble("settings.upgrade-costs.level-" + guild.orElseThrow().getLevel() + 1);
+
+            if (!guild.get().isOwner(player.getUniqueId())) {
                 Message.send(getPlugin(), getSender(), "must-be-owner");
-            } else if (guild.getLevel() == guild.getMaxLevel()) {
+            } else if (guild.get().getLevel() == guild.get().getMaxLevel()) {
                 Message.send(getPlugin(), getSender(), "already-max-level");
             } else if (Guilds.getEcon().has(Bukkit.getOfflinePlayer(player.getUniqueId()), upgradeCost)) {
-                String[] placeholders = {label, String.valueOf(upgradeCost)};
+                String[] placeholders = {String.valueOf(upgradeCost), label};
                 Message.sendPlaceholders(getPlugin(), getSender(), "upgrade-confirm", placeholders);
-                getPlugin().getData().getTransactionConfirmations().put(player.getUniqueId(), upgradeCost);
+                getPlugin().getCache().addTransactionConfirmation(player.getUniqueId(), upgradeCost);
                 BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
-                scheduler.scheduleSyncDelayedTask(getPlugin(), new Runnable() {
-                    @Override
-                    public void run() {
-                        getPlugin().getData().getTransactionConfirmations().remove(player.getUniqueId());
-                    }
-                }, 200);
+                scheduler.scheduleSyncDelayedTask(getPlugin(), () -> getPlugin().getCache().removeTransactionConfirmation(player.getUniqueId()), 200);
             } else {
                 Message.send(getPlugin(), getSender(), "not-console-command");
             }
-
-
         }
     }
 }

@@ -1,47 +1,48 @@
 package com.justinmtech.guilds;
 
-import com.justinmtech.guilds.persistence.FileManager;
+import com.justinmtech.guilds.persistence.*;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import com.justinmtech.guilds.persistence.ManageData;
 
+import java.sql.SQLException;
+import java.util.Objects;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
+//TODO Revamp all commands
 public final class Guilds extends JavaPlugin {
-    private static final Logger log = Logger.getLogger("Minecraft");
     private ManageData data;
+    private ManageDataNew db;
     private static Economy econ = null;
-    private static Permission perms = null;
-    private static Chat chat = null;
+    private Cache cache;
 
     @Override
     public void onEnable() {
-        data = new FileManager(this);
-        data.setup();
-        data.loadAllGuilds();
+        saveDefaultConfig();
+        if (Objects.requireNonNull(getConfig().getString("storage-type")).equalsIgnoreCase("db")) {
+            if (!setupDatabase()) {
+                getLogger().log(Level.SEVERE, "Plugin is not set to db storage-type");
+                getPluginLoader().disablePlugin(this);
+            }
+        }
 
-        this.getCommand("guilds").setExecutor(new CommandHandler(this));
+        Objects.requireNonNull(this.getCommand("guilds")).setExecutor(new CommandHandler(this));
 
         if (!setupEconomy() ) {
-            log.severe(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
-            getServer().getPluginManager().disablePlugin(this);
-            return;
+            getLogger().log(Level.SEVERE, "Economy not setup!");
+            //getServer().getPluginManager().disablePlugin(this);
         }
-        setupPermissions();
-        setupChat();
 
-        System.out.println("Guilds enabled!");
+        cache = new Cache();
+        getLogger().log(Level.INFO, "Plugin enabled!");
     }
 
     @Override
     public void onDisable() {
-        data.saveAllGuilds();
-        data.clearCache();
-
-        System.out.println("Guilds disabled!");
+        getLogger().log(Level.INFO, "Plugin disabled!");
     }
 
     public ManageData getData() {
@@ -57,30 +58,36 @@ public final class Guilds extends JavaPlugin {
             return false;
         }
         econ = rsp.getProvider();
-        return econ != null;
+        return true;
     }
 
-    private boolean setupChat() {
-        RegisteredServiceProvider<Chat> rsp = getServer().getServicesManager().getRegistration(Chat.class);
-        chat = rsp.getProvider();
-        return chat != null;
-    }
-
-    private boolean setupPermissions() {
-        RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
-        perms = rsp.getProvider();
-        return perms != null;
+    private boolean setupDatabase() {
+        try {
+            db = new Database(
+                    getConfig().getString("db.host"),
+                    getConfig().getInt("db.port"),
+                    getConfig().getString("db.username"),
+                    getConfig().getString("db.password"),
+                    getConfig().getString("db.table"),
+                    getConfig().getString("db.database"));
+            return true;
+        } catch (SQLException e) {
+            getLogger().log(Level.SEVERE, e.getMessage());
+            getLogger().log(Level.SEVERE, "Plugin shutting down due to database error. Check your database settings.");
+            getPluginLoader().disablePlugin(this);
+        }
+        return false;
     }
 
     public static Economy getEcon() {
         return econ;
     }
 
-    public static Permission getPerms() {
-        return perms;
+    public ManageDataNew getDb() {
+        return db;
     }
 
-    public static Chat getChat() {
-        return chat;
+    public Cache getCache() {
+        return cache;
     }
 }

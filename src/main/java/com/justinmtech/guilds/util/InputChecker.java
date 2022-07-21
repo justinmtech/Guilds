@@ -3,6 +3,7 @@ package com.justinmtech.guilds.util;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+//TODO Make this less confusing
 public class InputChecker {
     public static boolean noSpecialCharacters(String input) {
         Pattern pattern = Pattern.compile("^a-ZA-Z0-9");

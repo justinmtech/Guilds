@@ -9,6 +9,8 @@ import org.bukkit.entity.Player;
 import com.justinmtech.guilds.Guilds;
 import com.justinmtech.guilds.core.Guild;
 
+import java.util.Optional;
+
 public class InvitePlayer extends SubCommand {
 
     public InvitePlayer(Guilds plugin, CommandSender sender, String[] args) {
@@ -16,13 +18,14 @@ public class InvitePlayer extends SubCommand {
         execute();
     }
 
+    //TODO Test
     private boolean execute() {
         Player player = (Player) getSender();
         Player player2;
         player2 = Bukkit.getPlayer(getArgs()[1]);
-        Guild guild = getPlugin().getData().getGuild(player.getUniqueId());
+        Optional<Guild> guild = getPlugin().getDb().getGuild(player.getUniqueId());
 
-        if (guild == null) {
+        if (guild.isEmpty()) {
             Message.send(getPlugin(), getSender(), "must-be-owner");
             return false;
         }
@@ -37,19 +40,19 @@ public class InvitePlayer extends SubCommand {
             return false;
         }
 
-        if (guild.getMembers().get(player.getUniqueId()) != Role.LEADER) {
+        if (guild.get().getMembers().get(player.getUniqueId()) != Role.LEADER) {
             Message.send(getPlugin(), getSender(), "must-be-owner");
             return false;
         }
 
-        if (guild.getMembers().get(player2.getUniqueId()) != null) {
+        if (guild.get().getMembers().containsKey(player2.getUniqueId())) {
             Message.sendPlaceholder(getPlugin(), getSender(), "player-already-in-guild", player2.getName());
             return false;
         }
 
-        getPlugin().getData().createInvite(player2.getUniqueId(), guild.getName());
+        getPlugin().getDb().saveInvite(player2.getUniqueId(), guild.get().getName());
         Message.sendPlaceholder(getPlugin(), getSender(), "invite-send", player2.getName());
-        Message.sendPlaceholder(getPlugin(), player2, "invite-receive", guild.getName());
+        Message.sendPlaceholder(getPlugin(), player2, "invite-receive", guild.get().getName());
         return true;
     }
 }

@@ -112,8 +112,8 @@ public class CommandHandler implements CommandExecutor {
                 } else {
                     Message.sendPlaceholder(plugin, sender, "syntax.accept-invite", label);
                 }
-        } else if (args.length == 1) {
-            new GetGuildInfo(plugin, sender, args);
+        } else {
+            Message.sendHelp(plugin, sender, "help", label);
         }
     }
 }

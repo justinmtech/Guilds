@@ -14,7 +14,7 @@ An open-source Minecraft plugin that allows players to create their own goal-ori
   • /guilds warp <warpName> - Warp to a guild warp <br>
   • /guilds setwarp <name> - Set a guild warp at your location <br>
   • /guilds invite <player> - Invite a player to your guild <br>
-  • /guilds accept <guild> - Accept an invite from a guild <br>
+  • /guilds accept <guild> - Accept an invitation from a guild <br>
   • /guilds leave - Leave your guild <br>
   • /guilds upgrade - Upgrade your guild <br>
   • /guilds list - List the top guilds <br>

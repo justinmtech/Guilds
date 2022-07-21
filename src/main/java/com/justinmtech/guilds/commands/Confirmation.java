@@ -7,6 +7,8 @@ import com.justinmtech.guilds.util.Message;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Optional;
+
 public class Confirmation extends SubCommand {
 
     public Confirmation(Guilds plugin, CommandSender sender, String[] args) {
@@ -17,13 +19,18 @@ public class Confirmation extends SubCommand {
     private void execute() {
         if (getSender() instanceof Player) {
             Player player = (Player) getSender();
-            if (getPlugin().getData().getTransactionConfirmations().get(player.getUniqueId()) != null) {
-                Guild guild = getPlugin().getData().getGuild(player.getUniqueId());
-                guild.setLevel(guild.getLevel() + 1);
-                Message.sendPlaceholder(getPlugin(), getSender(), "guild-level-up", String.valueOf(guild.getLevel()));
+            if (getPlugin().getCache().hasPendingTransaction(player.getUniqueId())) {
+                Optional<Guild> guild = getPlugin().getDb().getGuild(player.getUniqueId());
+                if (guild.isEmpty()) {
+                    Message.send(getPlugin(), getSender(), "no-confirmation");
+                    return;
+                }
+                guild.get().setLevel(guild.get().getLevel() + 1);
+                getPlugin().getDb().saveGuild(guild.get());
+                Message.sendPlaceholder(getPlugin(), getSender(), "guild-level-up", String.valueOf(guild.get().getLevel()));
+                }
             } else {
                 Message.send(getPlugin(), getSender(), "no-confirmation");
-            }
         }
     }
 }

@@ -14,13 +14,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
+//TODO Update file manager, separate caching to Cache
 public class FileManager implements ManageData {
     private final Guilds plugin;
     private final List<Guild> guildList;
     private final Map<String, Guild> guildsByName;
     private final Map<UUID, String> guildsByUuid;
     private final Map<UUID, List<String>> invites;
-    private Map<UUID, Double> transactionConfirmations;
+    private final Map<UUID, Double> transactionConfirmations;
 
     public FileManager(Guilds plugin) {
         this.plugin = plugin;
@@ -130,7 +131,7 @@ public class FileManager implements ManageData {
     }
 
     @Override
-    public void deleteGuild(String guildName) {;
+    public void deleteGuild(String guildName) {
         guildList.removeIf(c -> c.getName().equals(guildName));
         guildsByUuid.remove(guildsByName.get(guildName).getOwner());
         guildsByName.remove(guildName);

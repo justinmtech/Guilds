@@ -6,6 +6,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import com.justinmtech.guilds.Guilds;
 
+import java.util.NoSuchElementException;
+
 public class SetDescription extends SubCommand {
 
     public SetDescription(Guilds plugin, CommandSender sender, String[] args) {
@@ -17,10 +19,12 @@ public class SetDescription extends SubCommand {
         Player player = (Player) getSender();
         try {
             StringBuilder desc = new StringBuilder();
-            for (String arg : getArgs()) {
-                desc.append(arg).append(" ");
+            for (String arg : getArgs()) desc.append(arg).append(" ");
+            try {
+                getPlugin().getDb().getGuild(player.getUniqueId()).orElseThrow().setDescription(desc.toString().trim());
+            } catch (NoSuchElementException ignored) {
+                Message.send(getPlugin(), getSender(), "generic-error");
             }
-            getPlugin().getData().getGuild(player.getUniqueId()).setDescription(desc.toString().trim());
             Message.sendPlaceholder(getPlugin(), getSender(), "set-description", desc.toString());
         } catch (NullPointerException e) {
             e.printStackTrace();

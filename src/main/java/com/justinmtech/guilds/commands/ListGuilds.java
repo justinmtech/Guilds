@@ -8,6 +8,7 @@ import com.justinmtech.guilds.core.Guild;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class ListGuilds extends SubCommand {
 
@@ -17,7 +18,7 @@ public class ListGuilds extends SubCommand {
     }
 
     private boolean execute() {
-        List<Guild> guildList = getPlugin().getData().getAllGuilds();
+        List<Guild> guildList = getPlugin().getDb().getAllGuilds();
         Collections.sort(guildList);
         if (guildList.size() == 0) {
             Message.send(getPlugin(), getSender(), "no-guilds");
