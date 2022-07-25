@@ -8,6 +8,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import com.justinmtech.guilds.Guilds;
 
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -20,10 +21,10 @@ public class Message {
         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("messages." + messagePath).replace("%placeholder%", placeholder)));
     }
 
-    public static void sendPlaceholders(Guilds plugin, CommandSender sender, String messagePath, String[] placeholders) {
+    public static void sendPlaceholders(Guilds plugin, CommandSender sender, String messagePath, Map<String, String> placeholders) {
         String output = plugin.getConfig().getString("messages." + messagePath);
-        for (String placeholder : placeholders) {
-            output = Objects.requireNonNull(output).replace("%placeholder%", placeholder);
+        for (String placeholder : placeholders.keySet()) {
+            output = Objects.requireNonNull(output).replace(placeholder, placeholders.get(placeholder));
         }
         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', output));
     }

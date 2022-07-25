@@ -9,6 +9,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 public class Upgrade extends SubCommand {
@@ -23,7 +25,7 @@ public class Upgrade extends SubCommand {
     private void execute() {
         if (getSender() instanceof Player) {
             Player player = (Player) getSender();
-            Optional<Guild> guild = getPlugin().getDb().getGuild(player.getUniqueId());
+            Optional<Guild> guild = getPlugin().getData().getGuild(player.getUniqueId());
             if (guild.isEmpty()) {
                 Message.send(getPlugin(), getSender(), "not-in-guild");
                 return;
@@ -35,7 +37,9 @@ public class Upgrade extends SubCommand {
             } else if (guild.get().getLevel() == guild.get().getMaxLevel()) {
                 Message.send(getPlugin(), getSender(), "already-max-level");
             } else if (Guilds.getEcon().has(Bukkit.getOfflinePlayer(player.getUniqueId()), upgradeCost)) {
-                String[] placeholders = {String.valueOf(upgradeCost), label};
+                Map<String, String> placeholders = new HashMap<>();
+                placeholders.put("%cost%", String.valueOf(upgradeCost));
+                placeholders.put("%command%", label);
                 Message.sendPlaceholders(getPlugin(), getSender(), "upgrade-confirm", placeholders);
                 getPlugin().getCache().addTransactionConfirmation(player.getUniqueId(), upgradeCost);
                 BukkitScheduler scheduler = Bukkit.getServer().getScheduler();

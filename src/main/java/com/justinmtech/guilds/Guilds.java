@@ -1,52 +1,48 @@
 package com.justinmtech.guilds;
 
 import com.justinmtech.guilds.persistence.*;
-import net.milkbowl.vault.chat.Chat;
+import com.justinmtech.guilds.persistence.database.DatabaseCache;
+import com.justinmtech.guilds.persistence.database.Database;
+import com.justinmtech.guilds.persistence.file.FileManager;
 import net.milkbowl.vault.economy.Economy;
-import net.milkbowl.vault.permission.Permission;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.SQLException;
 import java.util.Objects;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 //TODO Revamp all commands
+//TODO Tie both file and db under one interface
+//TODO Choose which implementation of the interface is used on startup
 public final class Guilds extends JavaPlugin {
-    private ManageData data;
-    private ManageDataNew db;
+    private ManageDataNew data;
     private static Economy econ = null;
-    private Cache cache;
+    private DatabaseCache cache;
 
     @Override
     public void onEnable() {
         saveDefaultConfig();
         if (Objects.requireNonNull(getConfig().getString("storage-type")).equalsIgnoreCase("db")) {
-            if (!setupDatabase()) {
-                getLogger().log(Level.SEVERE, "Plugin is not set to db storage-type");
-                getPluginLoader().disablePlugin(this);
-            }
+            setupDatabase();
+        } else {
+            setupFilesystem();
         }
 
         Objects.requireNonNull(this.getCommand("guilds")).setExecutor(new CommandHandler(this));
 
         if (!setupEconomy() ) {
             getLogger().log(Level.SEVERE, "Economy not setup!");
-            //getServer().getPluginManager().disablePlugin(this);
+            getServer().getPluginManager().disablePlugin(this);
         }
 
-        cache = new Cache();
+        cache = new DatabaseCache();
         getLogger().log(Level.INFO, "Plugin enabled!");
     }
 
     @Override
     public void onDisable() {
         getLogger().log(Level.INFO, "Plugin disabled!");
-    }
-
-    public ManageData getData() {
-        return data;
     }
 
     private boolean setupEconomy() {
@@ -63,7 +59,7 @@ public final class Guilds extends JavaPlugin {
 
     private boolean setupDatabase() {
         try {
-            db = new Database(
+            data = new Database(
                     getConfig().getString("db.host"),
                     getConfig().getInt("db.port"),
                     getConfig().getString("db.username"),
@@ -79,15 +75,26 @@ public final class Guilds extends JavaPlugin {
         return false;
     }
 
+    private boolean setupFilesystem() {
+        try {
+            data = new FileManager(this);
+            return true;
+        } catch (Exception e) {
+            getLogger().log(Level.SEVERE, "File system could not be initialized..");
+            getPluginLoader().disablePlugin(this);
+        }
+        return false;
+    }
+
     public static Economy getEcon() {
         return econ;
     }
 
-    public ManageDataNew getDb() {
-        return db;
+    public ManageDataNew getData() {
+        return data;
     }
 
-    public Cache getCache() {
+    public DatabaseCache getCache() {
         return cache;
     }
 }

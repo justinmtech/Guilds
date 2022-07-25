@@ -20,13 +20,13 @@ public class Confirmation extends SubCommand {
         if (getSender() instanceof Player) {
             Player player = (Player) getSender();
             if (getPlugin().getCache().hasPendingTransaction(player.getUniqueId())) {
-                Optional<Guild> guild = getPlugin().getDb().getGuild(player.getUniqueId());
+                Optional<Guild> guild = getPlugin().getData().getGuild(player.getUniqueId());
                 if (guild.isEmpty()) {
                     Message.send(getPlugin(), getSender(), "no-confirmation");
                     return;
                 }
                 guild.get().setLevel(guild.get().getLevel() + 1);
-                getPlugin().getDb().saveGuild(guild.get());
+                getPlugin().getData().saveGuild(guild.get());
                 Message.sendPlaceholder(getPlugin(), getSender(), "guild-level-up", String.valueOf(guild.get().getLevel()));
                 }
             } else {

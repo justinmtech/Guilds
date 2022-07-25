@@ -21,7 +21,7 @@ public class SetDescription extends SubCommand {
             StringBuilder desc = new StringBuilder();
             for (String arg : getArgs()) desc.append(arg).append(" ");
             try {
-                getPlugin().getDb().getGuild(player.getUniqueId()).orElseThrow().setDescription(desc.toString().trim());
+                getPlugin().getData().getGuild(player.getUniqueId()).orElseThrow().setDescription(desc.toString().trim());
             } catch (NoSuchElementException ignored) {
                 Message.send(getPlugin(), getSender(), "generic-error");
             }

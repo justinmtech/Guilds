@@ -19,12 +19,12 @@ public class SetName extends SubCommand {
     private void execute() {
         if (getSender() instanceof Player) {
             Player player = (Player) getSender();
-            Optional<Guild> guild = getPlugin().getDb().getGuild(player.getUniqueId());
+            Optional<Guild> guild = getPlugin().getData().getGuild(player.getUniqueId());
             if (guild.isEmpty()) {
                 Message.send(getPlugin(), getSender(), "not-in-guild");
             } else if (guild.orElseThrow().getMembers().get(player.getUniqueId()) != Role.LEADER) {
                 Message.send(getPlugin(), getSender(), "must-be-owner");
-            } else if (getPlugin().getDb().getGuild(getArgs()[1]).isPresent()) {
+            } else if (getPlugin().getData().getGuild(getArgs()[1]).isPresent()) {
                 Message.send(getPlugin(), getSender(), "guild-already-exists");
             } else {
               guild.orElseThrow().setName(getArgs()[1]);

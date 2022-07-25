@@ -25,19 +25,19 @@ public class AcceptInvite extends SubCommand {
     private boolean execute() {
         Player player2 = (Player) getSender();
         String guildName = getArgs()[1];
-        boolean noGuild = getPlugin().getDb().getGuild(player2.getUniqueId()).isEmpty();
-        boolean invited = getPlugin().getDb().hasInvite(player2.getUniqueId(), guildName);
+        boolean noGuild = getPlugin().getData().getGuild(player2.getUniqueId()).isEmpty();
+        boolean invited = getPlugin().getData().hasInvite(player2.getUniqueId(), guildName);
         if (!invited) {
             Message.sendPlaceholder(getPlugin(), getSender(), "no-invite", guildName);
             return false;
         }
-        Optional<Guild> guild = getPlugin().getDb().getGuild(guildName);
+        Optional<Guild> guild = getPlugin().getData().getGuild(guildName);
         boolean guildExists = guild.isPresent();
 
         if (guildExists && noGuild) {
-            getPlugin().getDb().savePlayer(new GPlayer(player2.getUniqueId(), guildName, Role.MEMBER));
+            getPlugin().getData().savePlayer(new GPlayer(player2.getUniqueId(), guildName, Role.MEMBER));
             Message.sendPlaceholder(getPlugin(), getSender(), "invite-accepted", guild.get().getName());
-            getPlugin().getDb().deleteInvite(player2.getUniqueId(), guildName);
+            getPlugin().getData().deleteInvite(player2.getUniqueId(), guildName);
             if (Bukkit.getPlayer(guild.get().getOwner()) != null) {
                 Message.sendPlaceholder(getPlugin(), Objects.requireNonNull(Bukkit.getPlayer(guild.get().getOwner())), "player-joined-guild", player2.getName());
             }

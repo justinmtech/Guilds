@@ -1,7 +1,6 @@
 package com.justinmtech.guilds.commands;
 
 import com.justinmtech.guilds.SubCommand;
-import com.justinmtech.guilds.core.Warp;
 import com.justinmtech.guilds.util.Message;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -24,14 +23,14 @@ public class SetWarp extends SubCommand {
         Player player = (Player) getSender();
         try {
             String warpName = getArgs()[1];
-            Optional<Guild> guild = getPlugin().getDb().getGuild(player.getUniqueId());
+            Optional<Guild> guild = getPlugin().getData().getGuild(player.getUniqueId());
             if (guild.isEmpty()) {
                 Message.send(getPlugin(), getSender(), "must-be-owner");
                 return;
             }
             if (guild.get().isOwner(player.getUniqueId())) {
                 Location loc = player.getLocation();
-                getPlugin().getDb().saveWarp(warpName,
+                getPlugin().getData().saveWarp(warpName,
                         Objects.requireNonNull(loc.getWorld()).getName(),
                         loc.getX(), loc.getY(), loc.getZ(),
                         loc.getYaw(), loc.getPitch(),

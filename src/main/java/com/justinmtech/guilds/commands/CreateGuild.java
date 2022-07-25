@@ -23,14 +23,14 @@ public class CreateGuild extends SubCommand {
     public void execute() {
         Player player = (Player) getSender();
         String name = getArgs()[1];
-        Optional<Guild> guild = getPlugin().getDb().getGuild(name);
-        Optional<GPlayer> gPlayer = getPlugin().getDb().getPlayer(player.getUniqueId());
+        Optional<Guild> guild = getPlugin().getData().getGuild(name);
+        Optional<GPlayer> gPlayer = getPlugin().getData().getPlayer(player.getUniqueId());
         if (guild.isPresent()) {
             if (gPlayer.isEmpty()) {
                 if (Guilds.getEcon().has(Bukkit.getOfflinePlayer(player.getUniqueId()), getPlugin().getConfig().getDouble("settings.guild-cost"))) {
                     Guilds.getEcon().withdrawPlayer(Bukkit.getOfflinePlayer(player.getUniqueId()), getPlugin().getConfig().getDouble("settings.guild-cost"));
-                    getPlugin().getDb().saveGuild(new Guild(player.getUniqueId(), name));
-                    getPlugin().getDb().savePlayer(new GPlayer(player.getUniqueId(), name, Role.LEADER));
+                    getPlugin().getData().saveGuild(new Guild(player.getUniqueId(), name));
+                    getPlugin().getData().savePlayer(new GPlayer(player.getUniqueId(), name, Role.LEADER));
                     Message.send(getPlugin(), player, "create-guild");
                 } else {
                     Message.sendPlaceholder(getPlugin(), getSender(), "guild-create-insufficient-funds",

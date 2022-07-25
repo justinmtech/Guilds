@@ -1,13 +1,13 @@
-package com.justinmtech.guilds.persistence;
+package com.justinmtech.guilds.persistence.database;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class Cache {
+public class DatabaseCache {
     private final Map<UUID, Double> transactionConfirmations;
 
-    public Cache() {
+    public DatabaseCache() {
         this.transactionConfirmations = new HashMap<>();
     }
 

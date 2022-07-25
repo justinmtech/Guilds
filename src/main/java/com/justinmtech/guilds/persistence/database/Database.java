@@ -1,9 +1,10 @@
-package com.justinmtech.guilds.persistence;
+package com.justinmtech.guilds.persistence.database;
 
 import com.justinmtech.guilds.core.GPlayer;
 import com.justinmtech.guilds.core.Guild;
 import com.justinmtech.guilds.core.Role;
 import com.justinmtech.guilds.core.Warp;
+import com.justinmtech.guilds.persistence.ManageDataNew;
 
 import java.sql.*;
 import java.util.*;
@@ -353,6 +354,16 @@ public class Database implements ManageDataNew {
             guild.ifPresent(guilds::add);
         }
         return guilds;
+    }
+
+    @Override
+    public boolean saveAllData() {
+        return false;
+    }
+
+    @Override
+    public boolean loadAllData() {
+        return false;
     }
 
     @Override

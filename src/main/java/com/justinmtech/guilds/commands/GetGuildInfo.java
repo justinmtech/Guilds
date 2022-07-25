@@ -17,7 +17,7 @@ public class GetGuildInfo extends SubCommand {
 
     private void execute() {
         String guildName = getArgs()[0];
-        Optional<Guild> guild = getPlugin().getDb().getGuild(guildName);
+        Optional<Guild> guild = getPlugin().getData().getGuild(guildName);
         if (guild.isEmpty()) {
             Message.sendPlaceholder(getPlugin(), getSender(), "guild-not-found", getArgs()[0]);
         } else Message.sendGuildInfo(getPlugin(), getSender(), "messages.guild-info", guild.get());

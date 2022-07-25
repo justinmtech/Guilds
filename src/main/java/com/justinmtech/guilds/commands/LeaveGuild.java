@@ -8,7 +8,6 @@ import com.justinmtech.guilds.SubCommand;
 import com.justinmtech.guilds.core.Guild;
 
 import java.util.Optional;
-import java.util.UUID;
 
 public class LeaveGuild extends SubCommand {
     public LeaveGuild(Guilds plugin, CommandSender sender, String[] args) {
@@ -19,7 +18,7 @@ public class LeaveGuild extends SubCommand {
     private boolean execute() {
         if (getSender() instanceof Player) {
             Player player = (Player) getSender();
-            Optional<Guild> guild = getPlugin().getDb().getGuild(player.getUniqueId());
+            Optional<Guild> guild = getPlugin().getData().getGuild(player.getUniqueId());
 
             if (guild.isEmpty()) {
                 Message.send(getPlugin(), getSender(), "not-in-guild");

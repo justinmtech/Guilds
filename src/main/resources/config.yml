@@ -1,5 +1,5 @@
 #db or file
-storage-type: db
+storage-type: file
 db:
   host: host
   port: 3306
@@ -51,7 +51,7 @@ messages:
   no-special-characters: "&cSpecial characters are not allowed in this command!"
   guild-create-insufficient-funds: "&cYou need $%placeholder% to create a Guild."
   already-max-level: "&cYour guild is already the max level!"
-  upgrade-confirm: "&cDo you want to upgrade your guild for %placeholder%? Type /%placeholder% confirm to confirm."
+  upgrade-confirm: "&cDo you want to upgrade your guild for %cost%? Type /%command% confirm to confirm."
   guild-level-up: "&aYour guild is now level %placeholder%!"
   no-confirmation: "&cNo pending confirmation found.."
   guild-info:
