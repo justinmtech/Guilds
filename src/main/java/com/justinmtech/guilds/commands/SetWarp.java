@@ -18,7 +18,6 @@ public class SetWarp extends SubCommand {
         execute();
     }
 
-    //TODO Warp saving/getting
     private void execute() {
         Player player = (Player) getSender();
         try {

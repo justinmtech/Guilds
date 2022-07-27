@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+@SuppressWarnings("unchecked")
 public class Guild implements Comparable<Guild> {
     private String name;
     private UUID owner;
@@ -131,8 +132,7 @@ public class Guild implements Comparable<Guild> {
     }
 
     public int getMaxLevel() {
-        int MAX_LEVEL = 10;
-        return MAX_LEVEL;
+        return 10;
     }
 
     @Override
@@ -190,12 +190,10 @@ public class Guild implements Comparable<Guild> {
         this.warps = warps;
     }
 
-    //TODO test
     public void addMember(UUID uuid) {
         members.put(uuid, Role.MEMBER);
     }
 
-    //TODO test
     public void removeMember(UUID uuid) {
         members.remove(uuid);
     }

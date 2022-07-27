@@ -3,7 +3,7 @@ package com.justinmtech.guilds.persistence.file;
 import com.justinmtech.guilds.core.GPlayer;
 import com.justinmtech.guilds.core.Role;
 import com.justinmtech.guilds.core.Warp;
-import com.justinmtech.guilds.persistence.ManageDataNew;
+import com.justinmtech.guilds.persistence.ManageData;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -11,14 +11,13 @@ import org.json.simple.parser.ParseException;
 import com.justinmtech.guilds.Guilds;
 import com.justinmtech.guilds.core.Guild;
 
-import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
-//TODO Update file manager, separate caching to Cache
-public class FileManager implements ManageDataNew {
+@SuppressWarnings("unchecked")
+public class FileManager implements ManageData {
     private final Guilds plugin;
     private final FileCache cache;
 
@@ -33,38 +32,37 @@ public class FileManager implements ManageDataNew {
 
     @Override
     public Optional<Guild> getGuild(String name) {
-        return Optional.of(getCache().getGuild(name));
+        return getCache().getGuild(name);
     }
 
     @Override
     public Optional<Guild> getGuild(UUID playerUuid) {
-        String guildId = getCache().getPlayer(playerUuid).getGuildId();
-        return Optional.of(getCache().getGuild(guildId));
+        if (getCache().getPlayer(playerUuid).isEmpty()) return Optional.empty();
+        String guildId = getCache().getPlayer(playerUuid).get().getGuildId();
+        return getCache().getGuild(guildId);
     }
 
     @Override
     public Optional<GPlayer> getPlayer(UUID id) {
-        GPlayer player = getCache().getPlayer(id);
-        if (player == null) {
-            return Optional.empty();
-        } else {
-            return Optional.of(player);
-        }
+        return getCache().getPlayer(id);
     }
 
     @Override
     public Optional<Warp> getWarp(UUID id, String warpId) {
-        String guildId = getCache().getPlayer(id).getGuildId();
+        if (getCache().getPlayer(id).isEmpty()) return Optional.empty();
+        String guildId = getCache().getPlayer(id).get().getGuildId();
         if (guildId == null) {
             return Optional.empty();
         } else {
-            return Optional.of(getCache().getGuild(guildId).getWarps().get(warpId));
+            if (getCache().getGuild(guildId).isEmpty()) return Optional.empty();
+            return Optional.of(getCache().getGuild(guildId).get().getWarps().get(warpId));
         }
     }
 
     @Override
     public boolean hasInvite(UUID uuid, String guildId) {
-        return getCache().getPlayer(uuid).hasInvite(guildId);
+        if (getCache().getPlayer(uuid).isEmpty()) return false;
+        return getCache().getPlayer(uuid).get().hasInvite(guildId);
     }
 
     @Override
@@ -91,23 +89,31 @@ public class FileManager implements ManageDataNew {
 
     @Override
     public boolean saveGuild(Guild guild) {
-        getCache().getGuilds().replace(guild.getName(), guild);
+        if (getCache().getGuilds().containsKey(guild.getName())) {
+            getCache().getGuilds().replace(guild.getName(), guild);
+        } else {
+            getCache().addGuild(guild);
+        }
         return true;
     }
 
     @Override
     public boolean savePlayer(GPlayer player) {
-        getCache().getPlayers().replace(player.getUuid(), new GPlayer(player.getUuid(), player.getGuildId(), player.getRole()));
+        if (getCache().playerExists(player.getUuid())) {
+            getCache().getPlayers().replace(player.getUuid(), new GPlayer(player.getUuid(), player.getGuildId(), player.getRole()));
+        } else {
+            getCache().addPlayer(player.getUuid(), player.getGuildId(), player.getRole());
+        }
         return true;
     }
 
-    //TODO Implement saving
     public void saveAllGuilds() {
         FileWriter file = null;
         Set<String> guildIds = getCache().getGuilds().keySet();
         ArrayList<Guild> guildList = new ArrayList<>();
         for (String guild : guildIds) {
-            guildList.add(getCache().getGuild(guild));
+            if (getCache().getGuild(guild).isEmpty()) continue;
+            guildList.add(getCache().getGuild(guild).get());
         }
 
         JSONArray guildsArray = new JSONArray();
@@ -124,7 +130,7 @@ public class FileManager implements ManageDataNew {
             e.printStackTrace();
         } finally {
             try {
-                file.flush();
+                Objects.requireNonNull(file).flush();
                 file.close();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -132,7 +138,6 @@ public class FileManager implements ManageDataNew {
         }
     }
 
-    //TODO Implement loading
     public void loadAllGuilds() {
         try {
             FileReader reader = new FileReader(plugin.getDataFolder().getAbsolutePath() + "//guilds.json");
@@ -153,7 +158,19 @@ public class FileManager implements ManageDataNew {
         long level = (long) guild.getOrDefault("level", 1);
 
         Guild guildObject = new Guild(name, UUID.fromString(ownerId), description, members, warps, (int) level);
+        _addMembers(members, name);
+
         getCache().addGuild(guildObject);
+    }
+
+    private void _addMembers(ArrayList<Object> memberObjects, String name) {
+        memberObjects.forEach(member -> _addMember((JSONObject) member, name));
+    }
+
+    private void _addMember(JSONObject member, String name) {
+        String id = (String) member.get("player");
+        String role = (String) member.get("role");
+        getCache().addPlayer(UUID.fromString(id), name, Role.valueOf(role));
     }
 
     @Override
@@ -164,18 +181,19 @@ public class FileManager implements ManageDataNew {
 
     @Override
     public boolean saveInvite(UUID receiver, String guildName) {
-        getCache().getPlayer(receiver).addInvite(guildName);
+        if (getCache().getPlayer(receiver).isEmpty()) return false;
+        getCache().getPlayer(receiver).get().addInvite(guildName);
         return true;
     }
 
     @Override
     public boolean saveWarp(String id, String world, double x, double y, double z, float yaw, float pitch, String guildId) {
-        Guild guild = getCache().getGuild(guildId);
-        if (guild == null) return false;
-        if (guild.getWarps().containsKey(id)) {
-            getCache().getGuild(guildId).getWarps().replace(id, new Warp(id, world, x, y, z, yaw, pitch));
+        Optional<Guild> guild = getCache().getGuild(guildId);
+        if (guild.isEmpty()) return false;
+        if (guild.get().getWarps().containsKey(id)) {
+            guild.get().getWarps().replace(id, new Warp(id, world, x, y, z, yaw, pitch));
         } else {
-            getCache().getGuild(guildId).getWarps().put(id, new Warp(id, world, x, y, z, yaw, pitch));
+            guild.get().getWarps().put(id, new Warp(id, world, x, y, z, yaw, pitch));
         }
         return true;
     }
@@ -188,13 +206,15 @@ public class FileManager implements ManageDataNew {
 
     @Override
     public boolean deleteInvite(UUID receiver, String name) {
-        getCache().getPlayer(receiver).removeInvite(name);
+        if (getCache().getPlayer(receiver).isEmpty()) return false;
+        getCache().getPlayer(receiver).get().removeInvite(name);
         return true;
     }
 
     @Override
     public boolean deleteWarp(String guildId, String warpId) {
-        getCache().getGuild(guildId).removeWarp(warpId);
+        if (getCache().getGuild(guildId).isEmpty()) return false;
+        getCache().getGuild(guildId).get().removeWarp(warpId);
         return true;
     }
 }

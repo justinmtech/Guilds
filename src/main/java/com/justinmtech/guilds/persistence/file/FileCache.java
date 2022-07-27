@@ -6,6 +6,7 @@ import com.justinmtech.guilds.core.Role;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 public class FileCache {
@@ -23,8 +24,12 @@ public class FileCache {
         players.put(uuid, new GPlayer(uuid, guildId, role));
     }
 
-    public GPlayer getPlayer(UUID uuid) {
-        return players.get(uuid);
+    public Optional<GPlayer> getPlayer(UUID uuid) {
+        if (players.containsKey(uuid)) {
+            return Optional.of(players.get(uuid));
+        } else {
+            return Optional.empty();
+        }
     }
 
     public void removePlayer(UUID uuid) {
@@ -47,8 +52,12 @@ public class FileCache {
         guilds.remove(id);
     }
 
-    public Guild getGuild(String id) {
-        return guilds.get(id);
+    public Optional<Guild> getGuild(String id) {
+        if (guilds.containsKey(id)) {
+            return Optional.of(guilds.get(id));
+        } else {
+            return Optional.empty();
+        }
     }
 
     public Map<String, Guild> getGuilds() {

@@ -7,26 +7,32 @@ import com.justinmtech.guilds.persistence.file.FileManager;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.sql.SQLException;
 import java.util.Objects;
 import java.util.logging.Level;
 
-//TODO Revamp all commands
-//TODO Tie both file and db under one interface
-//TODO Choose which implementation of the interface is used on startup
 public final class Guilds extends JavaPlugin {
-    private ManageDataNew data;
+    private ManageData data;
     private static Economy econ = null;
     private DatabaseCache cache;
 
     @Override
     public void onEnable() {
         saveDefaultConfig();
+        boolean dbEnabled;
         if (Objects.requireNonNull(getConfig().getString("storage-type")).equalsIgnoreCase("db")) {
             setupDatabase();
+            dbEnabled = true;
         } else {
             setupFilesystem();
+            dbEnabled = false;
+        }
+
+        if (!dbEnabled) {
+            data.loadAllData();
+            autoSaveTask();
         }
 
         Objects.requireNonNull(this.getCommand("guilds")).setExecutor(new CommandHandler(this));
@@ -42,7 +48,18 @@ public final class Guilds extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        data.saveAllData();
         getLogger().log(Level.INFO, "Plugin disabled!");
+    }
+
+    private void autoSaveTask() {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                data.saveAllData();
+                getLogger().log(Level.INFO, "Auto-saved data.");
+            }
+        }.runTaskTimer(this, 6000L, 6000L);
     }
 
     private boolean setupEconomy() {
@@ -57,6 +74,7 @@ public final class Guilds extends JavaPlugin {
         return true;
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     private boolean setupDatabase() {
         try {
             data = new Database(
@@ -75,6 +93,7 @@ public final class Guilds extends JavaPlugin {
         return false;
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     private boolean setupFilesystem() {
         try {
             data = new FileManager(this);
@@ -90,11 +109,12 @@ public final class Guilds extends JavaPlugin {
         return econ;
     }
 
-    public ManageDataNew getData() {
+    public ManageData getData() {
         return data;
     }
 
     public DatabaseCache getCache() {
         return cache;
     }
+
 }

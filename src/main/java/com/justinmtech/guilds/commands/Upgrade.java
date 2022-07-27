@@ -21,7 +21,6 @@ public class Upgrade extends SubCommand {
         execute();
     }
 
-    //TODO Transaction confirmations
     private void execute() {
         if (getSender() instanceof Player) {
             Player player = (Player) getSender();

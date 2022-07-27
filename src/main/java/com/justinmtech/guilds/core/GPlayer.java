@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-//TODO Add support for players with no guild or role
 public class GPlayer {
     private final UUID uuid;
     private String guildId;
@@ -15,7 +14,6 @@ public class GPlayer {
         this.uuid = uuid;
         this.guildId = guildId;
         this.role = role;
-        //TODO Add constructor with invites?
         this.invites = new HashSet<>();
     }
 
@@ -27,6 +25,7 @@ public class GPlayer {
         return guildId;
     }
 
+    @SuppressWarnings("unused")
     public void setGuildId(String newGuildId) {
         this.guildId = newGuildId;
     }
@@ -35,6 +34,7 @@ public class GPlayer {
         return role;
     }
 
+    @SuppressWarnings("unused")
     public void setRole(Role role) {
         this.role = role;
     }

@@ -4,13 +4,13 @@ import com.justinmtech.guilds.core.GPlayer;
 import com.justinmtech.guilds.core.Guild;
 import com.justinmtech.guilds.core.Role;
 import com.justinmtech.guilds.core.Warp;
-import com.justinmtech.guilds.persistence.ManageDataNew;
+import com.justinmtech.guilds.persistence.ManageData;
 
 import java.sql.*;
 import java.util.*;
 
 @SuppressWarnings("UnusedReturnValue")
-public class Database implements ManageDataNew {
+public class Database implements ManageData {
     private final String host;
     private final int port;
     private final String username;
@@ -345,6 +345,7 @@ public class Database implements ManageDataNew {
         return Optional.empty();
     }
 
+    @SuppressWarnings("unused")
     @Override
     public List<Guild> getAllGuilds() {
         Set<String> ids = getGuildIds();
@@ -356,16 +357,19 @@ public class Database implements ManageDataNew {
         return guilds;
     }
 
+    @SuppressWarnings("unused")
     @Override
     public boolean saveAllData() {
         return false;
     }
 
+    @SuppressWarnings("unused")
     @Override
     public boolean loadAllData() {
         return false;
     }
 
+    @SuppressWarnings("unused")
     @Override
     public boolean hasInvite(UUID playerId, String guildId) {
         String sql = "SELECT EXISTS(SELECT * FROM " + inviteTable + " WHERE player_id = ? AND guild_id = ?";
@@ -433,7 +437,7 @@ public class Database implements ManageDataNew {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            Optional.empty();
+            return Optional.empty();
         }
         return Optional.of(members);
     }
@@ -547,6 +551,7 @@ public class Database implements ManageDataNew {
         return false;
     }
 
+    @SuppressWarnings("unused")
     @Override
     public boolean deleteWarp(String guildId, String warpId) {
         return false;

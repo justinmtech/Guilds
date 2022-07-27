@@ -19,13 +19,12 @@ public class CreateGuild extends SubCommand {
         execute();
     }
 
-    //TODO Fix this
     public void execute() {
         Player player = (Player) getSender();
         String name = getArgs()[1];
         Optional<Guild> guild = getPlugin().getData().getGuild(name);
         Optional<GPlayer> gPlayer = getPlugin().getData().getPlayer(player.getUniqueId());
-        if (guild.isPresent()) {
+        if (guild.isEmpty()) {
             if (gPlayer.isEmpty()) {
                 if (Guilds.getEcon().has(Bukkit.getOfflinePlayer(player.getUniqueId()), getPlugin().getConfig().getDouble("settings.guild-cost"))) {
                     Guilds.getEcon().withdrawPlayer(Bukkit.getOfflinePlayer(player.getUniqueId()), getPlugin().getConfig().getDouble("settings.guild-cost"));

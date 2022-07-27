@@ -3,10 +3,10 @@ package com.justinmtech.guilds.persistence.file;
 import com.justinmtech.guilds.core.GPlayer;
 import com.justinmtech.guilds.core.Guild;
 import com.justinmtech.guilds.core.Role;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -31,8 +31,8 @@ class FileCacheTest {
     void getPlayer() {
         UUID uuid = UUID.randomUUID();
         cache.addPlayer(uuid, "Test", Role.LEADER);
-        GPlayer gPlayer = cache.getPlayer(uuid);
-        assertNotNull(gPlayer);
+        Optional<GPlayer> gPlayer = cache.getPlayer(uuid);
+        assertTrue(gPlayer.isPresent());
     }
 
     @Test
