@@ -19,6 +19,7 @@ public class InvitePlayer extends SubCommand {
     }
 
     //TODO Test
+    @SuppressWarnings("UnusedReturnValue")
     private boolean execute() {
         Player player = (Player) getSender();
         Player player2;

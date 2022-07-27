@@ -11,10 +11,6 @@ public class DatabaseCache {
         this.transactionConfirmations = new HashMap<>();
     }
 
-    public Map<UUID, Double> getTransactionConfirmations() {
-        return transactionConfirmations;
-    }
-
     public void addTransactionConfirmation(UUID uuid, double value) {
         transactionConfirmations.put(uuid, value);
     }

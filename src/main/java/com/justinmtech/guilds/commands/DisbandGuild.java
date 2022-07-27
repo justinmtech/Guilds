@@ -16,6 +16,7 @@ public class DisbandGuild extends SubCommand {
         execute();
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public boolean execute() {
         Player player = (Player) getSender();
         try {

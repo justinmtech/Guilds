@@ -21,9 +21,6 @@ class DatabaseTest {
     static void init() throws SQLException {
         d = new Database("localhost", 3306, "root", "password", "db_test", "server");
         uuid = UUID.randomUUID();
-        UUID id2 = UUID.randomUUID();
-        UUID id3 = UUID.randomUUID();
-        UUID id4 = UUID.randomUUID();
     }
 
     @Test

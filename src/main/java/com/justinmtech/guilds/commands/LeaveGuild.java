@@ -15,6 +15,7 @@ public class LeaveGuild extends SubCommand {
         execute();
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     private boolean execute() {
         if (getSender() instanceof Player) {
             Player player = (Player) getSender();

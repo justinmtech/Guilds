@@ -7,12 +7,12 @@ import java.util.Objects;
 
 public class Warp {
     private final String id;
-    private String world;
-    private double x;
-    private double y;
-    private double z;
-    private float yaw;
-    private float pitch;
+    private final String world;
+    private final double x;
+    private final double y;
+    private final double z;
+    private final float yaw;
+    private final float pitch;
 
     public Warp(String id, String world, double x, double y, double z, float yaw, float pitch) {
         this.id = id;
@@ -60,30 +60,6 @@ public class Warp {
 
     public String getId() {
         return id;
-    }
-
-    public void setWorld(String world) {
-        this.world = world;
-    }
-
-    public void setX(double x) {
-        this.x = x;
-    }
-
-    public void setY(double y) {
-        this.y = y;
-    }
-
-    public void setZ(double z) {
-        this.z = z;
-    }
-
-    public void setYaw(float yaw) {
-        this.yaw = yaw;
-    }
-
-    public void setPitch(float pitch) {
-        this.pitch = pitch;
     }
 
     public Location toLocation() {
