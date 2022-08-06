@@ -20,7 +20,10 @@ public class CommandHandler implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!command.getName().equalsIgnoreCase("guilds")) return false;
         if (sender instanceof ConsoleCommandSender) Message.sendHelp(plugin, sender, "help", label);
-        if (args.length == 0) return false;
+        if (args.length == 0) {
+            Message.sendHelp(plugin, sender, "help", label);
+            return true;
+        }
         if (InputChecker.noSpecialCharacters(args)) parseSubCommand(sender, args, label);
         else if (args[0].equalsIgnoreCase("setdesc")) parseSubCommand(sender, args, label);
         else Message.send(plugin, sender, "no-special-characters");
@@ -31,7 +34,6 @@ public class CommandHandler implements CommandExecutor {
         if (args[0].equalsIgnoreCase("create")) guildCreate(sender, args, label);
         else if (args[0].equalsIgnoreCase("disband")) guildDisband(sender, args, label);
         else if (args[0].equalsIgnoreCase("warp")) guildWarp(sender, args, label);
-        else if (args[0].equalsIgnoreCase("setname")) guildSetname(sender, args, label);
         else if (args[0].equalsIgnoreCase("invite")) guildInvite(sender, args, label);
         else if (args[0].equalsIgnoreCase("deny")) guildDeny(sender, args, label);
         else if (args[0].equalsIgnoreCase("list")) new ListGuilds(plugin, sender, args);
@@ -42,7 +44,6 @@ public class CommandHandler implements CommandExecutor {
         else if (args[0].equalsIgnoreCase("leave")) guildLeave(sender, args, label);
         else if (args[0].equalsIgnoreCase("accept")) guildInvite(sender, args, label);
         else if (args.length == 1) guildInfo(sender, args, label);
-        else Message.sendHelp(plugin, sender, "help", label);
     }
 
     private void guildLeave(CommandSender sender, String[] args, String label) {
@@ -94,11 +95,6 @@ public class CommandHandler implements CommandExecutor {
     private void guildWarp(CommandSender sender, String[] args, String label) {
         if (args.length == 2) new GoToWarp(plugin, sender, args);
         else Message.sendPlaceholder(plugin, sender, "syntax.warp", label);
-    }
-
-    private void guildSetname(CommandSender sender, String[] args, String label) {
-        if (args.length == 2) new SetName(plugin, sender, args);
-        else Message.sendPlaceholder(plugin, sender, "syntax.setname", label);
     }
 
     private void guildInvite(CommandSender sender, String[] args, String label) {
