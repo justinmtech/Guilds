@@ -8,7 +8,6 @@ import com.justinmtech.guilds.core.Guild;
 
 import java.util.Optional;
 
-//TODO Error handling when guild not found not working for SQL
 public class GetGuildInfo extends SubCommand {
 
     public GetGuildInfo(Guilds plugin, CommandSender sender, String[] args) {

@@ -10,7 +10,6 @@ import java.sql.*;
 import java.util.*;
 
 @SuppressWarnings("UnusedReturnValue")
-//TODO /guild nonGuildName returns error
 public class Database implements ManageData {
     private final String host;
     private final int port;
