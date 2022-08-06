@@ -5,6 +5,7 @@ import com.justinmtech.guilds.SubCommand;
 import com.justinmtech.guilds.core.Guild;
 import com.justinmtech.guilds.util.Message;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -29,17 +30,18 @@ public class Upgrade extends SubCommand {
                 Message.send(getPlugin(), getSender(), "not-in-guild");
                 return;
             }
-            double upgradeCost = getPlugin().getConfig().getDouble("settings.upgrade-costs.level-" + guild.orElseThrow().getLevel() + 1);
+            int level = guild.get().getLevel();
+            int upgradeCost = getPlugin().getConfig().getInt("settings.upgrade-costs.level-" + level);
 
             if (!guild.get().isOwner(player.getUniqueId())) {
                 Message.send(getPlugin(), getSender(), "must-be-owner");
             } else if (guild.get().getLevel() == guild.get().getMaxLevel()) {
                 Message.send(getPlugin(), getSender(), "already-max-level");
             } else if (Guilds.getEcon().has(Bukkit.getOfflinePlayer(player.getUniqueId()), upgradeCost)) {
-                Map<String, String> placeholders = new HashMap<>();
-                placeholders.put("%cost%", String.valueOf(upgradeCost));
-                placeholders.put("%command%", label);
-                Message.sendPlaceholders(getPlugin(), getSender(), "upgrade-confirm", placeholders);
+                String message = ChatColor.translateAlternateColorCodes('&', getPlugin().getConfig().getString("messages.upgrade-confirm"))
+                        .replace("%command%", label)
+                        .replace("%cost%", String.valueOf(upgradeCost));
+                player.sendMessage(message);
                 getPlugin().getCache().addTransactionConfirmation(player.getUniqueId(), upgradeCost);
                 BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
                 scheduler.scheduleSyncDelayedTask(getPlugin(), () -> getPlugin().getCache().removeTransactionConfirmation(player.getUniqueId()), 200);
