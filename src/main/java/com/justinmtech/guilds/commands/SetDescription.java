@@ -1,12 +1,14 @@
 package com.justinmtech.guilds.commands;
 
 import com.justinmtech.guilds.SubCommand;
+import com.justinmtech.guilds.core.Guild;
 import com.justinmtech.guilds.util.Message;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import com.justinmtech.guilds.Guilds;
 
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 public class SetDescription extends SubCommand {
 
@@ -17,18 +19,22 @@ public class SetDescription extends SubCommand {
 
     private void execute() {
         Player player = (Player) getSender();
-        try {
-            StringBuilder desc = new StringBuilder();
-            for (String arg : getArgs()) desc.append(arg).append(" ");
+        Optional<Guild> guild = getPlugin().getData().getGuild(player.getUniqueId());
+        if (guild.isEmpty()) {
+            Message.send(getPlugin(), getSender(), "generic-error");
+            return;
+        }
             try {
-                getPlugin().getData().getGuild(player.getUniqueId()).orElseThrow().setDescription(desc.toString().trim());
-            } catch (NoSuchElementException ignored) {
+                StringBuilder desc = new StringBuilder();
+                for (String arg : getArgs()) {
+                    if (arg.equals("setdesc")) continue;
+                    desc.append(arg).append(" ");
+                }
+                guild.get().setDescription(desc.toString().trim());
+                Message.sendPlaceholder(getPlugin(), getSender(), "set-description", desc.toString());
+            } catch (NullPointerException e) {
+                e.printStackTrace();
                 Message.send(getPlugin(), getSender(), "generic-error");
             }
-            Message.sendPlaceholder(getPlugin(), getSender(), "set-description", desc.toString());
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-            Message.send(getPlugin(), getSender(), "generic-error");
         }
-    }
 }
