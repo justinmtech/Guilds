@@ -10,6 +10,7 @@ import java.sql.*;
 import java.util.*;
 
 @SuppressWarnings("UnusedReturnValue")
+//TODO /guild nonGuildName returns error
 public class Database implements ManageData {
     private final String host;
     private final int port;
@@ -405,7 +406,7 @@ public class Database implements ManageData {
     private Optional<Guild> loadGuildData(String id) {
         Guild guild = new Guild(id);
         String sql = "SELECT description, level FROM " + guildTable + " WHERE id = ?";
-        try (Connection conn = connect(); PreparedStatement stat = connect().prepareStatement(sql)) {
+        try (Connection conn = connect(); PreparedStatement stat = conn.prepareStatement(sql)) {
             stat.setString(1, id);
             stat.execute();
             ResultSet rs = stat.getResultSet();
@@ -439,6 +440,7 @@ public class Database implements ManageData {
             e.printStackTrace();
             return Optional.empty();
         }
+        if (members.size() == 0) return Optional.empty();
         return Optional.of(members);
     }
 
