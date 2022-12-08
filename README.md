@@ -1,5 +1,6 @@
-# Guilds
-An open-source Minecraft plugin that allows players to create their own goal-oriented guilds to inspire cooperation and socializing.
+![Guilds](https://user-images.githubusercontent.com/8346060/206355497-fb93eae6-3cbb-4c94-af89-f8088cb6eee8.png)
+
+A Minecraft plugin that allows players to create their own goal-oriented guilds to inspire cooperation and socializing.
 
 # Features
 • Organize Groups - Allow your players to create powerful social groups <br>
