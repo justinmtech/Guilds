@@ -1,25 +1,33 @@
 package com.justinmtech.guilds.persistence;
 
+import com.justinmtech.guilds.core.GPlayer;
 import com.justinmtech.guilds.core.Guild;
+import com.justinmtech.guilds.core.Warp;
+
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
+@SuppressWarnings({"UnusedReturnValue", "unused"})
 public interface ManageData {
-    void setup();
-    Guild getGuild(UUID playerUuid);
-    Guild getGuild(String name);
+
+    boolean saveGuild(Guild guild);
+    boolean savePlayer(GPlayer player);
+    boolean saveInvite(UUID playerId, String guildId);
+    boolean saveWarp(String id, String world, double x, double y, double z, float yaw, float pitch, String guildId);
+
+    boolean deletePlayer(String id);
+    boolean deleteGuild(String id);
+    boolean deleteInvite(UUID playerId, String guildId);
+    boolean deleteWarp(String guildId, String warpId);
+
+    Optional<Guild> getGuild(String id);
+    Optional<Guild> getGuild(UUID uuid);
+    Optional<GPlayer> getPlayer(UUID id);
+    Optional<Warp> getWarp(UUID id, String warpId);
+
+    boolean hasInvite(UUID uuid, String guildId);
     List<Guild> getAllGuilds();
-    void createGuild(UUID owner, String name);
-    void saveAllGuilds();
-    void loadAllGuilds();
-    void deleteGuild(String communityName);
-    void addMember(UUID member, String communityName);
-    void removeMember(UUID member);
-    String getInvite(UUID receiver, String name);
-    void deleteInvite(UUID receiver, String name);
-    List<String> getInvites(UUID receiver);
-    void createInvite(UUID receiver, String communityName);
-    void clearCache();
-    Map<UUID, Double> getTransactionConfirmations();
+    boolean saveAllData();
+    boolean loadAllData();
 }

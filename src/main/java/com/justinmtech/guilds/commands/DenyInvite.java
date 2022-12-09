@@ -18,7 +18,7 @@ public class DenyInvite extends SubCommand {
             String name = getArgs()[1];
 
             try {
-                if (getPlugin().getData().getInvite(player.getUniqueId(), name) == null) {
+                if (!getPlugin().getData().hasInvite(player.getUniqueId(), name)) {
                     Message.sendPlaceholder(getPlugin(), getSender(), "no-invite", name);
                 } else {
                     getPlugin().getData().deleteInvite(player.getUniqueId(), name);

@@ -1,5 +1,6 @@
-# Guilds
-A free, open-source plugin that allows players to create their own goal-oriented guilds to inspire cooperation and socializing. If you want to contribute to the project, feel free to make a pull request or add me on Discord at Jamm#0747.
+![Guilds](https://user-images.githubusercontent.com/8346060/206355497-fb93eae6-3cbb-4c94-af89-f8088cb6eee8.png)
+
+A Minecraft plugin that allows players to create their own goal-oriented guilds to inspire cooperation and socializing.
 
 # Features
 • Organize Groups - Allow your players to create powerful social groups <br>
@@ -14,7 +15,7 @@ A free, open-source plugin that allows players to create their own goal-oriented
   • /guilds warp <warpName> - Warp to a guild warp <br>
   • /guilds setwarp <name> - Set a guild warp at your location <br>
   • /guilds invite <player> - Invite a player to your guild <br>
-  • /guilds accept <guild> - Accept an invite from a guild <br>
+  • /guilds accept <guild> - Accept an invitation from a guild <br>
   • /guilds leave - Leave your guild <br>
   • /guilds upgrade - Upgrade your guild <br>
   • /guilds list - List the top guilds <br>

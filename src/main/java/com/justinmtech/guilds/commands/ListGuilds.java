@@ -16,6 +16,7 @@ public class ListGuilds extends SubCommand {
         execute();
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     private boolean execute() {
         List<Guild> guildList = getPlugin().getData().getAllGuilds();
         Collections.sort(guildList);

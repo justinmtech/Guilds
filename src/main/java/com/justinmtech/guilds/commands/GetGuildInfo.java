@@ -2,10 +2,11 @@ package com.justinmtech.guilds.commands;
 
 import com.justinmtech.guilds.util.Message;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import com.justinmtech.guilds.Guilds;
 import com.justinmtech.guilds.SubCommand;
 import com.justinmtech.guilds.core.Guild;
+
+import java.util.Optional;
 
 public class GetGuildInfo extends SubCommand {
 
@@ -15,14 +16,9 @@ public class GetGuildInfo extends SubCommand {
     }
 
     private void execute() {
-        Guild guild = null;
-        try {
-            String guildName = getArgs()[0];
-            guild = getPlugin().getData().getGuild(guildName);
-        } catch (NullPointerException e) {
-            Message.sendPlaceholder(getPlugin(), getSender(), "guild-not-found", getArgs()[0]);
-        }
-        Message.sendGuildInfo(getPlugin(), getSender(), "messages.guild-info", guild);
-
+        String guildName = getArgs()[0];
+        Optional<Guild> guild = getPlugin().getData().getGuild(guildName);
+        if (guild.isEmpty() || guild.get().getMembers().size() == 0) Message.sendPlaceholder(getPlugin(), getSender(), "guild-not-found", getArgs()[0]);
+        else Message.sendGuildInfo(getPlugin(), getSender(), "messages.guild-info", guild.get());
     }
 }

@@ -1,51 +1,65 @@
 package com.justinmtech.guilds;
 
-import com.justinmtech.guilds.persistence.FileManager;
-import net.milkbowl.vault.chat.Chat;
+import com.justinmtech.guilds.persistence.*;
+import com.justinmtech.guilds.persistence.database.DatabaseCache;
+import com.justinmtech.guilds.persistence.database.Database;
+import com.justinmtech.guilds.persistence.file.FileManager;
 import net.milkbowl.vault.economy.Economy;
-import net.milkbowl.vault.permission.Permission;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import com.justinmtech.guilds.persistence.ManageData;
+import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.logging.Logger;
+import java.sql.SQLException;
+import java.util.Objects;
+import java.util.logging.Level;
 
 public final class Guilds extends JavaPlugin {
-    private static final Logger log = Logger.getLogger("Minecraft");
     private ManageData data;
     private static Economy econ = null;
-    private static Permission perms = null;
-    private static Chat chat = null;
+    private DatabaseCache cache;
 
     @Override
     public void onEnable() {
-        data = new FileManager(this);
-        data.setup();
-        data.loadAllGuilds();
+        saveDefaultConfig();
+        boolean dbEnabled;
+        if (Objects.requireNonNull(getConfig().getString("storage-type")).equalsIgnoreCase("db")) {
+            setupDatabase();
+            dbEnabled = true;
+        } else {
+            setupFilesystem();
+            dbEnabled = false;
+        }
 
-        this.getCommand("guilds").setExecutor(new CommandHandler(this));
+        if (!dbEnabled) {
+            data.loadAllData();
+            autoSaveTask();
+        }
+
+        Objects.requireNonNull(this.getCommand("guilds")).setExecutor(new CommandHandler(this));
 
         if (!setupEconomy() ) {
-            log.severe(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
+            getLogger().log(Level.SEVERE, "Economy not setup!");
             getServer().getPluginManager().disablePlugin(this);
-            return;
         }
-        setupPermissions();
-        setupChat();
 
-        System.out.println("Guilds enabled!");
+        cache = new DatabaseCache();
+        getLogger().log(Level.INFO, "Plugin enabled!");
     }
 
     @Override
     public void onDisable() {
-        data.saveAllGuilds();
-        data.clearCache();
-
-        System.out.println("Guilds disabled!");
+        data.saveAllData();
+        getLogger().log(Level.INFO, "Plugin disabled!");
     }
 
-    public ManageData getData() {
-        return data;
+    private void autoSaveTask() {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                data.saveAllData();
+                getLogger().log(Level.INFO, "Auto-saved data.");
+            }
+        }.runTaskTimer(this, 6000L, 6000L);
     }
 
     private boolean setupEconomy() {
@@ -57,30 +71,50 @@ public final class Guilds extends JavaPlugin {
             return false;
         }
         econ = rsp.getProvider();
-        return econ != null;
+        return true;
     }
 
-    private boolean setupChat() {
-        RegisteredServiceProvider<Chat> rsp = getServer().getServicesManager().getRegistration(Chat.class);
-        chat = rsp.getProvider();
-        return chat != null;
+    @SuppressWarnings("UnusedReturnValue")
+    private boolean setupDatabase() {
+        try {
+            data = new Database(
+                    getConfig().getString("db.host"),
+                    getConfig().getInt("db.port"),
+                    getConfig().getString("db.username"),
+                    getConfig().getString("db.password"),
+                    getConfig().getString("db.table"),
+                    getConfig().getString("db.database"));
+            return true;
+        } catch (SQLException e) {
+            getLogger().log(Level.SEVERE, e.getMessage());
+            getLogger().log(Level.SEVERE, "Plugin shutting down due to database error. Check your database settings.");
+            getPluginLoader().disablePlugin(this);
+        }
+        return false;
     }
 
-    private boolean setupPermissions() {
-        RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
-        perms = rsp.getProvider();
-        return perms != null;
+    @SuppressWarnings("UnusedReturnValue")
+    private boolean setupFilesystem() {
+        try {
+            data = new FileManager(this);
+            return true;
+        } catch (Exception e) {
+            getLogger().log(Level.SEVERE, "File system could not be initialized..");
+            getPluginLoader().disablePlugin(this);
+        }
+        return false;
     }
 
     public static Economy getEcon() {
         return econ;
     }
 
-    public static Permission getPerms() {
-        return perms;
+    public ManageData getData() {
+        return data;
     }
 
-    public static Chat getChat() {
-        return chat;
+    public DatabaseCache getCache() {
+        return cache;
     }
+
 }

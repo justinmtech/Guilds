@@ -1,7 +1,5 @@
 package com.justinmtech.guilds.core;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -10,12 +8,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+@SuppressWarnings("unchecked")
 public class Guild implements Comparable<Guild> {
     private String name;
     private UUID owner;
     private String description;
-    private final Map<UUID, Role> members;
-    private final Map<String, Location> warps;
+    private Map<UUID, Role> members;
+    private Map<String, Warp> warps;
     private int level;
 
     public Guild(UUID owner, String name) {
@@ -23,6 +22,16 @@ public class Guild implements Comparable<Guild> {
         this.name = name;
         this.members = new HashMap<>();
         members.put(owner, Role.LEADER);
+        this.warps = new HashMap<>();
+        this.description = "A new guild!";
+        this.level = 1;
+    }
+
+    public Guild(String name) {
+        this.owner = null;
+        this.name = name;
+        this.members = new HashMap<>();
+        //members.put(null, Role.LEADER);
         this.warps = new HashMap<>();
         this.description = "A new guild!";
         this.level = 1;
@@ -53,7 +62,7 @@ public class Guild implements Comparable<Guild> {
             double z = (Double) warp.get("z");
             double yaw = (Double) warp.get("yaw");
             double pitch = (Double) warp.get("pitch");
-            this.warps.put(name, new Location(Bukkit.getWorld(world), x, y, z, (float) yaw, (float) pitch));
+            this.warps.put(name, new Warp(name, world, x, y, z, (float) yaw, (float) pitch));
     }
 
 
@@ -97,7 +106,7 @@ public class Guild implements Comparable<Guild> {
         this.owner = owner;
     }
 
-    public Map<String, Location> getWarps() {
+    public Map<String, Warp> getWarps() {
         return warps;
     }
 
@@ -106,7 +115,12 @@ public class Guild implements Comparable<Guild> {
     }
 
     public void setLevel(int level) {
-        this.level = level;
+        if (level >= 1 && level <= 10) {
+            this.level = level;
+        } else {
+            if (level < 1) this.level = 1;
+            if (level > 10) this.level = 10;
+        }
     }
 
     public int getMaxWarps() {
@@ -125,20 +139,22 @@ public class Guild implements Comparable<Guild> {
     public String toString() {
         JSONObject json = new JSONObject();
         json.put("name", name);
-        json.put("owner", owner.toString());
+        if (owner != null) json.put("owner", owner.toString());
         json.put("description", description);
         JSONArray jsonArray = new JSONArray();
-        for (UUID member : members.keySet()) {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("player", member.toString());
-            jsonObject.put("role", members.get(member).toString());
-            jsonArray.add(jsonObject);
+        if (members != null) {
+            for (UUID member : members.keySet()) {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("player", member.toString());
+                jsonObject.put("role", members.get(member).toString());
+                jsonArray.add(jsonObject);
+            }
+            json.put("members", jsonArray);
         }
-        json.put("members", jsonArray);
         JSONArray warpArray = new JSONArray();
         for (String key : warps.keySet()) {
-            Location location = warps.get(key);
-            String world = location.getWorld().getName();
+            Warp location = warps.get(key);
+            String world = location.getWorld();
             double x = location.getX();
             double y = location.getY();
             double z = location.getZ();
@@ -165,4 +181,26 @@ public class Guild implements Comparable<Guild> {
         if (members.size() > o.getMembers().size()) return 1;
         return -1;
     }
+
+    public void setMembers(Map<UUID, Role> members) {
+        this.members = members;
+    }
+
+    public void setWarps(Map<String, Warp> warps) {
+        this.warps = warps;
+    }
+
+    public void addMember(UUID uuid) {
+        members.put(uuid, Role.MEMBER);
+    }
+
+    public void removeMember(UUID uuid) {
+        members.remove(uuid);
+    }
+
+    public void addWarp(Warp warp) {warps.put(warp.getId(), warp);}
+
+    public void removeWarp(String id) {warps.remove(id);}
+
+    public void updateWarp(Warp warp) {warps.replace(warp.getId(), warp);}
 }

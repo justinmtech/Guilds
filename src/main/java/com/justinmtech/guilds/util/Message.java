@@ -8,47 +8,49 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import com.justinmtech.guilds.Guilds;
 
+import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 public class Message {
     public static void send(Guilds plugin, CommandSender sender, String messagePath) {
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("messages." + messagePath)));
+        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("messages." + messagePath))));
     }
 
     public static void sendPlaceholder(Guilds plugin, CommandSender sender, String messagePath, String placeholder) {
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("messages." + messagePath).replace("%placeholder%", placeholder)));
+        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("messages." + messagePath)).replace("%placeholder%", placeholder)));
     }
 
-    public static void sendPlaceholders(Guilds plugin, CommandSender sender, String messagePath, String[] placeholders) {
+    public static void sendPlaceholders(Guilds plugin, CommandSender sender, String messagePath, Map<String, String> placeholders) {
         String output = plugin.getConfig().getString("messages." + messagePath);
-        for (String placeholder : placeholders) {
-            output = output.replace("%placeholder%", placeholder);
+        for (String placeholder : placeholders.keySet()) {
+            output = Objects.requireNonNull(output).replace(placeholder, placeholders.get(placeholder));
         }
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', output));
+        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(output)));
     }
 
     public static void sendPlaceholderPath(Guilds plugin, CommandSender sender, String messagePath, String placeholder) {
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString(messagePath).replace("%placeholder%", placeholder)));
+        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString(messagePath)).replace("%placeholder%", placeholder)));
     }
 
     public static void sendPlaceholder(Guilds plugin, Player sender, String messagePath, String placeholder) {
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("messages." + messagePath).replace("%placeholder%", placeholder)));
+        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("messages." + messagePath)).replace("%placeholder%", placeholder)));
     }
 
     public static void sendHelp(Guilds plugin, CommandSender sender, String messagePath, String placeholder) {
         ConfigurationSection section = plugin.getConfig().getConfigurationSection(messagePath);
-        for (String key : section.getKeys(false)) {
+        for (String key : Objects.requireNonNull(section).getKeys(false)) {
             if (key.equals("header")) {
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString(messagePath + "." + key)));
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString(messagePath + "." + key))));
             } else {
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString(messagePath + "." + key).replace("%placeholder%", placeholder)));
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString(messagePath + "." + key)).replace("%placeholder%", placeholder)));
             }
         }
     }
 
     public static void sendGuildList(Guilds plugin, CommandSender sender, String messagePath, String[] placeholder) {
         sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                plugin.getConfig().getString("messages." + messagePath)
+                Objects.requireNonNull(plugin.getConfig().getString("messages." + messagePath))
                         .replace("%number%", placeholder[0])
                         .replace("%guildName%", placeholder[1])
                         .replace("%members%", placeholder[2])));
@@ -56,7 +58,7 @@ public class Message {
 
     public static void sendGuildInfo(Guilds plugin, CommandSender sender, String messagePath, Guild guild) {
         ConfigurationSection section = plugin.getConfig().getConfigurationSection(messagePath);
-        for (String key : section.getKeys(false)) {
+        for (String key : Objects.requireNonNull(section).getKeys(false)) {
             switch (key) {
                 case "header" :
                     sendPlaceholderPath(plugin, sender, messagePath + "." + key, guild.getName());
@@ -82,12 +84,11 @@ public class Message {
                     break;
                 case "members" :
                     StringBuilder string = new StringBuilder();
-                    string.append(plugin.getConfig().getString(messagePath + "." + key) + " ");
+                    string.append(plugin.getConfig().getString(messagePath + "." + key)).append(" ");
                     for (UUID member : guild.getMembers().keySet()) {
-                        string.append(ChatColor.translateAlternateColorCodes('&', section.getString("member-color")) +
-                                Bukkit.getOfflinePlayer(member).getName() + " ");
+                        string.append(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(section.getString("member-color")))).append(Bukkit.getOfflinePlayer(member).getName()).append(" ");
                     }
-                    sendRaw(plugin, sender, string.toString());
+                    sendRaw(sender, string.toString());
                     break;
                 case "bottom" :
                     send(plugin, sender, "guild-info." + key);
@@ -96,7 +97,7 @@ public class Message {
         }
     }
 
-    public static void sendRaw(Guilds plugin, CommandSender sender, String message) {
+    public static void sendRaw(CommandSender sender, String message) {
         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
     }
 }
