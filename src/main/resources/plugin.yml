@@ -8,7 +8,7 @@ website: https://justinm.tech
 commands:
   guilds:
     description: Base command of Guilds.
-    usage: ""
+    usage: "/guilds"
     aliases:
       - guild
       - guilds

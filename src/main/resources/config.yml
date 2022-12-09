@@ -42,7 +42,7 @@ messages:
   guild-already-exists: "&cA Guild with that name already exists!"
   already-in-guild: "&cYou are already in a guild!"
   self-invite-error: "&cYou can't invite yourself!"
-  leave-guild-owner: "&cYou can't leave your own guild! Use /pc delete if you wish to remove it."
+  leave-guild-owner: "&cYou can't leave your own guild! Use /guilds delete if you wish to remove it."
   not-in-guild: "&cYou are not in a guild!"
   leave-guild: "&aYou left %placeholder%."
   not-console-command: "Only in-game players can do this command!"
@@ -90,6 +90,6 @@ help:
   line-6: "&e/%placeholder% accept <guild> - Accept an invite"
   line-7: "&e/%placeholder% leave - Leave your guild"
   line-8: "&e/%placeholder% list - List the top guilds"
-  line-9: "&e/%plcaeholder% upgrade - Upgrade your guild"
+  line-9: "&e/%placeholder% upgrade - Upgrade your guild"
 
 

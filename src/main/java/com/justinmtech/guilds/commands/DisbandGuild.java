@@ -19,6 +19,7 @@ public class DisbandGuild extends SubCommand {
     @SuppressWarnings("UnusedReturnValue")
     public boolean execute() {
         Player player = (Player) getSender();
+        System.out.println(getPlugin().getData().getGuild(player.getUniqueId()));
         try {
             Optional<Guild> guild = getPlugin().getData().getGuild(player.getUniqueId());
             if (guild.isEmpty()) {
