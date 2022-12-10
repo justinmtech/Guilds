@@ -8,6 +8,8 @@ A Minecraft plugin that allows players to create their own goal-oriented guilds 
 • Guild Levels & Upgrades - Upgrade your guild level to unlock new features <br>
 • Economy Support - Customizable costs for creating and upgrading guilds <br>
 • Fully Configurable - Easy to use, configure and modify <br>
+• MySQL/Flat File Support - Use the data storage the suits your needs
+
 
 # Commands
   • /guilds - Displays help menu <br>
