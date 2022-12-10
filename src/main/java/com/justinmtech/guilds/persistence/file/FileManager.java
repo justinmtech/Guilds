@@ -175,7 +175,7 @@ public class FileManager implements ManageData {
 
     @Override
     public boolean deleteGuild(String guildName) {
-        getCache().removeGuild(guildName);
+        getCache().removeGuildAndItsPlayers(guildName);
         return true;
     }
 

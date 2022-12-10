@@ -74,7 +74,7 @@ class FileCacheTest {
         Guild guild = new Guild(UUID.randomUUID(), "Test");
         cache.addGuild(guild);
         assertEquals(1, cache.getGuilds().size());
-        cache.removeGuild(guild.getName());
+        cache.removeGuildAndItsPlayers(guild.getName());
         assertEquals(0, cache.getGuilds().size());
     }
 

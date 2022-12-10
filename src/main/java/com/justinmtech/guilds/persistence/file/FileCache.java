@@ -48,7 +48,14 @@ public class FileCache {
         guilds.put(guild.getName(), guild);
     }
 
-    public void removeGuild(String id) {
+    public void removeGuildAndItsPlayers(String id) {
+        Optional<Guild> guild = getGuild(id);
+        if (guild.isPresent()) {
+            Map<UUID, Role> members = guild.get().getMembers();
+            for (UUID uuid : members.keySet()) {
+                removePlayer(uuid);
+            }
+        }
         guilds.remove(id);
     }
 

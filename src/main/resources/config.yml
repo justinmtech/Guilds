@@ -42,7 +42,7 @@ messages:
   guild-already-exists: "&cA Guild with that name already exists!"
   already-in-guild: "&cYou are already in a guild!"
   self-invite-error: "&cYou can't invite yourself!"
-  leave-guild-owner: "&cYou can't leave your own guild! Use /guilds delete if you wish to remove it."
+  leave-guild-owner: "&cYou can't leave your own guild! Use /guilds disband if you wish to remove it."
   not-in-guild: "&cYou are not in a guild!"
   leave-guild: "&aYou left %placeholder%."
   not-console-command: "Only in-game players can do this command!"
@@ -83,7 +83,7 @@ messages:
 help:
   header: "&6&lGuilds Help"
   line-1: "&e/%placeholder% create <name> - Create a new guild"
-  line-2: "&e/%placeholder% delete - Delete your guild"
+  line-2: "&e/%placeholder% disband - Remove your guild"
   line-3: "&e/%placeholder% warp <warpName> - Go to a warp"
   line-4: "&e/%placeholder% setwarp <name> - Set a warp"
   line-5: "&e/%placeholder% invite <player> - Invite a player"

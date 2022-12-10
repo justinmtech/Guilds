@@ -4,7 +4,7 @@ main: com.justinmtech.guilds.Guilds
 api-version: 1.17
 authors: [ justinmtech ]
 description: A plugin that allows players to create their own goal-oriented communities to inspire cooperation and socializing.
-website: https://justinm.tech
+website: https://justinmtech.com
 commands:
   guilds:
     description: Base command of Guilds.
@@ -13,6 +13,6 @@ commands:
       - guild
       - guilds
       - g
-depend:
-  - Vault
+depend: [Vault]
+softdepend: [PlaceholderAPI]
 

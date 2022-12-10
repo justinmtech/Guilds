@@ -4,7 +4,9 @@ import com.justinmtech.guilds.persistence.*;
 import com.justinmtech.guilds.persistence.database.DatabaseCache;
 import com.justinmtech.guilds.persistence.database.Database;
 import com.justinmtech.guilds.persistence.file.FileManager;
+import com.justinmtech.guilds.util.Placeholders;
 import net.milkbowl.vault.economy.Economy;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -22,7 +24,7 @@ public final class Guilds extends JavaPlugin {
     public void onEnable() {
         saveDefaultConfig();
         boolean dbEnabled;
-        if (Objects.requireNonNull(getConfig().getString("storage-type")).equalsIgnoreCase("db")) {
+        if (Objects.requireNonNull(getConfig().getString("storage-type", "file")).equalsIgnoreCase("db")) {
             setupDatabase();
             dbEnabled = true;
         } else {
@@ -43,6 +45,10 @@ public final class Guilds extends JavaPlugin {
         }
 
         cache = new DatabaseCache();
+
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            new Placeholders(getData()).register();
+        }
         getLogger().log(Level.INFO, "Plugin enabled!");
     }
 
