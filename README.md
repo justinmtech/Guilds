@@ -22,4 +22,5 @@ A Minecraft plugin that allows players to create their own goal-oriented guilds 
   • /guilds upgrade - Upgrade your guild <br>
   • /guilds list - List the top guilds <br>
   
-
+# Note
+This plugin has not been battle tested on a lot of servers yet, and still has some issues. Please use with caution, and feel free to submit a PR!
