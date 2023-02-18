@@ -7,10 +7,13 @@ import com.justinmtech.guilds.persistence.file.FileManager;
 import com.justinmtech.guilds.util.Placeholders;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.java.JavaPluginLoader;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.io.File;
 import java.sql.SQLException;
 import java.util.Objects;
 import java.util.logging.Level;
@@ -19,6 +22,12 @@ public final class Guilds extends JavaPlugin {
     private ManageData data;
     private static Economy econ = null;
     private DatabaseCache cache;
+
+    public Guilds() {super();}
+
+    protected Guilds(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
+        super(loader, description, dataFolder, file);
+    }
 
     @Override
     public void onEnable() {
@@ -41,7 +50,7 @@ public final class Guilds extends JavaPlugin {
 
         if (!setupEconomy() ) {
             getLogger().log(Level.SEVERE, "Economy not setup!");
-            getServer().getPluginManager().disablePlugin(this);
+            //getServer().getPluginManager().disablePlugin(this);
         }
 
         cache = new DatabaseCache();

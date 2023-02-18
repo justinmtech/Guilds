@@ -26,11 +26,13 @@ public class CreateGuild extends SubCommand {
         Optional<GPlayer> gPlayer = getPlugin().getData().getPlayer(player.getUniqueId());
         if (guild.isEmpty()) {
             if (gPlayer.isEmpty()) {
+                if (Guilds.getEcon() == null) {
+                    createGuild(player, name);
+                    return;
+                }
                 if (Guilds.getEcon().has(Bukkit.getOfflinePlayer(player.getUniqueId()), getPlugin().getConfig().getDouble("settings.guild-cost"))) {
                     Guilds.getEcon().withdrawPlayer(Bukkit.getOfflinePlayer(player.getUniqueId()), getPlugin().getConfig().getDouble("settings.guild-cost"));
-                    getPlugin().getData().saveGuild(new Guild(player.getUniqueId(), name));
-                    getPlugin().getData().savePlayer(new GPlayer(player.getUniqueId(), name, Role.LEADER));
-                    Message.send(getPlugin(), player, "create-guild");
+                    createGuild(player, name);
                 } else {
                     Message.sendPlaceholder(getPlugin(), getSender(), "guild-create-insufficient-funds",
                             String.valueOf(getPlugin().getConfig().getDouble("settings.guild-cost")));
@@ -41,5 +43,12 @@ public class CreateGuild extends SubCommand {
         } else {
             Message.send(getPlugin(), getSender(), "guild-already-exists");
         }
+    }
+
+    private void createGuild(Player player, String name) {
+        getPlugin().getData().saveGuild(new Guild(player.getUniqueId(), name));
+        getPlugin().getData().savePlayer(new GPlayer(player.getUniqueId(), name, Role.LEADER));
+        Message.send(getPlugin(), player, "create-guild");
+
     }
 }

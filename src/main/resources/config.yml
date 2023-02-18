@@ -1,11 +1,11 @@
 #db or file
 storage-type: file
 db:
-  host: host
+  host: localhost
   port: 3306
-  username: user
-  password: pass
-  database: db
+  username: root
+  password: password
+  database: server
   table: table
 settings:
   guild-cost: 50000

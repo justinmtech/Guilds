@@ -11,6 +11,7 @@ import org.json.simple.parser.ParseException;
 import com.justinmtech.guilds.Guilds;
 import com.justinmtech.guilds.core.Guild;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
