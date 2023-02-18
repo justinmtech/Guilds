@@ -21,8 +21,8 @@ public class GuildCommandTests {
     void guildsCommand() {
         server.addPlayer();
         Assertions.assertTrue(server.getPlayer(0).performCommand("guilds"));
-        Assertions.assertTrue(server.getPlayer(0).performCommand("guilds create test"));
-
+        Assertions.assertTrue(server.getPlayer(0).performCommand("guilds list"));
+        Assertions.assertTrue(server.getPlayer(0).performCommand("guilds warp"));
     }
 
 
