@@ -9,7 +9,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;
-//TODO Test
+//TODO Not working
 public class Confirmation extends SubCommand {
 
     public Confirmation(Guilds plugin, CommandSender sender, String[] args) {
