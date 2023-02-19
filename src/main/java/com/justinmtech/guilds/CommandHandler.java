@@ -1,6 +1,7 @@
 package com.justinmtech.guilds;
 
 import com.justinmtech.guilds.commands.*;
+import com.justinmtech.guilds.util.InputChecker;
 import com.justinmtech.guilds.util.Message;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -19,25 +20,35 @@ public class CommandHandler implements CommandExecutor {
         if (!command.getName().equalsIgnoreCase("guilds")) return false;
         if (sender instanceof ConsoleCommandSender) Message.sendHelp(plugin, sender, "help", label);
         if (args.length == 0) {
-            Message.sendHelp(plugin, sender, "help", label);
+            guildInfo(sender, args, label);
             return true;
         }
-        //if (InputChecker.noSpecialCharacters(args)) parseSubCommand(sender, args, label);
         parseSubCommand(sender, args, label);
-        //else if (args[0].equalsIgnoreCase("setdesc")) parseSubCommand(sender, args, label);
-        //else Message.send(plugin, sender, "no-special-characters");
         return true;
     }
 
     private void parseSubCommand(CommandSender sender, String[] args, String label) {
-        if (args[0].equalsIgnoreCase("create")) guildCreate(sender, args, label);
+        if (args[0].equalsIgnoreCase("help")) Message.sendHelp(plugin, sender, "help", label);
+        else if (args[0].equalsIgnoreCase("create")) {
+            if (InputChecker.noSpecialCharacters(args)) {
+                guildCreate(sender, args, label);
+            } else {
+                Message.send(plugin, sender, "no-special-characters");
+            }
+        }
         else if (args[0].equalsIgnoreCase("disband")) guildDisband(sender, args, label);
         else if (args[0].equalsIgnoreCase("warp")) guildWarp(sender, args, label);
         else if (args[0].equalsIgnoreCase("invite")) guildInvite(sender, args, label);
         else if (args[0].equalsIgnoreCase("deny")) guildDeny(sender, args, label);
         else if (args[0].equalsIgnoreCase("list")) new ListGuilds(plugin, sender, args);
         else if (args[0].equalsIgnoreCase("setdesc")) guildSetDesc(sender, args, label);
-        else if (args[0].equalsIgnoreCase("setwarp")) guildSetWarp(sender, args, label);
+        else if (args[0].equalsIgnoreCase("setwarp")) {
+            if (InputChecker.noSpecialCharacters(args)) {
+                guildSetWarp(sender, args, label);
+            } else {
+                Message.send(plugin, sender, "no-special-characters");
+            }
+        }
         else if (args[0].equalsIgnoreCase("upgrade")) guildUpgrade(sender, args, label);
         else if (args[0].equalsIgnoreCase("confirm")) guildConfirmUpgrade(sender, args, label);
         else if (args[0].equalsIgnoreCase("leave")) guildLeave(sender, args, label);
@@ -77,8 +88,8 @@ public class CommandHandler implements CommandExecutor {
     }
 
     private void guildInfo(CommandSender sender, String[] args, String label) {
-        if (args.length == 1) new GetGuildInfo(plugin, sender, args);
-        else Message.sendPlaceholder(plugin, sender, "messages.guild-not-found", label);
+        if (args.length == 0 || args.length == 1) new GetGuildInfo(plugin, sender, args);
+        else Message.sendPlaceholder(plugin, sender, "messages.guild-not-found", label != null ? label : "guild");
     }
 
     private void guildDeny(CommandSender sender, String[] args, String label) {
