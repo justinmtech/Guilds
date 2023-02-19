@@ -11,7 +11,6 @@ import org.json.simple.parser.ParseException;
 import com.justinmtech.guilds.Guilds;
 import com.justinmtech.guilds.core.Guild;
 
-import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -39,6 +38,7 @@ public class FileManager implements ManageData {
     @Override
     public Optional<Guild> getGuild(UUID playerUuid) {
         if (getCache().getPlayer(playerUuid).isEmpty()) return Optional.empty();
+        if (!getCache().getPlayer(playerUuid).get().hasGuild()) return Optional.empty();
         String guildId = getCache().getPlayer(playerUuid).get().getGuildId();
         return getCache().getGuild(guildId);
     }
@@ -56,7 +56,8 @@ public class FileManager implements ManageData {
             return Optional.empty();
         } else {
             if (getCache().getGuild(guildId).isEmpty()) return Optional.empty();
-            return Optional.of(getCache().getGuild(guildId).get().getWarps().get(warpId));
+            Warp warp = getCache().getGuild(guildId).get().getWarps().get(warpId);
+            return warp != null ? Optional.of(warp) : Optional.empty();
         }
     }
 
@@ -101,7 +102,7 @@ public class FileManager implements ManageData {
     @Override
     public boolean savePlayer(GPlayer player) {
         if (getCache().playerExists(player.getUuid())) {
-            getCache().getPlayers().replace(player.getUuid(), new GPlayer(player.getUuid(), player.getGuildId(), player.getRole()));
+            getCache().getGuildPlayers().replace(player.getUuid(), player);
         } else {
             getCache().addPlayer(player.getUuid(), player.getGuildId(), player.getRole());
         }
@@ -181,13 +182,6 @@ public class FileManager implements ManageData {
     }
 
     @Override
-    public boolean saveInvite(UUID receiver, String guildName) {
-        if (getCache().getPlayer(receiver).isEmpty()) return false;
-        getCache().getPlayer(receiver).get().addInvite(guildName);
-        return true;
-    }
-
-    @Override
     public boolean saveWarp(String id, String world, double x, double y, double z, float yaw, float pitch, String guildId) {
         Optional<Guild> guild = getCache().getGuild(guildId);
         if (guild.isEmpty()) return false;
@@ -202,6 +196,13 @@ public class FileManager implements ManageData {
     @Override
     public boolean deletePlayer(String id) {
         getCache().removePlayer(UUID.fromString(id));
+        return true;
+    }
+
+    @Override
+    public boolean saveInvite(UUID receiver, String guildName) {
+        if (getCache().getPlayer(receiver).isEmpty()) return false;
+        getCache().getPlayer(receiver).get().addInvite(guildName);
         return true;
     }
 

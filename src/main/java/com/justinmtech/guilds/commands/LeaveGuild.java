@@ -1,5 +1,6 @@
 package com.justinmtech.guilds.commands;
 
+import com.justinmtech.guilds.core.GPlayer;
 import com.justinmtech.guilds.util.Message;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -31,6 +32,10 @@ public class LeaveGuild extends SubCommand {
                 return false;
             }
             guild.get().removeMember(player.getUniqueId());
+            Optional<GPlayer> gPlayer = getPlugin().getData().getPlayer(player.getUniqueId());
+            gPlayer.ifPresent(value -> value.setGuildId(null));
+            getPlugin().getData().savePlayer(gPlayer.get());
+            getPlugin().getData().saveGuild(guild.get());
             Message.sendPlaceholder(getPlugin(), getSender(), "leave-guild", guild.get().getName());
             return true;
         }

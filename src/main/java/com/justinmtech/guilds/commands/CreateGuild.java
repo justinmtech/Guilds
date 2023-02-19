@@ -25,7 +25,7 @@ public class CreateGuild extends SubCommand {
         Optional<Guild> guild = getPlugin().getData().getGuild(name);
         Optional<GPlayer> gPlayer = getPlugin().getData().getPlayer(player.getUniqueId());
         if (guild.isEmpty()) {
-            if (gPlayer.isEmpty()) {
+            if (gPlayer.isEmpty() || !gPlayer.get().hasGuild()) {
                 if (Guilds.getEcon().has(Bukkit.getOfflinePlayer(player.getUniqueId()), getPlugin().getConfig().getDouble("settings.guild-cost"))) {
                     Guilds.getEcon().withdrawPlayer(Bukkit.getOfflinePlayer(player.getUniqueId()), getPlugin().getConfig().getDouble("settings.guild-cost"));
                     createGuild(player, name);
@@ -45,6 +45,5 @@ public class CreateGuild extends SubCommand {
         getPlugin().getData().saveGuild(new Guild(player.getUniqueId(), name));
         getPlugin().getData().savePlayer(new GPlayer(player.getUniqueId(), name, Role.LEADER));
         Message.send(getPlugin(), player, "create-guild");
-
     }
 }

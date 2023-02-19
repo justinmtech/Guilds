@@ -1,13 +1,11 @@
 package com.justinmtech.guilds;
 
 import com.justinmtech.guilds.commands.*;
-import com.justinmtech.guilds.util.InputChecker;
 import com.justinmtech.guilds.util.Message;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Player;
 
 public class CommandHandler implements CommandExecutor {
     private final Guilds plugin;
@@ -24,9 +22,10 @@ public class CommandHandler implements CommandExecutor {
             Message.sendHelp(plugin, sender, "help", label);
             return true;
         }
-        if (InputChecker.noSpecialCharacters(args)) parseSubCommand(sender, args, label);
-        else if (args[0].equalsIgnoreCase("setdesc")) parseSubCommand(sender, args, label);
-        else Message.send(plugin, sender, "no-special-characters");
+        //if (InputChecker.noSpecialCharacters(args)) parseSubCommand(sender, args, label);
+        parseSubCommand(sender, args, label);
+        //else if (args[0].equalsIgnoreCase("setdesc")) parseSubCommand(sender, args, label);
+        //else Message.send(plugin, sender, "no-special-characters");
         return true;
     }
 
@@ -40,9 +39,9 @@ public class CommandHandler implements CommandExecutor {
         else if (args[0].equalsIgnoreCase("setdesc")) guildSetDesc(sender, args, label);
         else if (args[0].equalsIgnoreCase("setwarp")) guildSetWarp(sender, args, label);
         else if (args[0].equalsIgnoreCase("upgrade")) guildUpgrade(sender, args, label);
-        else if (args[0].equalsIgnoreCase("confirm")) guildConfirmInvite(sender, args, label);
+        else if (args[0].equalsIgnoreCase("confirm")) guildConfirmUpgrade(sender, args, label);
         else if (args[0].equalsIgnoreCase("leave")) guildLeave(sender, args, label);
-        else if (args[0].equalsIgnoreCase("accept")) guildInvite(sender, args, label);
+        else if (args[0].equalsIgnoreCase("accept")) guildAcceptInvite(sender, args, label);
         else if (args.length == 1) guildInfo(sender, args, label);
     }
 
@@ -52,7 +51,12 @@ public class CommandHandler implements CommandExecutor {
 
     }
 
-    private void guildConfirmInvite(CommandSender sender, String[] args, String label) {
+    private void guildAcceptInvite(CommandSender sender, String[] args, String label) {
+        if (args.length == 2) new AcceptInvite(plugin, sender, args);
+        else Message.sendPlaceholder(plugin, sender, "syntax.confirm", label);
+    }
+
+    private void guildConfirmUpgrade(CommandSender sender, String[] args, String label) {
         if (args.length == 1) new Confirmation(plugin, sender, args);
         else Message.sendPlaceholder(plugin, sender, "syntax.confirm", label);
     }

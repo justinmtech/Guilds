@@ -21,7 +21,6 @@ public class AcceptInvite extends SubCommand {
         execute();
     }
 
-    //TODO Test
     private boolean execute() {
         Player player2 = (Player) getSender();
         String guildName = getArgs()[1];
@@ -36,6 +35,8 @@ public class AcceptInvite extends SubCommand {
 
         if (guildExists && noGuild) {
             getPlugin().getData().savePlayer(new GPlayer(player2.getUniqueId(), guildName, Role.MEMBER));
+            guild.get().addMember(player2.getUniqueId());
+            getPlugin().getData().saveGuild(guild.get());
             Message.sendPlaceholder(getPlugin(), getSender(), "invite-accepted", guild.get().getName());
             getPlugin().getData().deleteInvite(player2.getUniqueId(), guildName);
             if (Bukkit.getPlayer(guild.get().getOwner()) != null) {

@@ -1,4 +1,4 @@
-package com.justinmtech.guilds.persistence;
+package com.justinmtech.guilds.persistence.database;
 
 import com.justinmtech.guilds.core.GPlayer;
 import com.justinmtech.guilds.core.Guild;

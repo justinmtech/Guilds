@@ -50,4 +50,8 @@ public class GPlayer {
     public void removeInvite(String guildId) {
         invites.remove(guildId);
     }
+
+    public boolean hasGuild() {
+        return this.guildId != null && !this.guildId.isBlank() && !this.guildId.isEmpty();
+    }
 }

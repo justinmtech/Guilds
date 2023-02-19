@@ -4,6 +4,7 @@ import com.justinmtech.guilds.persistence.*;
 import com.justinmtech.guilds.persistence.database.DatabaseCache;
 import com.justinmtech.guilds.persistence.database.Database;
 import com.justinmtech.guilds.persistence.file.FileManager;
+import com.justinmtech.guilds.persistence.file.PlayerListener;
 import com.justinmtech.guilds.util.Placeholders;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -23,7 +24,9 @@ public final class Guilds extends JavaPlugin {
     private static Economy econ = null;
     private DatabaseCache cache;
 
-    public Guilds() {super();}
+    public Guilds() {
+        super();
+    }
 
     protected Guilds(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
         super(loader, description, dataFolder, file);
@@ -43,14 +46,15 @@ public final class Guilds extends JavaPlugin {
 
         if (!dbEnabled) {
             data.loadAllData();
+            getServer().getPluginManager().registerEvents(new PlayerListener(data), this);
             autoSaveTask();
         }
 
         Objects.requireNonNull(this.getCommand("guilds")).setExecutor(new CommandHandler(this));
 
-        if (!setupEconomy() ) {
+        if (!setupEconomy()) {
             getLogger().log(Level.SEVERE, "Economy not setup!");
-            //getServer().getPluginManager().disablePlugin(this);
+            getServer().getPluginManager().disablePlugin(this);
         }
 
         cache = new DatabaseCache();
@@ -78,6 +82,7 @@ public final class Guilds extends JavaPlugin {
     }
 
     private boolean setupEconomy() {
+        //if (testing) return true;
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
             return false;
         }
@@ -131,5 +136,4 @@ public final class Guilds extends JavaPlugin {
     public DatabaseCache getCache() {
         return cache;
     }
-
 }
