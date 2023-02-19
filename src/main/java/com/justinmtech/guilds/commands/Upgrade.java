@@ -46,8 +46,10 @@ public class Upgrade extends SubCommand {
                 BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
                 scheduler.scheduleSyncDelayedTask(getPlugin(), () -> getPlugin().getCache().removeTransactionConfirmation(player.getUniqueId()), 200);
             } else {
-                Message.send(getPlugin(), getSender(), "not-console-command");
+                Message.sendPlaceholder(getPlugin(), getSender(), "upgrade-insufficient-funds", String.valueOf(upgradeCost));
             }
+        } else {
+            Message.send(getPlugin(), getSender(), "not-console-command");
         }
     }
 }

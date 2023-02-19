@@ -1,18 +1,19 @@
 package com.justinmtech.guilds.persistence.database;
 
+import com.justinmtech.guilds.persistence.TransactionCache;
 import org.junit.jupiter.api.*;
 
 import java.util.UUID;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class DatabaseCacheTest {
-    private static DatabaseCache databaseCache;
+    private static TransactionCache databaseCache;
     private static UUID UUID;
 
     @BeforeAll
     static void setup() {
         UUID = java.util.UUID.randomUUID();
-        databaseCache = new DatabaseCache();
+        databaseCache = new TransactionCache();
     }
 
     @Test

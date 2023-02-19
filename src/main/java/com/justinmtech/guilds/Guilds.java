@@ -1,7 +1,7 @@
 package com.justinmtech.guilds;
 
 import com.justinmtech.guilds.persistence.*;
-import com.justinmtech.guilds.persistence.database.DatabaseCache;
+import com.justinmtech.guilds.persistence.TransactionCache;
 import com.justinmtech.guilds.persistence.database.Database;
 import com.justinmtech.guilds.persistence.file.FileManager;
 import com.justinmtech.guilds.persistence.file.PlayerListener;
@@ -22,7 +22,7 @@ import java.util.logging.Level;
 public final class Guilds extends JavaPlugin {
     private ManageData data;
     private static Economy econ = null;
-    private DatabaseCache cache;
+    private TransactionCache cache;
 
     public Guilds() {
         super();
@@ -57,7 +57,7 @@ public final class Guilds extends JavaPlugin {
             getServer().getPluginManager().disablePlugin(this);
         }
 
-        cache = new DatabaseCache();
+        cache = new TransactionCache();
 
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new Placeholders(getData()).register();
@@ -133,7 +133,7 @@ public final class Guilds extends JavaPlugin {
         return data;
     }
 
-    public DatabaseCache getCache() {
+    public TransactionCache getCache() {
         return cache;
     }
 }

@@ -1,18 +1,22 @@
-package com.justinmtech.guilds.persistence.database;
+package com.justinmtech.guilds.persistence;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class DatabaseCache {
+public class TransactionCache {
     private final Map<UUID, Double> transactionConfirmations;
 
-    public DatabaseCache() {
+    public TransactionCache() {
         this.transactionConfirmations = new HashMap<>();
     }
 
     public void addTransactionConfirmation(UUID uuid, double value) {
         transactionConfirmations.put(uuid, value);
+    }
+
+    public Double getPendingTransactionAmount(UUID uuid) {
+        return transactionConfirmations.get(uuid);
     }
 
     public void removeTransactionConfirmation(UUID uuid) {

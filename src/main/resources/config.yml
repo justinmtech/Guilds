@@ -52,6 +52,7 @@ messages:
   guild-create-insufficient-funds: "&cYou need $%placeholder% to create a Guild."
   already-max-level: "&cYour guild is already the max level!"
   upgrade-confirm: "&cDo you want to upgrade your guild for %cost%? Type /%command% confirm to confirm."
+  upgrade-insufficient-funds: "&cYou need at least %placeholder% to buy the next guild upgrade."
   guild-level-up: "&aYour guild is now level %placeholder%!"
   no-confirmation: "&cNo pending confirmation found.."
   guild-info:
