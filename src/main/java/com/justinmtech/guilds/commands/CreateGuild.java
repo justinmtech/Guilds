@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import com.justinmtech.guilds.Guilds;
 import com.justinmtech.guilds.SubCommand;
 
+import java.text.DecimalFormat;
 import java.util.Optional;
 
 public class CreateGuild extends SubCommand {
@@ -30,8 +31,11 @@ public class CreateGuild extends SubCommand {
                     Guilds.getEcon().withdrawPlayer(Bukkit.getOfflinePlayer(player.getUniqueId()), getPlugin().getConfig().getDouble("settings.guild-cost"));
                     createGuild(player, name);
                 } else {
+                    String cost = String.valueOf(getPlugin().getConfig().getDouble("settings.guild-cost"));
+                    double amount = Double.parseDouble(cost);
+                    DecimalFormat formatter = new DecimalFormat("#,###");
                     Message.sendPlaceholder(getPlugin(), getSender(), "guild-create-insufficient-funds",
-                            String.valueOf(getPlugin().getConfig().getDouble("settings.guild-cost")));
+                            formatter.format(amount));
                 }
             } else {
                 Message.send(getPlugin(), getSender(), "already-in-guild");

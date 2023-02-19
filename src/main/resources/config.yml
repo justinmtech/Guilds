@@ -10,6 +10,7 @@ db:
 settings:
   guild-cost: 50000
   upgrade-costs:
+    level-1: 2500
     level-2: 5000
     level-3: 10000
     level-4: 25000
