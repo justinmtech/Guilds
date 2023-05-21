@@ -143,9 +143,11 @@ public class FileManager implements ManageData {
 
     public void loadAllGuilds() {
         File file = new File(plugin.getDataFolder().getAbsolutePath() + "//guilds.json");
-        saveAllGuilds();
         try {
-            if (!file.exists()) file.createNewFile();
+            if (!file.exists()) {
+                file.createNewFile();
+                saveAllGuilds();
+            }
             FileReader reader = new FileReader(plugin.getDataFolder().getAbsolutePath() + "//guilds.json");
             Object object = new JSONParser().parse(reader);
             ((JSONArray) object).forEach(guild -> _addGuild((JSONObject) guild));

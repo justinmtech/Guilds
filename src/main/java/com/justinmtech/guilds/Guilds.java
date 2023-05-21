@@ -1,5 +1,6 @@
 package com.justinmtech.guilds;
 
+import com.justinmtech.guilds.commands.TabCompleter;
 import com.justinmtech.guilds.persistence.*;
 import com.justinmtech.guilds.persistence.TransactionCache;
 import com.justinmtech.guilds.persistence.database.Database;
@@ -51,6 +52,7 @@ public final class Guilds extends JavaPlugin {
         }
 
         Objects.requireNonNull(this.getCommand("guilds")).setExecutor(new CommandHandler(this));
+        Objects.requireNonNull(getCommand("guilds")).setTabCompleter(new TabCompleter(this));
 
         if (!setupEconomy()) {
             getLogger().log(Level.SEVERE, "Economy not setup!");
