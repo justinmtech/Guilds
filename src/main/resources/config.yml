@@ -1,15 +1,16 @@
 #db or file
 storage-type: file
 db:
-  host: host
+  host: localhost
   port: 3306
-  username: user
-  password: pass
-  database: db
+  username: root
+  password: password
+  database: server
   table: table
 settings:
   guild-cost: 50000
   upgrade-costs:
+    level-1: 2500
     level-2: 5000
     level-3: 10000
     level-4: 25000
@@ -52,6 +53,7 @@ messages:
   guild-create-insufficient-funds: "&cYou need $%placeholder% to create a Guild."
   already-max-level: "&cYour guild is already the max level!"
   upgrade-confirm: "&cDo you want to upgrade your guild for %cost%? Type /%command% confirm to confirm."
+  upgrade-insufficient-funds: "&cYou need at least %placeholder% to buy the next guild upgrade."
   guild-level-up: "&aYour guild is now level %placeholder%!"
   no-confirmation: "&cNo pending confirmation found.."
   guild-info:

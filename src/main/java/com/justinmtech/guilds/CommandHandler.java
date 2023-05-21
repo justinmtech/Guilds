@@ -7,7 +7,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Player;
 
 public class CommandHandler implements CommandExecutor {
     private final Guilds plugin;
@@ -21,28 +20,39 @@ public class CommandHandler implements CommandExecutor {
         if (!command.getName().equalsIgnoreCase("guilds")) return false;
         if (sender instanceof ConsoleCommandSender) Message.sendHelp(plugin, sender, "help", label);
         if (args.length == 0) {
-            Message.sendHelp(plugin, sender, "help", label);
+            guildInfo(sender, args, label);
             return true;
         }
-        if (InputChecker.noSpecialCharacters(args)) parseSubCommand(sender, args, label);
-        else if (args[0].equalsIgnoreCase("setdesc")) parseSubCommand(sender, args, label);
-        else Message.send(plugin, sender, "no-special-characters");
+        parseSubCommand(sender, args, label);
         return true;
     }
 
     private void parseSubCommand(CommandSender sender, String[] args, String label) {
-        if (args[0].equalsIgnoreCase("create")) guildCreate(sender, args, label);
+        if (args[0].equalsIgnoreCase("help")) Message.sendHelp(plugin, sender, "help", label);
+        else if (args[0].equalsIgnoreCase("create")) {
+            if (InputChecker.noSpecialCharacters(args)) {
+                guildCreate(sender, args, label);
+            } else {
+                Message.send(plugin, sender, "no-special-characters");
+            }
+        }
         else if (args[0].equalsIgnoreCase("disband")) guildDisband(sender, args, label);
         else if (args[0].equalsIgnoreCase("warp")) guildWarp(sender, args, label);
         else if (args[0].equalsIgnoreCase("invite")) guildInvite(sender, args, label);
         else if (args[0].equalsIgnoreCase("deny")) guildDeny(sender, args, label);
         else if (args[0].equalsIgnoreCase("list")) new ListGuilds(plugin, sender, args);
         else if (args[0].equalsIgnoreCase("setdesc")) guildSetDesc(sender, args, label);
-        else if (args[0].equalsIgnoreCase("setwarp")) guildSetWarp(sender, args, label);
+        else if (args[0].equalsIgnoreCase("setwarp")) {
+            if (InputChecker.noSpecialCharacters(args)) {
+                guildSetWarp(sender, args, label);
+            } else {
+                Message.send(plugin, sender, "no-special-characters");
+            }
+        }
         else if (args[0].equalsIgnoreCase("upgrade")) guildUpgrade(sender, args, label);
-        else if (args[0].equalsIgnoreCase("confirm")) guildConfirmInvite(sender, args, label);
+        else if (args[0].equalsIgnoreCase("confirm")) guildConfirmUpgrade(sender, args, label);
         else if (args[0].equalsIgnoreCase("leave")) guildLeave(sender, args, label);
-        else if (args[0].equalsIgnoreCase("accept")) guildInvite(sender, args, label);
+        else if (args[0].equalsIgnoreCase("accept")) guildAcceptInvite(sender, args, label);
         else if (args.length == 1) guildInfo(sender, args, label);
     }
 
@@ -52,7 +62,12 @@ public class CommandHandler implements CommandExecutor {
 
     }
 
-    private void guildConfirmInvite(CommandSender sender, String[] args, String label) {
+    private void guildAcceptInvite(CommandSender sender, String[] args, String label) {
+        if (args.length == 2) new AcceptInvite(plugin, sender, args);
+        else Message.sendPlaceholder(plugin, sender, "syntax.confirm", label);
+    }
+
+    private void guildConfirmUpgrade(CommandSender sender, String[] args, String label) {
         if (args.length == 1) new Confirmation(plugin, sender, args);
         else Message.sendPlaceholder(plugin, sender, "syntax.confirm", label);
     }
@@ -73,8 +88,8 @@ public class CommandHandler implements CommandExecutor {
     }
 
     private void guildInfo(CommandSender sender, String[] args, String label) {
-        if (args.length == 1) new GetGuildInfo(plugin, sender, args);
-        else Message.sendPlaceholder(plugin, sender, "messages.guild-not-found", label);
+        if (args.length == 0 || args.length == 1) new GetGuildInfo(plugin, sender, args);
+        else Message.sendPlaceholder(plugin, sender, "messages.guild-not-found", label != null ? label : "guild");
     }
 
     private void guildDeny(CommandSender sender, String[] args, String label) {

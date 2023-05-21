@@ -22,9 +22,9 @@ class FileCacheTest {
 
     @Test
     void addPlayer() {
-        assertEquals(0, cache.getPlayers().size());
+        assertEquals(0, cache.getGuildPlayers().size());
         cache.addPlayer(UUID.randomUUID(), "Test", Role.LEADER);
-        assertEquals(1, cache.getPlayers().size());
+        assertEquals(1, cache.getGuildPlayers().size());
     }
 
     @Test
@@ -39,9 +39,9 @@ class FileCacheTest {
     void removePlayer() {
         UUID uuid = UUID.randomUUID();
         cache.addPlayer(uuid, "Test", Role.LEADER);
-        assertEquals(1, cache.getPlayers().size());
+        assertEquals(1, cache.getGuildPlayers().size());
         cache.removePlayer(uuid);
-        assertEquals(0, cache.getPlayers().size());
+        assertEquals(0, cache.getGuildPlayers().size());
     }
 
     @Test
@@ -92,7 +92,7 @@ class FileCacheTest {
 
     @Test
     void getPlayers() {
-        assertNotNull(cache.getPlayers());
+        assertNotNull(cache.getGuildPlayers());
     }
 
     @Test

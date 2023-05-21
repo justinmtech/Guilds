@@ -9,7 +9,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;
-//TODO Test
+
 public class Confirmation extends SubCommand {
 
     public Confirmation(Guilds plugin, CommandSender sender, String[] args) {
@@ -21,6 +21,7 @@ public class Confirmation extends SubCommand {
         if (getSender() instanceof ConsoleCommandSender) return;
         Player player = (Player) getSender();
         if (!getPlugin().getCache().hasPendingTransaction(player.getUniqueId())) return;
+        double amount = getPlugin().getCache().getPendingTransactionAmount(player.getUniqueId());
         Optional<Guild> guild = getPlugin().getData().getGuild(player.getUniqueId());
         if (guild.isEmpty()) {
             Message.send(getPlugin(), getSender(), "no-confirmation");
@@ -28,5 +29,8 @@ public class Confirmation extends SubCommand {
         }
         guild.get().setLevel(guild.get().getLevel() + 1);
         getPlugin().getData().saveGuild(guild.get());
+        Guilds.getEcon().withdrawPlayer(player, amount);
+        getPlugin().getCache().removeTransactionConfirmation(player.getUniqueId());
+        Message.sendPlaceholder(getPlugin(), getSender(), "guild-level-up", String.valueOf(guild.get().getLevel()));
     }
 }

@@ -10,34 +10,34 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class FileCache {
-    private final Map<UUID, GPlayer> players;
+    private final Map<UUID, GPlayer> guildPlayers;
     private final Map<String, Guild> guilds;
     private final Map<UUID, Double> transactionConfirmations;
 
     public FileCache() {
-        players = new HashMap<>();
+        guildPlayers = new HashMap<>();
         guilds = new HashMap<>();
         transactionConfirmations = new HashMap<>();
     }
 
     public void addPlayer(UUID uuid, String guildId, Role role) {
-        players.put(uuid, new GPlayer(uuid, guildId, role));
+        guildPlayers.put(uuid, new GPlayer(uuid, guildId, role));
     }
 
     public Optional<GPlayer> getPlayer(UUID uuid) {
-        if (players.containsKey(uuid)) {
-            return Optional.of(players.get(uuid));
+        if (guildPlayers.containsKey(uuid)) {
+            return Optional.of(guildPlayers.get(uuid));
         } else {
             return Optional.empty();
         }
     }
 
     public void removePlayer(UUID uuid) {
-        players.remove(uuid);
+        guildPlayers.remove(uuid);
     }
 
     public boolean playerExists(UUID uuid) {
-        return players.containsKey(uuid);
+        return guildPlayers.containsKey(uuid);
     }
 
     public boolean guildExists(String guildId) {
@@ -71,8 +71,8 @@ public class FileCache {
         return guilds;
     }
 
-    public Map<UUID, GPlayer> getPlayers() {
-        return players;
+    public Map<UUID, GPlayer> getGuildPlayers() {
+        return guildPlayers;
     }
 
     public void addTransactionConfirmation(UUID uuid, double value) {

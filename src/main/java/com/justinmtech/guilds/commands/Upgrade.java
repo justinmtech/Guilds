@@ -10,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -33,6 +34,9 @@ public class Upgrade extends SubCommand {
             int level = guild.get().getLevel();
             int upgradeCost = getPlugin().getConfig().getInt("settings.upgrade-costs.level-" + level);
 
+            int amount = Integer.parseInt(String.valueOf(upgradeCost));
+            DecimalFormat formatter = new DecimalFormat("#,###");
+
             if (!guild.get().isOwner(player.getUniqueId())) {
                 Message.send(getPlugin(), getSender(), "must-be-owner");
             } else if (guild.get().getLevel() == guild.get().getMaxLevel()) {
@@ -40,14 +44,16 @@ public class Upgrade extends SubCommand {
             } else if (Guilds.getEcon().has(Bukkit.getOfflinePlayer(player.getUniqueId()), upgradeCost)) {
                 String message = ChatColor.translateAlternateColorCodes('&', getPlugin().getConfig().getString("messages.upgrade-confirm"))
                         .replace("%command%", label)
-                        .replace("%cost%", String.valueOf(upgradeCost));
+                        .replace("%cost%", formatter.format(amount));
                 player.sendMessage(message);
                 getPlugin().getCache().addTransactionConfirmation(player.getUniqueId(), upgradeCost);
                 BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
                 scheduler.scheduleSyncDelayedTask(getPlugin(), () -> getPlugin().getCache().removeTransactionConfirmation(player.getUniqueId()), 200);
             } else {
-                Message.send(getPlugin(), getSender(), "not-console-command");
+                Message.sendPlaceholder(getPlugin(), getSender(), "upgrade-insufficient-funds", formatter.format(amount));
             }
+        } else {
+            Message.send(getPlugin(), getSender(), "not-console-command");
         }
     }
 }

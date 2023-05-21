@@ -13,6 +13,8 @@ commands:
       - guild
       - guilds
       - g
-depend: [Vault]
-softdepend: [PlaceholderAPI]
+depend:
+  - Vault
+softdepend:
+  - PlaceholderAPI
 

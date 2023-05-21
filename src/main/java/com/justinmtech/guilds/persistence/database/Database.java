@@ -69,8 +69,8 @@ public class Database implements ManageData {
 
     private boolean createPlayerTable() throws SQLException {
         String sql = "CREATE TABLE IF NOT EXISTS " + playerTable + " (id VARCHAR(64) PRIMARY KEY, " +
-                "role VARCHAR(12) NOT NULL, " +
-                "guild_id VARCHAR(64) NOT NULL, INDEX guild_ind (guild_id), FOREIGN KEY (guild_id) REFERENCES " + guildTable + "(id) ON DELETE CASCADE ON UPDATE CASCADE)";
+                "role VARCHAR(12), " +
+                "guild_id VARCHAR(64), INDEX guild_ind (guild_id), FOREIGN KEY (guild_id) REFERENCES " + guildTable + "(id) ON DELETE CASCADE ON UPDATE CASCADE)";
                 //"PRIMARY KEY (id))";
         try (Connection conn = connect(); PreparedStatement stat = conn.prepareStatement(sql)) {
             stat.execute();
@@ -164,11 +164,12 @@ public class Database implements ManageData {
 
     @Override
     public boolean savePlayer(GPlayer player) {
+        String role = player.getRole() != null ? player.getRole().toString() : null;
         try {
-            if (rowExists(playerTable, player.getGuildId())) {
-                return updatePlayer(player.getUuid(), player.getRole().toString(), player.getGuildId());
+            if (rowExists(playerTable, player.getUuid().toString())) {
+                return updatePlayer(player.getUuid(), role, player.getGuildId());
             } else {
-                return insertPlayer(player.getUuid(), player.getRole().toString(), player.getGuildId());
+                return insertPlayer(player.getUuid(), role, player.getGuildId());
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -191,7 +192,7 @@ public class Database implements ManageData {
     }
 
     private boolean updatePlayer(UUID id, String role, String guildId) throws SQLException {
-        String sql = "UPDATE " + playerTable + "SET role = ?, guild_id = ? WHERE id = ?";
+        String sql = "UPDATE " + playerTable + " SET role = ?, guild_id = ? WHERE id = ?";
         try (Connection conn = connect(); PreparedStatement stat = conn.prepareStatement(sql)) {
             stat.setString(1, role);
             stat.setString(2, guildId);
@@ -200,7 +201,7 @@ public class Database implements ManageData {
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new SQLException("Could not add player to the database");
+            throw new SQLException("Could not update player in database");
         }
     }
 
@@ -330,14 +331,15 @@ public class Database implements ManageData {
     @Override
     public Optional<GPlayer> getPlayer(UUID id) {
         String sql = "SELECT role, guild_id FROM " + playerTable + " WHERE id = ?";
-        try (Connection conn = connect(); PreparedStatement stat = connect().prepareStatement(sql)) {
+        try (Connection conn = connect(); PreparedStatement stat = conn.prepareStatement(sql)) {
             stat.setString(1, id.toString());
             stat.execute();
             ResultSet rs = stat.getResultSet();
             if (rs.next()) {
                 String role = rs.getString(1);
                 String guildId = rs.getString(2);
-                return Optional.of(new GPlayer(id, guildId, Role.valueOf(role)));
+                Role roleType = role != null ? Role.valueOf(role) : Role.MEMBER;
+                return Optional.of(new GPlayer(id, guildId, roleType));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -372,7 +374,7 @@ public class Database implements ManageData {
     @SuppressWarnings("unused")
     @Override
     public boolean hasInvite(UUID playerId, String guildId) {
-        String sql = "SELECT EXISTS(SELECT * FROM " + inviteTable + " WHERE player_id = ? AND guild_id = ?";
+        String sql = "SELECT EXISTS(SELECT * FROM " + inviteTable + " WHERE player_id = ? AND guild_id = ?)";
         try (Connection conn = connect(); PreparedStatement stat = conn.prepareStatement(sql)) {
             stat.setString(1, playerId.toString());
             stat.setString(2, guildId);
@@ -505,6 +507,9 @@ public class Database implements ManageData {
 
     @Override
     public boolean saveInvite(UUID playerId, String guildId) {
+        if (!rowExists(playerTable, playerId.toString())) {
+            savePlayer(new GPlayer(playerId, null, null));
+        }
         if (rowExists(inviteTable, playerId.toString(), guildId)) {
             return updateInvite(playerId.toString(), guildId);
         } else {
