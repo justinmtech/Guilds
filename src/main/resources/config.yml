@@ -58,13 +58,14 @@ messages:
   no-confirmation: "&cNo pending confirmation found.."
   guild-info:
     header: "&8&m-------&r &6&l%placeholder% &8&m--------"
-    leader: "&eLeader: &f%placeholder%"
+    leader: "&eLeader: &c%placeholder%"
     description: "&eDescription: &f%placeholder%"
     level: "&eLevel: &f%placeholder%"
     size: "&eSize: &f%placeholder%"
     online: "&eOnline: &f%placeholder%"
     members: "&eMembers:"
-    member-color: "&f"
+    member-prefix: "&7[Member] "
+    leader-prefix: "&c[Leader] "
     bottom: "&8&m----------------------"
 
   syntax:

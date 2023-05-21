@@ -86,8 +86,13 @@ public class Message {
                     StringBuilder string = new StringBuilder();
                     string.append(plugin.getConfig().getString(messagePath + "." + key)).append(" ");
                     for (UUID member : guild.getMembers().keySet()) {
-                        string.append(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(section.getString("member-color")))).append(Bukkit.getOfflinePlayer(member).getName()).append(" ");
+                        if (guild.isOwner(member)) {
+                            string.append(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(section.getString("leader-prefix")))).append(Bukkit.getOfflinePlayer(member).getName()).append(", ");
+                        } else {
+                            string.append(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(section.getString("member-prefix")))).append(Bukkit.getOfflinePlayer(member).getName()).append(", ");
+                        }
                     }
+                    string.deleteCharAt(string.length() - 2);
                     sendRaw(sender, string.toString());
                     break;
                 case "bottom" :
