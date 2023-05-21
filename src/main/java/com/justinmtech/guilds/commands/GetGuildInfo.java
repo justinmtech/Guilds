@@ -1,11 +1,10 @@
 package com.justinmtech.guilds.commands;
 
-import com.justinmtech.guilds.util.Message;
-import org.bukkit.command.CommandSender;
 import com.justinmtech.guilds.Guilds;
 import com.justinmtech.guilds.SubCommand;
 import com.justinmtech.guilds.core.Guild;
-import org.bukkit.command.ConsoleCommandSender;
+import com.justinmtech.guilds.util.Message;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;
@@ -24,11 +23,14 @@ public class GetGuildInfo extends SubCommand {
             if (guild.isEmpty() || guild.get().getMembers().size() == 0)
                 Message.sendPlaceholder(getPlugin(), getSender(), "guild-not-found", getArgs()[0]);
             else Message.sendGuildInfo(getPlugin(), getSender(), "messages.guild-info", guild.get());
-        } else if (getArgs().length == 0) {
-            if (getSender() instanceof ConsoleCommandSender) {
+        } else if (getArgs().length == 0 && getSender() instanceof Player) {
+            Optional<Guild> guild = getPlugin().getData().getGuild(((Player) getSender()).getUniqueId());
+            if (guild.isEmpty()) {
                 Message.sendHelp(getPlugin(), getSender(), "help", "guild");
-                return;
+            } else {
+                Message.sendGuildInfo(getPlugin(), getSender(), "messages.guild-info", guild.get());
             }
+        } else if (getArgs().length == 1) {
             Player player = (Player) getSender();
             Optional<Guild> guild = getPlugin().getData().getGuild(player.getUniqueId());
             guild.ifPresent(value -> Message.sendGuildInfo(getPlugin(), getSender(), "messages.guild-info", value));

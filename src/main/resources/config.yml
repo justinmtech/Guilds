@@ -92,6 +92,7 @@ help:
   line-6: "&e/%placeholder% accept <guild> - Accept an invite"
   line-7: "&e/%placeholder% leave - Leave your guild"
   line-8: "&e/%placeholder% list - List the top guilds"
-  line-9: "&e/%placeholder% upgrade - Upgrade your guild"
+  line-9: "&e/%placeholder% <guild> - View another guild"
+  line-10: "&e/%placeholder% upgrade - Upgrade your guild"
 
 
