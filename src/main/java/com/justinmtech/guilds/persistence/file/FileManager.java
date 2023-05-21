@@ -1,6 +1,8 @@
 package com.justinmtech.guilds.persistence.file;
 
+import com.justinmtech.guilds.Guilds;
 import com.justinmtech.guilds.core.GPlayer;
+import com.justinmtech.guilds.core.Guild;
 import com.justinmtech.guilds.core.Role;
 import com.justinmtech.guilds.core.Warp;
 import com.justinmtech.guilds.persistence.ManageData;
@@ -8,9 +10,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import com.justinmtech.guilds.Guilds;
-import com.justinmtech.guilds.core.Guild;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -141,7 +142,10 @@ public class FileManager implements ManageData {
     }
 
     public void loadAllGuilds() {
+        File file = new File(plugin.getDataFolder().getAbsolutePath() + "//guilds.json");
+        saveAllGuilds();
         try {
+            if (!file.exists()) file.createNewFile();
             FileReader reader = new FileReader(plugin.getDataFolder().getAbsolutePath() + "//guilds.json");
             Object object = new JSONParser().parse(reader);
             ((JSONArray) object).forEach(guild -> _addGuild((JSONObject) guild));
