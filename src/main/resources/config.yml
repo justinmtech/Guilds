@@ -58,13 +58,13 @@ messages:
   no-confirmation: "&cNo pending confirmation found.."
   guild-info:
     header: "&8&m-------&r &6&l%placeholder% &8&m--------"
-    leader: "&eLeader: %placeholder%"
-    description: "&eDescription: %placeholder%"
-    level: "&eLevel: %placeholder%"
-    size: "&eSize: %placeholder%"
-    online: "&eOnline: %placeholder%"
+    leader: "&eLeader: &f%placeholder%"
+    description: "&eDescription: &f%placeholder%"
+    level: "&eLevel: &f%placeholder%"
+    size: "&eSize: &f%placeholder%"
+    online: "&eOnline: &f%placeholder%"
     members: "&eMembers:"
-    member-color: "&e"
+    member-color: "&f"
     bottom: "&8&m----------------------"
 
   syntax:
