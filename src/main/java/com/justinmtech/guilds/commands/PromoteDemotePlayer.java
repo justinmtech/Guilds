@@ -65,7 +65,7 @@ public class PromoteDemotePlayer extends SubCommand {
                         Map<String, String> placeholders = new HashMap<>();
                         placeholders.put("player", target.getName());
                         placeholders.put("role", targetGplayer.get().getRole().toString().replace("COLEADER", "CO-LEADER"));
-                        Message.sendPlaceholders(getPlugin(), getSender(), promoting ? "player-promoted" : "player-demoted", placeholders);
+                        Message.sendPlaceholders(getPlugin(), onlineMember, promoting ? "player-promoted" : "player-demoted", placeholders);
                     }
                 }
             } else {
