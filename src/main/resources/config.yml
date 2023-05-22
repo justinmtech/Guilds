@@ -32,7 +32,6 @@ messages:
   invite-denied: "&cYou denied the invite from %placeholder%."
   set-warp: "&aYou set a warp: %placeholder%!"
   must-be-owner: "&cYou must be the owner of a guild to do this!"
-  must-be-mod: "&cOnly mods and up can invite players!"
   guild-not-found: "&c%placeholder% not found!"
   cannot-promote-leader: "&cYou cannot promote the leader of a guild!"
   cannot-demote-leader: "&cYou cannot demote the leader of a guild!"
@@ -104,7 +103,5 @@ help:
   line-8: "&e/%placeholder% list - List the top guilds"
   line-9: "&e/%placeholder% <guild> - View another guild"
   line-10: "&e/%placeholder% upgrade - Upgrade your guild"
-  line-11: "&e/%placeholder% promote <player> - Promote a player"
-
 
 

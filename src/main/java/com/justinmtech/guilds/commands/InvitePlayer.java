@@ -1,7 +1,6 @@
 package com.justinmtech.guilds.commands;
 
 import com.justinmtech.guilds.SubCommand;
-import com.justinmtech.guilds.core.GPlayer;
 import com.justinmtech.guilds.core.Role;
 import com.justinmtech.guilds.util.Message;
 import org.bukkit.Bukkit;
@@ -28,7 +27,7 @@ public class InvitePlayer extends SubCommand {
         Optional<Guild> guild = getPlugin().getData().getGuild(player.getUniqueId());
 
         if (guild.isEmpty()) {
-            Message.send(getPlugin(), getSender(), "not-in-guild");
+            Message.send(getPlugin(), getSender(), "must-be-owner");
             return false;
         }
 
@@ -41,14 +40,9 @@ public class InvitePlayer extends SubCommand {
             Message.send(getPlugin(), getSender(), "self-invite-error");
             return false;
         }
-        Optional<GPlayer> gPlayer = getPlugin().getData().getPlayer(player.getUniqueId());
-        if (gPlayer.isEmpty()) {
-            Message.send(getPlugin(), getSender(), "not-in-guild");
-            return false;
-        }
-        if (gPlayer.get().getRole() != Role.LEADER &&
-                gPlayer.get().getRole() != Role.MOD) {
-            Message.send(getPlugin(), getSender(), "must-be-mod");
+
+        if (guild.get().getMembers().get(player.getUniqueId()) != Role.LEADER) {
+            Message.send(getPlugin(), getSender(), "must-be-owner");
             return false;
         }
 
