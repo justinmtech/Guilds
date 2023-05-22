@@ -34,30 +34,28 @@ public class GPlayer {
         return role;
     }
 
-    @SuppressWarnings("unused")
-    public void setRole(Role role) {
+    public Role setRole(Role role) {
         this.role = role;
+        return role;
     }
 
     public Role promote() {
         if (role == Role.MEMBER) {
-            setRole(Role.MOD);
-            return Role.MOD;
+            return setRole(Role.MOD);
         } else if (role == Role.MOD) {
-            setRole(Role.COLEADER);
-            return Role.COLEADER;
+            return setRole(Role.COLEADER);
         }
         return null;
     }
 
     public Role demote() {
         if (role == Role.MEMBER) {
-            setRole(Role.MOD);
-            return Role.MOD;
+            return null;
         }
         if (role == Role.MOD) {
-            setRole(Role.COLEADER);
-            return Role.COLEADER;
+            return setRole(Role.MEMBER);
+        } else if (role == Role.COLEADER) {
+            return setRole(Role.MOD);
         }
         return null;
     }

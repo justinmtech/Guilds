@@ -23,7 +23,7 @@ public class PromoteDemotePlayer extends SubCommand {
         execute();
     }
 
-    //TODO Cannot promote or demote players as leader
+    //TODO Cannot demote players
     //guild promote/demote <player>
     private boolean execute() {
         if (getSender() instanceof Player) {
