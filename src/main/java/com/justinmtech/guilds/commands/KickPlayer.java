@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 
 import java.util.Optional;
 
+//TODO Ensure mods cannot kick co-leaders
 public class KickPlayer extends SubCommand {
     public KickPlayer(Guilds plugin, CommandSender sender, String[] args) {
         super(plugin, sender, args);
@@ -34,19 +35,16 @@ public class KickPlayer extends SubCommand {
                 Message.send(getPlugin(), getSender(), "not-in-guild");
                 return false;
             }
-            //ensure target player exists and has joined before
-            OfflinePlayer target = Bukkit.getOfflinePlayer(getArgs()[1]);
-            if (!guild.get().getMembers().containsKey(target.getUniqueId())) {
-                Message.sendPlaceholder(getPlugin(), getSender(), "player-not-found", target.getName());
-                return false;
-            }
-            Optional<GPlayer> targetPlayer = getPlugin().getData().getPlayer(target.getUniqueId());
 
+            OfflinePlayer target = Bukkit.getOfflinePlayer(getArgs()[1]);
             //ensure the target player is in the same guild
             if (!guild.get().getMembers().containsKey(target.getUniqueId())) {
                 Message.sendPlaceholder(getPlugin(), getSender(), "player-not-in-guild", target.getName());
                 return false;
             }
+
+            Optional<GPlayer> targetPlayer = getPlugin().getData().getPlayer(target.getUniqueId());
+
 
             //ensure player is at least a mod
             if (gPlayer.get().getRole().ordinal() == 0) {
@@ -66,7 +64,6 @@ public class KickPlayer extends SubCommand {
                 return false;
             }
 
-            //TODO FIX
             //ensure player can kick the target
             if (gPlayer.get().getRole().ordinal() < targetPlayer.get().getRole().ordinal()) {
                 Message.sendPlaceholder(getPlugin(), getSender(), "kick-error", target.getName());
@@ -80,9 +77,14 @@ public class KickPlayer extends SubCommand {
             getPlugin().getData().savePlayer(targetPlayer.get());
             guild.get().getOnlineMembers().forEach((uuid, p) -> {
                 Player bukkitPlayer = Bukkit.getPlayer(uuid);
-                if (bukkitPlayer != null) Message.sendPlaceholder(getPlugin(), bukkitPlayer, "kick-success", target.getName());
+                if (bukkitPlayer != null) {
+                    if (!bukkitPlayer.getUniqueId().equals(targetPlayer.get().getUuid())) {
+                        Message.sendPlaceholder(getPlugin(), bukkitPlayer, "kick-success", target.getName());
+                    }
+                }
             });
-            if (target.isOnline() && target.getPlayer() != null) Message.sendPlaceholder(getPlugin(), target.getPlayer(), "kick-success", target.getName());
+            Player targetPlayerOnline = Bukkit.getPlayer(target.getUniqueId());
+            if (targetPlayerOnline != null) Message.sendPlaceholder(getPlugin(), targetPlayerOnline, "kicked-from-guild", guild.get().getName());
             return true;
         } else {
             Message.send(getPlugin(), getSender(), "not-console-command");
