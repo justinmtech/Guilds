@@ -56,7 +56,7 @@ public class PromoteDemotePlayer extends SubCommand {
             }
             boolean promoting = getArgs()[0].equalsIgnoreCase("promote");
             if (targetGplayer.get().getRole() == Role.LEADER) {
-                Message.send(getPlugin(), getSender(), promoting ? "cannot-promote-leader" : "cannot-demote-leader");
+                Message.send(getPlugin(), getSender(), promoting ? "cannot-promote" : "cannot-demote");
                 return false;
             }
             Role newRole = promoting ? targetGplayer.get().promote() : targetGplayer.get().demote();
@@ -78,7 +78,7 @@ public class PromoteDemotePlayer extends SubCommand {
                 for (UUID uuid : onlineMembers.keySet()) {
                     Player onlineMember = Bukkit.getPlayer(uuid);
                     if (onlineMember != null) {
-                        Message.sendPlaceholder(getPlugin(), onlineMember, promoting ? "cannot-promote-leader" : "cannot-demote-leader", target.getName());
+                        Message.sendPlaceholder(getPlugin(), onlineMember, promoting ? "cannot-promote" : "cannot-demote", target.getName());
                     }
                 }
             }

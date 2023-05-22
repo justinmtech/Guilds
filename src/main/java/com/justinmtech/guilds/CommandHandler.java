@@ -41,6 +41,7 @@ public class CommandHandler implements CommandExecutor {
             guildPromote(sender, args, label);
         }
         else if (args[0].equalsIgnoreCase("warp")) guildWarp(sender, args, label);
+        else if (args[0].equalsIgnoreCase("kick")) playerKick(sender, args, label);
         else if (args[0].equalsIgnoreCase("invite")) guildInvite(sender, args, label);
         else if (args[0].equalsIgnoreCase("deny")) guildDeny(sender, args, label);
         else if (args[0].equalsIgnoreCase("list")) new ListGuilds(plugin, sender, args);
@@ -57,6 +58,11 @@ public class CommandHandler implements CommandExecutor {
         else if (args[0].equalsIgnoreCase("leave")) guildLeave(sender, args, label);
         else if (args[0].equalsIgnoreCase("accept")) guildAcceptInvite(sender, args, label);
         else if (args.length == 1) guildInfo(sender, args, label);
+    }
+
+    private void playerKick(CommandSender sender, String[] args, String label) {
+        if (args.length == 2) new KickPlayer(plugin, sender, args);
+        else Message.sendPlaceholder(plugin, sender, "syntax.kick", label);
     }
 
     private void guildPromote(CommandSender sender, String[] args, String label) {
