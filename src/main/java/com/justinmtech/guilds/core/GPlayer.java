@@ -41,10 +41,10 @@ public class GPlayer {
 
     public Role promote() {
         if (role == Role.MEMBER) {
-            role = Role.MOD;
+            setRole(Role.MOD);
             return Role.MOD;
         } else if (role == Role.MOD) {
-            role = Role.COLEADER;
+            setRole(Role.COLEADER);
             return Role.COLEADER;
         }
         return null;

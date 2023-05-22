@@ -27,7 +27,8 @@ public class TabCompleter implements org.bukkit.command.TabCompleter {
     @Nullable
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (sender instanceof Player player) {
+        if (sender instanceof Player) {
+            Player player = (Player) sender;
             Optional<Guild> guild = getPlugin().getData().getGuild(player.getUniqueId());
             if (command.getName().equalsIgnoreCase("guilds")) {
                 if (args.length == 1) {

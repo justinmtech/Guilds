@@ -88,6 +88,10 @@ public class Message {
                     for (UUID member : guild.getMembers().keySet()) {
                         if (guild.isOwner(member)) {
                             string.append(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(section.getString("leader-prefix")))).append(Bukkit.getOfflinePlayer(member).getName()).append(", ");
+                        } else if (guild.isColeader(member)) {
+                            string.append(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(section.getString("co-leader-prefix")))).append(Bukkit.getOfflinePlayer(member).getName()).append(", ");
+                        } else if (guild.isMod(member)) {
+                            string.append(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(section.getString("mod-prefix")))).append(Bukkit.getOfflinePlayer(member).getName()).append(", ");
                         } else {
                             string.append(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(section.getString("member-prefix")))).append(Bukkit.getOfflinePlayer(member).getName()).append(", ");
                         }

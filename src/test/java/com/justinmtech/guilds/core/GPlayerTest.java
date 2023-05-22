@@ -66,4 +66,13 @@ public class GPlayerTest {
         player.removeInvite("thebros");
         Assertions.assertFalse(player.hasInvite("thebros"));
     }
+
+    @Test
+    @Order(9)
+    public void testPromote() {
+        player.setRole(Role.MEMBER);
+        Assertions.assertEquals(Role.MOD, player.promote());
+        Assertions.assertEquals(Role.COLEADER, player.promote());
+        Assertions.assertNull(player.promote());
+    }
 }

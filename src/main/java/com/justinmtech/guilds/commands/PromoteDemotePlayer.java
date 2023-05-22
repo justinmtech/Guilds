@@ -23,17 +23,14 @@ public class PromoteDemotePlayer extends SubCommand {
         execute();
     }
 
+    //TODO Cannot promote or demote players as leader
     //guild promote/demote <player>
     private boolean execute() {
-        if (getSender() instanceof Player player) {
+        if (getSender() instanceof Player) {
+            Player player = (Player) getSender();
             Optional<Guild> guild = getPlugin().getData().getGuild(player.getUniqueId());
-            boolean promoting = getArgs()[0].equalsIgnoreCase("promote");
             if (guild.isEmpty()) {
-                Message.send(getPlugin(), getSender(), "must-be-owner");
-                return false;
-            }
-            if (guild.get().getOwner() != player.getUniqueId()) {
-                Message.send(getPlugin(), getSender(), "must-be-owner");
+                Message.send(getPlugin(), getSender(), "must-be-mod");
                 return false;
             }
             String targetName = getArgs()[1];
@@ -47,24 +44,32 @@ public class PromoteDemotePlayer extends SubCommand {
                 return false;
             }
             Optional<GPlayer> targetGplayer = getPlugin().getData().getPlayer(target.getUniqueId());
+
             if (targetGplayer.isEmpty()) {
                 Message.send(getPlugin(), getSender(), "player-not-found");
                 return false;
             }
+            Optional<GPlayer> gplayer = getPlugin().getData().getPlayer(player.getUniqueId());
+            if (gplayer.isEmpty()) {
+                Message.send(getPlugin(), getSender(), "must-be-mod");
+                return false;
+            }
+            boolean promoting = getArgs()[0].equalsIgnoreCase("promote");
             if (targetGplayer.get().getRole() == Role.LEADER) {
                 Message.send(getPlugin(), getSender(), promoting ? "cannot-promote-leader" : "cannot-demote-leader");
                 return false;
             }
-            Role newRole = getArgs()[0].equalsIgnoreCase("promote") ? targetGplayer.get().promote() : targetGplayer.get().demote();
+            Role newRole = promoting ? targetGplayer.get().promote() : targetGplayer.get().demote();
             Map<UUID, Role> onlineMembers = guild.get().getOnlineMembers();
             if (newRole != null) {
                 getPlugin().getData().savePlayer(targetGplayer.get());
+                System.out.println(targetGplayer.get().getRole().toString());
                 for (UUID uuid : onlineMembers.keySet()) {
                     Player onlineMember = Bukkit.getPlayer(uuid);
                     if (onlineMember != null) {
                         Map<String, String> placeholders = new HashMap<>();
-                        placeholders.put("player", target.getName());
-                        placeholders.put("role", targetGplayer.get().getRole().toString().replace("COLEADER", "CO-LEADER"));
+                        placeholders.put("%player%", target.getName());
+                        placeholders.put("%role%", targetGplayer.get().getRole().toString().replace("COLEADER", "CO-LEADER"));
                         Message.sendPlaceholders(getPlugin(), onlineMember, promoting ? "player-promoted" : "player-demoted", placeholders);
                     }
                 }

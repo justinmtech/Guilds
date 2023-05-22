@@ -100,6 +100,21 @@ public class Guild implements Comparable<Guild> {
     public boolean isOwner(UUID playerUuid) {
         return playerUuid.equals(owner);
     }
+    public boolean isMod(UUID playerUuid) {
+        if (members.containsKey(playerUuid)) {
+            return members.get(playerUuid).equals(Role.MOD);
+        } else {
+            return false;
+        }
+    }
+    public boolean isColeader(UUID playerUuid) {
+        if (members.containsKey(playerUuid)) {
+            return members.get(playerUuid).equals(Role.COLEADER);
+        } else {
+            return false;
+        }
+    }
+
 
     public boolean containsMember(UUID playerUuid) {
         return members.containsKey(playerUuid);

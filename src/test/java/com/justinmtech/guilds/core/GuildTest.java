@@ -11,6 +11,12 @@ class GuildTest {
     private static Guild defaultGuild;
     private static UUID owner;
     private static UUID testPlayer;
+    private static UUID testMod;
+    private static UUID testCoLeader;
+    private static UUID testMember;
+
+
+
 
     @BeforeEach
     void init() {
@@ -132,4 +138,11 @@ class GuildTest {
         assertEquals(10, defaultGuild.getMaxLevel());
     }
 
+    @Test
+    void isMod() {
+    }
+
+    @Test
+    void isColeader() {
+    }
 }
