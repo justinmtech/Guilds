@@ -62,8 +62,9 @@ public class PromoteDemotePlayer extends SubCommand {
             Role newRole = promoting ? targetGplayer.get().promote() : targetGplayer.get().demote();
             Map<UUID, Role> onlineMembers = guild.get().getOnlineMembers();
             if (newRole != null) {
+                guild.get().getMembers().put(target.getUniqueId(), newRole);
                 getPlugin().getData().savePlayer(targetGplayer.get());
-                System.out.println(targetGplayer.get().getRole().toString());
+                getPlugin().getData().saveGuild(guild.get());
                 for (UUID uuid : onlineMembers.keySet()) {
                     Player onlineMember = Bukkit.getPlayer(uuid);
                     if (onlineMember != null) {
