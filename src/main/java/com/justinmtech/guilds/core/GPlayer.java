@@ -39,6 +39,29 @@ public class GPlayer {
         this.role = role;
     }
 
+    public Role promote() {
+        if (role == Role.MEMBER) {
+            role = Role.MOD;
+            return Role.MOD;
+        } else if (role == Role.MOD) {
+            role = Role.COLEADER;
+            return Role.COLEADER;
+        }
+        return null;
+    }
+
+    public Role demote() {
+        if (role == Role.MEMBER) {
+            setRole(Role.MOD);
+            return Role.MOD;
+        }
+        if (role == Role.MOD) {
+            setRole(Role.COLEADER);
+            return Role.COLEADER;
+        }
+        return null;
+    }
+
     public boolean hasInvite(String guildId) {
         return invites.contains(guildId);
     }

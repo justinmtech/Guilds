@@ -1,5 +1,6 @@
 package com.justinmtech.guilds.core;
 
+import org.bukkit.Bukkit;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -84,6 +85,16 @@ public class Guild implements Comparable<Guild> {
 
     public Map<UUID, Role> getMembers() {
         return members;
+    }
+
+    public Map<UUID, Role> getOnlineMembers() {
+        Map<UUID, Role> onlineMembers = new HashMap<>();
+        for (UUID uuid : members.keySet()) {
+            if (Bukkit.getPlayer(uuid) != null) {
+                onlineMembers.put(uuid, members.get(uuid));
+            }
+        }
+        return onlineMembers;
     }
 
     public boolean isOwner(UUID playerUuid) {

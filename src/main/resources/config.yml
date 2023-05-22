@@ -33,7 +33,12 @@ messages:
   set-warp: "&aYou set a warp: %placeholder%!"
   must-be-owner: "&cYou must be the owner of a guild to do this!"
   guild-not-found: "&c%placeholder% not found!"
+  cannot-promote-leader: "&cYou cannot promote the leader of a guild!"
+  cannot-demote-leader: "&cYou cannot demote the leader of a guild!"
+  player-promoted: "&a%placeholder% was promoted to %placeholder%!"
+  player-demoted: "&c%placeholder% was demoted to %placeholder%!"
   player-not-found: "&cThe player %placeholder% was not found!"
+  player-not-in-guild: "&cThe player %placeholder% is not in your guild!"
   player-already-in-guild: "&cThe player %placeholder% is already in your guild!"
   player-joined-guild: "&a%placeholder% joined your guild!"
   set-description: "&aGuild description set to: &6%placeholder%"
@@ -82,6 +87,7 @@ messages:
     setname: "&cUsage: /%placeholder% setname <name>"
     confirm: "&cUsage: /%placeholder% confirm"
     upgrade: "&cUsage: /%placeholder% upgrade"
+    promote: "&cUsage: /%placeholder% <promote/demote> <player>"
 
 help:
   header: "&6&lGuilds Help"

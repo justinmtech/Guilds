@@ -37,6 +37,9 @@ public class CommandHandler implements CommandExecutor {
             }
         }
         else if (args[0].equalsIgnoreCase("disband")) guildDisband(sender, args, label);
+        else if (args[0].equalsIgnoreCase("promote") || args[0].equalsIgnoreCase("demote")) {
+            guildPromote(sender, args, label);
+        }
         else if (args[0].equalsIgnoreCase("warp")) guildWarp(sender, args, label);
         else if (args[0].equalsIgnoreCase("invite")) guildInvite(sender, args, label);
         else if (args[0].equalsIgnoreCase("deny")) guildDeny(sender, args, label);
@@ -54,6 +57,11 @@ public class CommandHandler implements CommandExecutor {
         else if (args[0].equalsIgnoreCase("leave")) guildLeave(sender, args, label);
         else if (args[0].equalsIgnoreCase("accept")) guildAcceptInvite(sender, args, label);
         else if (args.length == 1) guildInfo(sender, args, label);
+    }
+
+    private void guildPromote(CommandSender sender, String[] args, String label) {
+        if (args.length == 2) new PromoteDemotePlayer(plugin, sender, args);
+        else Message.sendPlaceholder(plugin, sender, "syntax.promote", label);
     }
 
     private void guildLeave(CommandSender sender, String[] args, String label) {
