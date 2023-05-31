@@ -1,4 +1,4 @@
-package com.justinmtech.guilds.util;
+package com.justinmtech.guilds.bukkit.util;
 
 import com.justinmtech.guilds.core.GPlayer;
 import com.justinmtech.guilds.persistence.GuildsRepository;

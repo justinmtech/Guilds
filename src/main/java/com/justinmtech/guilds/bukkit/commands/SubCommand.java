@@ -1,5 +1,6 @@
-package com.justinmtech.guilds;
+package com.justinmtech.guilds.bukkit.commands;
 
+import com.justinmtech.guilds.Guilds;
 import org.bukkit.command.CommandSender;
 
 public class SubCommand {

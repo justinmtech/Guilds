@@ -1,8 +1,8 @@
-package com.justinmtech.guilds;
+package com.justinmtech.guilds.bukkit.commands;
 
-import com.justinmtech.guilds.commands.*;
+import com.justinmtech.guilds.Guilds;
 import com.justinmtech.guilds.util.InputChecker;
-import com.justinmtech.guilds.util.Message;
+import com.justinmtech.guilds.bukkit.util.Message;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

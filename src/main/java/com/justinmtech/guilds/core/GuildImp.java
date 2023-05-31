@@ -15,7 +15,7 @@ public class GuildImp implements Guild {
     private UUID owner;
     private String description;
     private Map<UUID, Role> members;
-    private Map<String, WarpImp> warps;
+    private Map<String, Warp> warps;
     private int level;
 
     public GuildImp(UUID owner, String name) {
@@ -146,7 +146,7 @@ public class GuildImp implements Guild {
     }
 
     @Override
-    public Map<String, WarpImp> getWarps() {
+    public Map<String, Warp> getWarps() {
         return warps;
     }
 
@@ -198,7 +198,7 @@ public class GuildImp implements Guild {
         }
         JSONArray warpArray = new JSONArray();
         for (String key : warps.keySet()) {
-            WarpImp location = warps.get(key);
+            Warp location = warps.get(key);
             String world = location.getWorld();
             double x = location.getX();
             double y = location.getY();
@@ -233,7 +233,7 @@ public class GuildImp implements Guild {
     }
 
     @Override
-    public void setWarps(Map<String, WarpImp> warps) {
+    public void setWarps(Map<String, Warp> warps) {
         this.warps = warps;
     }
 
@@ -248,11 +248,11 @@ public class GuildImp implements Guild {
     }
 
     @Override
-    public void addWarp(WarpImp warp) {warps.put(warp.getId(), warp);}
+    public void addWarp(Warp warp) {warps.put(warp.getId(), warp);}
 
     @Override
     public void removeWarp(String id) {warps.remove(id);}
 
     @Override
-    public void updateWarp(WarpImp warp) {warps.replace(warp.getId(), warp);}
+    public void updateWarp(Warp warp) {warps.replace(warp.getId(), warp);}
 }

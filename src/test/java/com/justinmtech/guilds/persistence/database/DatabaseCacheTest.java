@@ -1,6 +1,6 @@
 package com.justinmtech.guilds.persistence.database;
 
-import com.justinmtech.guilds.persistence.TransactionCacheImp;
+import com.justinmtech.guilds.service.TransactionCacheImp;
 import org.junit.jupiter.api.*;
 
 import java.util.UUID;

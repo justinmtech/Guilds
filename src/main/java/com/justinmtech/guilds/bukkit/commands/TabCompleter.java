@@ -1,4 +1,4 @@
-package com.justinmtech.guilds.commands;
+package com.justinmtech.guilds.bukkit.commands;
 
 import com.justinmtech.guilds.Guilds;
 import com.justinmtech.guilds.core.Guild;

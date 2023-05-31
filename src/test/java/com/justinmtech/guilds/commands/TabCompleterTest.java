@@ -1,8 +1,7 @@
 package com.justinmtech.guilds.commands;
 
+import com.justinmtech.guilds.bukkit.commands.TabCompleter;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class TabCompleterTest {
 

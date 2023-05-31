@@ -1,10 +1,9 @@
-package com.justinmtech.guilds.commands;
+package com.justinmtech.guilds.bukkit.commands;
 
-import com.justinmtech.guilds.util.Message;
+import com.justinmtech.guilds.bukkit.util.Message;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import com.justinmtech.guilds.Guilds;
-import com.justinmtech.guilds.SubCommand;
 
 public class DenyInvite extends SubCommand {
     public DenyInvite(Guilds plugin, CommandSender sender, String[] args) {

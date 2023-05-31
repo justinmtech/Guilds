@@ -26,12 +26,12 @@ public interface Guild extends Comparable<Guild> {
     boolean isMod(UUID playerUuid);
     boolean isColeader(UUID playerUuid);
 
-    Map<String, WarpImp> getWarps();
+    Map<String, Warp> getWarps();
     boolean containsWarp(String warpName);
-    void setWarps(Map<String, WarpImp> warps);
-    void addWarp(WarpImp warp);
+    void setWarps(Map<String, Warp> warps);
+    void addWarp(Warp warp);
     void removeWarp(String warpName);
-    void updateWarp(WarpImp warp);
+    void updateWarp(Warp warp);
     int getMaxWarps();
 
     int getMaxLevel();

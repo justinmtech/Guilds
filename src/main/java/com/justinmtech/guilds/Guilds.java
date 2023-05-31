@@ -1,12 +1,13 @@
 package com.justinmtech.guilds;
 
-import com.justinmtech.guilds.commands.TabCompleter;
+import com.justinmtech.guilds.bukkit.commands.CommandHandler;
+import com.justinmtech.guilds.bukkit.commands.TabCompleter;
 import com.justinmtech.guilds.persistence.*;
-import com.justinmtech.guilds.persistence.TransactionCacheImp;
+import com.justinmtech.guilds.service.TransactionCacheImp;
 import com.justinmtech.guilds.persistence.database.Database;
 import com.justinmtech.guilds.persistence.file.FileManager;
 import com.justinmtech.guilds.persistence.file.PlayerListener;
-import com.justinmtech.guilds.util.Placeholders;
+import com.justinmtech.guilds.bukkit.util.Placeholders;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginDescriptionFile;

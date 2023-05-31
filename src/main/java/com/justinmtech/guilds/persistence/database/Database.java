@@ -291,7 +291,7 @@ public class Database implements GuildsRepository {
 
     public Optional<Guild> getGuild(String id) {
         GuildImp guild = new GuildImp(id);
-        Optional<GuildImp> guildData = loadGuildData(id);
+        Optional<Guild> guildData = loadGuildData(id);
         if (guildData.isPresent()) {
             guild.setLevel(guildData.get().getLevel());
             guild.setDescription(guildData.get().getDescription());
@@ -309,7 +309,7 @@ public class Database implements GuildsRepository {
         } else {
             return Optional.empty();
         }
-        Optional<Map<String, WarpImp>> warps = loadGuildWarps(id);
+        Optional<Map<String, Warp>> warps = loadGuildWarps(id);
         warps.ifPresent(guild::setWarps);
         return Optional.of(guild);
     }
@@ -401,7 +401,7 @@ public class Database implements GuildsRepository {
     }
 
 
-    private Optional<GuildImp> loadGuildData(String id) {
+    private Optional<Guild> loadGuildData(String id) {
         GuildImp guild = new GuildImp(id);
         String sql = "SELECT description, level FROM " + guildTable + " WHERE id = ?";
         try (Connection conn = connect(); PreparedStatement stat = conn.prepareStatement(sql)) {
@@ -442,9 +442,9 @@ public class Database implements GuildsRepository {
         return Optional.of(members);
     }
 
-    private Optional<Map<String, WarpImp>> loadGuildWarps(String id) {
+    private Optional<Map<String, Warp>> loadGuildWarps(String id) {
         String sql = "SELECT id, world, x, y, z, yaw, pitch FROM " + warpTable + " WHERE guild_id = ?";
-        Map<String, WarpImp> warps = new HashMap<>();
+        Map<String, Warp> warps = new HashMap<>();
         try (Connection conn = connect(); PreparedStatement stat = conn.prepareStatement(sql)) {
             stat.setString(1, id);
             stat.execute();

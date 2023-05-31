@@ -1,4 +1,4 @@
-package com.justinmtech.guilds.persistence;
+package com.justinmtech.guilds.service;
 
 import java.util.UUID;
 

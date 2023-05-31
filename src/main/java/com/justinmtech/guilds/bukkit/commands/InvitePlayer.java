@@ -1,10 +1,9 @@
-package com.justinmtech.guilds.commands;
+package com.justinmtech.guilds.bukkit.commands;
 
 import com.justinmtech.guilds.Guilds;
-import com.justinmtech.guilds.SubCommand;
 import com.justinmtech.guilds.core.Guild;
 import com.justinmtech.guilds.core.Role;
-import com.justinmtech.guilds.util.Message;
+import com.justinmtech.guilds.bukkit.util.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
