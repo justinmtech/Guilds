@@ -11,8 +11,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import java.text.DecimalFormat;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 public class Upgrade extends SubCommand {

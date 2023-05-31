@@ -12,7 +12,7 @@ public class GPlayerTest {
     @BeforeAll
     static void setup() {
         uuid = UUID.randomUUID();
-        player = new GPlayer(uuid, "bears", Role.MEMBER);
+        player = new GPlayerImp(uuid, "bears", Role.MEMBER);
     }
 
     @Test

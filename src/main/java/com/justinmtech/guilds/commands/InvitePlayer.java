@@ -1,13 +1,13 @@
 package com.justinmtech.guilds.commands;
 
+import com.justinmtech.guilds.Guilds;
 import com.justinmtech.guilds.SubCommand;
+import com.justinmtech.guilds.core.Guild;
 import com.justinmtech.guilds.core.Role;
 import com.justinmtech.guilds.util.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import com.justinmtech.guilds.Guilds;
-import com.justinmtech.guilds.core.Guild;
 
 import java.util.Optional;
 

@@ -1,17 +1,19 @@
 package com.justinmtech.guilds.persistence.database;
 
-import com.justinmtech.guilds.core.GPlayer;
-import com.justinmtech.guilds.core.Guild;
+import com.justinmtech.guilds.core.GPlayerImp;
+import com.justinmtech.guilds.core.GuildImp;
 import com.justinmtech.guilds.core.Role;
 import com.justinmtech.guilds.core.Warp;
-import com.justinmtech.guilds.persistence.database.Database;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DatabaseTest {
     private static Database d;
@@ -27,10 +29,10 @@ class DatabaseTest {
     void testSQL() throws SQLException {
         assertNotNull(d.connect());
         d.createAllTables();
-        Guild guild = new Guild(uuid, "Warriors");
+        GuildImp guild = new GuildImp(uuid, "Warriors");
         assertTrue(d.saveGuild(guild));
         d.getGuild(guild.getName());
-        assertTrue(d.savePlayer(new GPlayer(uuid, "Warriors", Role.LEADER)));
+        assertTrue(d.savePlayer(new GPlayerImp(uuid, "Warriors", Role.LEADER)));
         assertTrue(d.saveWarp("CoolWarp", "world", 100, 50, 100, 0, 0, "Warriors"));
         Optional<Warp> warp = d.getWarp(uuid, "CoolWarp");
         Optional<Warp> warp2 = d.getWarp(uuid, "noexist");

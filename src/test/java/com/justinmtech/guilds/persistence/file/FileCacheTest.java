@@ -1,7 +1,7 @@
 package com.justinmtech.guilds.persistence.file;
 
 import com.justinmtech.guilds.core.GPlayer;
-import com.justinmtech.guilds.core.Guild;
+import com.justinmtech.guilds.core.GuildImp;
 import com.justinmtech.guilds.core.Role;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -54,7 +54,7 @@ class FileCacheTest {
 
     @Test
     void guildExists() {
-        Guild guild = new Guild(UUID.randomUUID(), "Test");
+        GuildImp guild = new GuildImp(UUID.randomUUID(), "Test");
         cache.addGuild(guild);
         assertEquals(1, cache.getGuilds().size());
         assertTrue(cache.guildExists(guild.getName()));
@@ -63,7 +63,7 @@ class FileCacheTest {
 
     @Test
     void addGuild() {
-        Guild guild = new Guild(UUID.randomUUID(), "Test");
+        GuildImp guild = new GuildImp(UUID.randomUUID(), "Test");
         assertEquals(0, cache.getGuilds().size());
         cache.addGuild(guild);
         assertEquals(1, cache.getGuilds().size());
@@ -71,7 +71,7 @@ class FileCacheTest {
 
     @Test
     void removeGuild() {
-        Guild guild = new Guild(UUID.randomUUID(), "Test");
+        GuildImp guild = new GuildImp(UUID.randomUUID(), "Test");
         cache.addGuild(guild);
         assertEquals(1, cache.getGuilds().size());
         cache.removeGuildAndItsPlayers(guild.getName());
@@ -80,7 +80,7 @@ class FileCacheTest {
 
     @Test
     void getGuild() {
-        Guild guild = new Guild(UUID.randomUUID(), "Test");
+        GuildImp guild = new GuildImp(UUID.randomUUID(), "Test");
         cache.addGuild(guild);
         assertNotNull(cache.getGuild(guild.getName()));
     }

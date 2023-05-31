@@ -1,15 +1,13 @@
 package com.justinmtech.guilds.persistence;
 
-import com.justinmtech.guilds.core.GPlayer;
-import com.justinmtech.guilds.core.Guild;
-import com.justinmtech.guilds.core.Warp;
+import com.justinmtech.guilds.core.*;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @SuppressWarnings({"UnusedReturnValue", "unused"})
-public interface ManageData {
+public interface GuildsRepository {
 
     boolean saveGuild(Guild guild);
     boolean savePlayer(GPlayer player);

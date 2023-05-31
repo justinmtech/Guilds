@@ -1,14 +1,14 @@
 package com.justinmtech.guilds.commands;
 
-import com.justinmtech.guilds.core.GPlayer;
+import com.justinmtech.guilds.Guilds;
+import com.justinmtech.guilds.SubCommand;
+import com.justinmtech.guilds.core.GPlayerImp;
+import com.justinmtech.guilds.core.Guild;
 import com.justinmtech.guilds.core.Role;
+import com.justinmtech.guilds.util.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import com.justinmtech.guilds.Guilds;
-import com.justinmtech.guilds.SubCommand;
-import com.justinmtech.guilds.core.Guild;
-import com.justinmtech.guilds.util.Message;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -34,7 +34,7 @@ public class AcceptInvite extends SubCommand {
         boolean guildExists = guild.isPresent();
 
         if (guildExists && noGuild) {
-            getPlugin().getData().savePlayer(new GPlayer(player2.getUniqueId(), guildName, Role.MEMBER));
+            getPlugin().getData().savePlayer(new GPlayerImp(player2.getUniqueId(), guildName, Role.MEMBER));
             guild.get().addMember(player2.getUniqueId());
             getPlugin().getData().saveGuild(guild.get());
             Message.sendPlaceholder(getPlugin(), getSender(), "invite-accepted", guild.get().getName());

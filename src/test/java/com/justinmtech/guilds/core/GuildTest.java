@@ -20,7 +20,7 @@ class GuildTest {
 
     @BeforeEach
     void init() {
-        defaultGuild = new Guild(owner, "GuildName");
+        defaultGuild = new GuildImp(owner, "GuildName");
         testPlayer = UUID.fromString("d8d5a923-7b20-43d8-883b-1150148d6955");
         owner = UUID.fromString("2adce835-6539-4ce9-9585-50f03822d9d6");
     }

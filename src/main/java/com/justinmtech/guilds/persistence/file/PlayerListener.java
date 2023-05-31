@@ -1,6 +1,6 @@
 package com.justinmtech.guilds.persistence.file;
 
-import com.justinmtech.guilds.persistence.ManageData;
+import com.justinmtech.guilds.persistence.GuildsRepository;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -9,7 +9,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 public class PlayerListener implements Listener {
     private final FileManager fileManager;
 
-    public PlayerListener(ManageData data) {
+    public PlayerListener(GuildsRepository data) {
         this.fileManager = (FileManager) data;
     }
 

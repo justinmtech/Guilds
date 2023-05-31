@@ -1,11 +1,8 @@
 package com.justinmtech.guilds.persistence.file;
 
 import com.justinmtech.guilds.Guilds;
-import com.justinmtech.guilds.core.GPlayer;
-import com.justinmtech.guilds.core.Guild;
-import com.justinmtech.guilds.core.Role;
-import com.justinmtech.guilds.core.Warp;
-import com.justinmtech.guilds.persistence.ManageData;
+import com.justinmtech.guilds.core.*;
+import com.justinmtech.guilds.persistence.GuildsRepository;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -18,7 +15,7 @@ import java.io.IOException;
 import java.util.*;
 
 @SuppressWarnings("unchecked")
-public class FileManager implements ManageData {
+public class FileManager implements GuildsRepository {
     private final Guilds plugin;
     private final FileCache cache;
 
@@ -165,7 +162,7 @@ public class FileManager implements ManageData {
         ArrayList<Object> warps = (ArrayList<Object>) guild.getOrDefault("warps", new ArrayList<>());
         long level = (long) guild.getOrDefault("level", 1);
 
-        Guild guildObject = new Guild(name, UUID.fromString(ownerId), description, members, warps, (int) level);
+        GuildImp guildObject = new GuildImp(name, UUID.fromString(ownerId), description, members, warps, (int) level);
         _addMembers(members, name);
 
         getCache().addGuild(guildObject);
@@ -192,9 +189,9 @@ public class FileManager implements ManageData {
         Optional<Guild> guild = getCache().getGuild(guildId);
         if (guild.isEmpty()) return false;
         if (guild.get().getWarps().containsKey(id)) {
-            guild.get().getWarps().replace(id, new Warp(id, world, x, y, z, yaw, pitch));
+            guild.get().getWarps().replace(id, new WarpImp(id, world, x, y, z, yaw, pitch));
         } else {
-            guild.get().getWarps().put(id, new Warp(id, world, x, y, z, yaw, pitch));
+            guild.get().getWarps().put(id, new WarpImp(id, world, x, y, z, yaw, pitch));
         }
         return true;
     }

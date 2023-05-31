@@ -1,14 +1,12 @@
 package com.justinmtech.guilds.commands;
 
-import com.justinmtech.guilds.core.GPlayer;
-import com.justinmtech.guilds.core.Guild;
-import com.justinmtech.guilds.core.Role;
+import com.justinmtech.guilds.Guilds;
+import com.justinmtech.guilds.SubCommand;
+import com.justinmtech.guilds.core.*;
 import com.justinmtech.guilds.util.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import com.justinmtech.guilds.Guilds;
-import com.justinmtech.guilds.SubCommand;
 
 import java.text.DecimalFormat;
 import java.util.Optional;
@@ -46,8 +44,8 @@ public class CreateGuild extends SubCommand {
     }
 
     private void createGuild(Player player, String name) {
-        getPlugin().getData().saveGuild(new Guild(player.getUniqueId(), name));
-        getPlugin().getData().savePlayer(new GPlayer(player.getUniqueId(), name, Role.LEADER));
+        getPlugin().getData().saveGuild(new GuildImp(player.getUniqueId(), name));
+        getPlugin().getData().savePlayer(new GPlayerImp(player.getUniqueId(), name, Role.LEADER));
         Message.send(getPlugin(), player, "create-guild");
     }
 }

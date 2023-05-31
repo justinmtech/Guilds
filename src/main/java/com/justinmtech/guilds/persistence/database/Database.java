@@ -1,16 +1,13 @@
 package com.justinmtech.guilds.persistence.database;
 
-import com.justinmtech.guilds.core.GPlayer;
-import com.justinmtech.guilds.core.Guild;
-import com.justinmtech.guilds.core.Role;
-import com.justinmtech.guilds.core.Warp;
-import com.justinmtech.guilds.persistence.ManageData;
+import com.justinmtech.guilds.core.*;
+import com.justinmtech.guilds.persistence.GuildsRepository;
 
 import java.sql.*;
 import java.util.*;
 
 @SuppressWarnings("UnusedReturnValue")
-public class Database implements ManageData {
+public class Database implements GuildsRepository {
     private final String host;
     private final int port;
     private final String username;
@@ -265,7 +262,7 @@ public class Database implements ManageData {
                 double z = rs.getDouble(5);
                 float yaw = rs.getFloat(6);
                 float pitch = rs.getFloat(7);
-                return Optional.of(new Warp(id, world, x, y, z, yaw, pitch));
+                return Optional.of(new WarpImp(id, world, x, y, z, yaw, pitch));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -293,8 +290,8 @@ public class Database implements ManageData {
     }
 
     public Optional<Guild> getGuild(String id) {
-        Guild guild = new Guild(id);
-        Optional<Guild> guildData = loadGuildData(id);
+        GuildImp guild = new GuildImp(id);
+        Optional<GuildImp> guildData = loadGuildData(id);
         if (guildData.isPresent()) {
             guild.setLevel(guildData.get().getLevel());
             guild.setDescription(guildData.get().getDescription());
@@ -312,7 +309,7 @@ public class Database implements ManageData {
         } else {
             return Optional.empty();
         }
-        Optional<Map<String, Warp>> warps = loadGuildWarps(id);
+        Optional<Map<String, WarpImp>> warps = loadGuildWarps(id);
         warps.ifPresent(guild::setWarps);
         return Optional.of(guild);
     }
@@ -339,7 +336,7 @@ public class Database implements ManageData {
                 String role = rs.getString(1);
                 String guildId = rs.getString(2);
                 Role roleType = role != null ? Role.valueOf(role) : Role.MEMBER;
-                return Optional.of(new GPlayer(id, guildId, roleType));
+                return Optional.of(new GPlayerImp(id, guildId, roleType));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -404,8 +401,8 @@ public class Database implements ManageData {
     }
 
 
-    private Optional<Guild> loadGuildData(String id) {
-        Guild guild = new Guild(id);
+    private Optional<GuildImp> loadGuildData(String id) {
+        GuildImp guild = new GuildImp(id);
         String sql = "SELECT description, level FROM " + guildTable + " WHERE id = ?";
         try (Connection conn = connect(); PreparedStatement stat = conn.prepareStatement(sql)) {
             stat.setString(1, id);
@@ -445,9 +442,9 @@ public class Database implements ManageData {
         return Optional.of(members);
     }
 
-    private Optional<Map<String, Warp>> loadGuildWarps(String id) {
+    private Optional<Map<String, WarpImp>> loadGuildWarps(String id) {
         String sql = "SELECT id, world, x, y, z, yaw, pitch FROM " + warpTable + " WHERE guild_id = ?";
-        Map<String, Warp> warps = new HashMap<>();
+        Map<String, WarpImp> warps = new HashMap<>();
         try (Connection conn = connect(); PreparedStatement stat = conn.prepareStatement(sql)) {
             stat.setString(1, id);
             stat.execute();
@@ -460,7 +457,7 @@ public class Database implements ManageData {
                 double z = rs.getDouble(5);
                 float yaw = rs.getFloat(6);
                 float pitch = rs.getFloat(7);
-                warps.put(warpId, new Warp(warpId, world, x, y, z, yaw, pitch));
+                warps.put(warpId, new WarpImp(warpId, world, x, y, z, yaw, pitch));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -508,7 +505,7 @@ public class Database implements ManageData {
     @Override
     public boolean saveInvite(UUID playerId, String guildId) {
         if (!rowExists(playerTable, playerId.toString())) {
-            savePlayer(new GPlayer(playerId, null, null));
+            savePlayer(new GPlayerImp(playerId, null, null));
         }
         if (rowExists(inviteTable, playerId.toString(), guildId)) {
             return updateInvite(playerId.toString(), guildId);

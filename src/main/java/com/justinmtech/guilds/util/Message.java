@@ -1,12 +1,12 @@
 package com.justinmtech.guilds.util;
 
+import com.justinmtech.guilds.Guilds;
 import com.justinmtech.guilds.core.Guild;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import com.justinmtech.guilds.Guilds;
 
 import java.util.Map;
 import java.util.Objects;

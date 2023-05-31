@@ -1,10 +1,11 @@
 package com.justinmtech.guilds.commands;
 
-import com.justinmtech.guilds.util.Message;
-import org.bukkit.command.CommandSender;
 import com.justinmtech.guilds.Guilds;
 import com.justinmtech.guilds.SubCommand;
 import com.justinmtech.guilds.core.Guild;
+import com.justinmtech.guilds.core.GuildImp;
+import com.justinmtech.guilds.util.Message;
+import org.bukkit.command.CommandSender;
 
 import java.util.Collections;
 import java.util.List;

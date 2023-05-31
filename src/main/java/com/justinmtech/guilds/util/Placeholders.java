@@ -1,7 +1,7 @@
 package com.justinmtech.guilds.util;
 
 import com.justinmtech.guilds.core.GPlayer;
-import com.justinmtech.guilds.persistence.ManageData;
+import com.justinmtech.guilds.persistence.GuildsRepository;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
@@ -9,9 +9,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 
 public class Placeholders extends PlaceholderExpansion {
-    private final ManageData data;
+    private final GuildsRepository data;
 
-    public Placeholders(ManageData data) {
+    public Placeholders(GuildsRepository data) {
         this.data = data;
     }
 
@@ -47,7 +47,7 @@ public class Placeholders extends PlaceholderExpansion {
         return "None";
     }
 
-    public ManageData getData() {
+    public GuildsRepository getData() {
         return data;
     }
 }
