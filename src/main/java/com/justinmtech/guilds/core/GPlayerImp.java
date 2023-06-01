@@ -83,6 +83,11 @@ public class GPlayerImp implements GPlayer {
     }
 
     @Override
+    public Set<String> getInvites() {
+        return invites;
+    }
+
+    @Override
     public boolean hasGuild() {
         return this.guildId != null && !this.guildId.isBlank() && !this.guildId.isEmpty();
     }

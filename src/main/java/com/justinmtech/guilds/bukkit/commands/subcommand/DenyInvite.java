@@ -1,5 +1,6 @@
-package com.justinmtech.guilds.bukkit.commands;
+package com.justinmtech.guilds.bukkit.commands.subcommand;
 
+import com.justinmtech.guilds.bukkit.commands.SubCommand;
 import com.justinmtech.guilds.bukkit.util.Message;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

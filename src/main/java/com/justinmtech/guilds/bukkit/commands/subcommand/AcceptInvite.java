@@ -1,6 +1,7 @@
-package com.justinmtech.guilds.bukkit.commands;
+package com.justinmtech.guilds.bukkit.commands.subcommand;
 
 import com.justinmtech.guilds.Guilds;
+import com.justinmtech.guilds.bukkit.commands.SubCommand;
 import com.justinmtech.guilds.core.GPlayerImp;
 import com.justinmtech.guilds.core.Guild;
 import com.justinmtech.guilds.core.Role;

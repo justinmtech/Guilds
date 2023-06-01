@@ -1,5 +1,6 @@
 package com.justinmtech.guilds.core;
 
+import java.util.Set;
 import java.util.UUID;
 
 public interface GPlayer {
@@ -14,5 +15,6 @@ public interface GPlayer {
     boolean hasInvite(String guildId);
     void addInvite(String guildId);
     void removeInvite(String guildId);
+    Set<String> getInvites();
     boolean hasGuild();
 }

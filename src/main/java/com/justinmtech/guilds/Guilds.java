@@ -2,12 +2,13 @@ package com.justinmtech.guilds;
 
 import com.justinmtech.guilds.bukkit.commands.CommandHandler;
 import com.justinmtech.guilds.bukkit.commands.TabCompleter;
-import com.justinmtech.guilds.persistence.*;
-import com.justinmtech.guilds.service.TransactionCacheImp;
+import com.justinmtech.guilds.bukkit.util.Placeholders;
+import com.justinmtech.guilds.persistence.GuildsRepository;
 import com.justinmtech.guilds.persistence.database.Database;
 import com.justinmtech.guilds.persistence.file.FileManager;
 import com.justinmtech.guilds.persistence.file.PlayerListener;
-import com.justinmtech.guilds.bukkit.util.Placeholders;
+import com.justinmtech.guilds.service.TransactionCache;
+import com.justinmtech.guilds.service.TransactionCacheImp;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -24,7 +25,7 @@ import java.util.logging.Level;
 public final class Guilds extends JavaPlugin {
     private GuildsRepository data;
     private static Economy econ = null;
-    private TransactionCacheImp cache;
+    private TransactionCache cache;
 
     public Guilds() {
         super();
@@ -136,7 +137,7 @@ public final class Guilds extends JavaPlugin {
         return data;
     }
 
-    public TransactionCacheImp getCache() {
+    public TransactionCache getCache() {
         return cache;
     }
 }
