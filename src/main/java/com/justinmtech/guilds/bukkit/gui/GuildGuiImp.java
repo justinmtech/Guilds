@@ -2,6 +2,7 @@ package com.justinmtech.guilds.bukkit.gui;
 
 import com.justinmtech.aqua.item.ItemFactory;
 import com.justinmtech.guilds.core.GPlayer;
+import com.justinmtech.guilds.core.Guild;
 import com.justinmtech.guilds.core.Role;
 import com.justinmtech.guilds.persistence.GuildsRepository;
 import org.bukkit.Bukkit;
@@ -10,6 +11,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Collections;
 import java.util.List;
 
 public class GuildGuiImp implements GuildGui {
@@ -68,8 +70,12 @@ public class GuildGuiImp implements GuildGui {
     }
 
     @Override
-    public Inventory getGuildMenu(GPlayer gPlayer) {
-        return null;
+    public Inventory getGuildMenu(Guild guild, GPlayer gPlayer) {
+        Inventory menu = Bukkit.createInventory(null, 54, guild.getName() + " Guild");
+        //Members
+        //Level
+        //Rating
+        return menu;
     }
 
     @Override
@@ -90,8 +96,34 @@ public class GuildGuiImp implements GuildGui {
     }
 
     @Override
-    public Inventory getGuildsMenu(GPlayer gPlayer) {
-        return null;
+    public Inventory getGuildsMenu(GPlayer gPlayer, int page) {
+        Inventory menu = Bukkit.createInventory(null, 54, "Guilds");
+        List<Guild> guild = guildsRepository.getAllGuilds();
+        Collections.sort(guild);
+        int pages = (int) Math.ceil(guild.size() / 45.0);
+
+        int guildIndex = (page - 1) * 45;
+        for (int i = guildIndex; i < 45; i++) {
+            try {
+                Guild guildFetched = guild.get(guildIndex++);
+                menu.addItem(getGuildListItem(guildFetched));
+            } catch (IndexOutOfBoundsException e) {
+                break;
+            }
+        }
+        if (page > 1) menu.setItem(48, ItemFactory.build(Material.PAPER, "§cPrevious page"));
+        menu.setItem(49, ItemFactory.build(Material.PAPER, "§aCurrent Page: " + page));
+        if (pages > 1 && page < pages) menu.setItem(50, ItemFactory.build(Material.PAPER, "§aNext page"));
+
+        return menu;
+    }
+
+    private ItemStack getGuildListItem(Guild guild) {
+        return ItemFactory.build(Material.PAPER, "§6" + guild.getName(),
+                "§7Level: " + guild.getLevel(),
+                "§7Members: " + guild.getMembers().size(),
+                "§7Rating: " + guild.getRating(),
+                "§7Leader: " + guild.getLeader());
     }
 
     private ItemStack getHelpMenuItem() {

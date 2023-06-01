@@ -1,4 +1,4 @@
-package com.justinmtech.guilds.bukkit.commands.subcommand;
+package com.justinmtech.guilds.bukkit.commands.sub_command;
 
 import com.justinmtech.guilds.Guilds;
 import com.justinmtech.guilds.bukkit.commands.SubCommand;
@@ -39,8 +39,8 @@ public class AcceptInvite extends SubCommand {
             getPlugin().getData().saveGuild(guild.get());
             Message.sendPlaceholder(getPlugin(), getSender(), "invite-accepted", guild.get().getName());
             getPlugin().getData().deleteInvite(player2.getUniqueId(), guildName);
-            if (Bukkit.getPlayer(guild.get().getOwner()) != null) {
-                Message.sendPlaceholder(getPlugin(), Objects.requireNonNull(Bukkit.getPlayer(guild.get().getOwner())), "player-joined-guild", player2.getName());
+            if (Bukkit.getPlayer(guild.get().getLeader()) != null) {
+                Message.sendPlaceholder(getPlugin(), Objects.requireNonNull(Bukkit.getPlayer(guild.get().getLeader())), "player-joined-guild", player2.getName());
             }
         } else {
             if (!guildExists) player2.sendMessage(guildName + " does not exist anymore!");

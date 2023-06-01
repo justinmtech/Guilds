@@ -1,5 +1,9 @@
 package com.justinmtech.guilds.core;
 
+import org.bukkit.inventory.ItemStack;
+
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -8,8 +12,26 @@ public interface Guild extends Comparable<Guild> {
     String getName();
     void setName(String name);
 
-    UUID getOwner();
-    void setOwner(UUID owner);
+    void setTag(String tag);
+    String getTag();
+
+    void setSymbol(ItemStack itemStack);
+    ItemStack getSymbol();
+
+    List<ItemStack> getVault();
+    void setVault(List<ItemStack> vault);
+    void addVaultItem(ItemStack itemStack);
+    void removeVaultItem(ItemStack itemStack);
+
+    BigDecimal getBankBalance();
+    void setBankBalance(BigDecimal balance);
+    void addBankBalance(BigDecimal balance);
+    void removeBankBalance(BigDecimal balance);
+
+    int getRating();
+
+    UUID getLeader();
+    void setLeader(UUID owner);
 
     String getDescription();
     void setDescription(String description);

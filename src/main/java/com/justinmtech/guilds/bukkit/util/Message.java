@@ -64,7 +64,7 @@ public class Message {
                     sendPlaceholderPath(plugin, sender, messagePath + "." + key, guild.getName());
                     break;
                 case "leader" :
-                    sendPlaceholderPath(plugin, sender, messagePath + "." + key, Bukkit.getOfflinePlayer(guild.getOwner()).getName());
+                    sendPlaceholderPath(plugin, sender, messagePath + "." + key, Bukkit.getOfflinePlayer(guild.getLeader()).getName());
                     break;
                 case "description" :
                     sendPlaceholderPath(plugin, sender, messagePath + "." + key, guild.getDescription());

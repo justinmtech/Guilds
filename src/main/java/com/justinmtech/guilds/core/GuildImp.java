@@ -1,9 +1,12 @@
 package com.justinmtech.guilds.core;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,11 +15,23 @@ import java.util.UUID;
 @SuppressWarnings("unchecked")
 public class GuildImp implements Guild {
     private String name;
+    //TODO Add to serialization
+    private String tag;
     private UUID owner;
     private String description;
     private Map<UUID, Role> members;
     private Map<String, Warp> warps;
     private int level;
+    //TODO Add to serialization
+    private ItemStack symbol;
+    //TODO Add to serialization
+    private BigDecimal bankBalance;
+    //TODO Add to serialization
+    private List<ItemStack> vault;
+
+    private static final int MAX_LEVEL = 10;
+    private static final double MEMBER_WEIGHT = 10.0;
+    private static final double BALANCE_WEIGHT = 0.001;
 
     public GuildImp(UUID owner, String name) {
         this.owner = owner;
@@ -38,7 +53,7 @@ public class GuildImp implements Guild {
         this.level = 1;
     }
 
-    public GuildImp(String name, UUID ownerId, String description, List<Object> memberObjects, Object warps, int level) {
+    public GuildImp(String name, UUID ownerId, String description, List<Object> memberObjects, Object warps, int level, BigDecimal bankBalance, List<ItemStack> vault) {
         this.members = new HashMap<>();
         this.warps = new HashMap<>();
         this.name = name;
@@ -47,6 +62,8 @@ public class GuildImp implements Guild {
         memberObjects.forEach(member -> _addMember((JSONObject) member));
         ((JSONArray) warps).forEach(warp -> _addWarps((JSONObject) warp));
         this.level = level;
+        this.bankBalance = bankBalance;
+        this.vault = vault;
     }
 
     private void _addMember(JSONObject member) {
@@ -63,7 +80,8 @@ public class GuildImp implements Guild {
             double z = (Double) warp.get("z");
             double yaw = (Double) warp.get("yaw");
             double pitch = (Double) warp.get("pitch");
-            this.warps.put(name, new WarpImp(name, world, x, y, z, (float) yaw, (float) pitch));
+            boolean isPublic = (Boolean) warp.get("isPublic");
+            this.warps.put(name, new WarpImp(name, world, x, y, z, (float) yaw, (float) pitch, isPublic));
     }
 
     @Override
@@ -136,12 +154,12 @@ public class GuildImp implements Guild {
     }
 
     @Override
-    public UUID getOwner() {
+    public UUID getLeader() {
         return owner;
     }
 
     @Override
-    public void setOwner(UUID owner) {
+    public void setLeader(UUID owner) {
         this.owner = owner;
     }
 
@@ -157,27 +175,27 @@ public class GuildImp implements Guild {
 
     @Override
     public void setLevel(int level) {
-        if (level >= 1 && level <= 10) {
+        if (level >= 1 && level <= MAX_LEVEL) {
             this.level = level;
         } else {
             if (level < 1) this.level = 1;
-            if (level > 10) this.level = 10;
+            if (level > MAX_LEVEL) this.level = MAX_LEVEL;
         }
     }
 
     @Override
     public int getMaxWarps() {
-        return level;
+        return (int) Math.floor(level / 2.0);
     }
 
     @Override
     public int getMaxMembers() {
-        return level * 3;
+        return level * 5;
     }
 
     @Override
     public int getMaxLevel() {
-        return 10;
+        return MAX_LEVEL;
     }
 
     @Override
@@ -218,12 +236,16 @@ public class GuildImp implements Guild {
         }
         json.put("warps", warpArray);
         json.put("level", level);
+        json.put("tag", tag);
+        json.put("symbol", symbol);
+        json.put("bankBalance", bankBalance);
+        json.put("vault", vault);
         return json.toString();
     }
 
     @Override
     public int compareTo(Guild o) {
-        if (members.size() > o.getMembers().size()) return 1;
+        if (this.getRating() > o.getRating()) return 1;
         return -1;
     }
 
@@ -255,4 +277,76 @@ public class GuildImp implements Guild {
 
     @Override
     public void updateWarp(Warp warp) {warps.replace(warp.getId(), warp);}
+
+    @Override
+    public void setTag(String tag) {
+        if (tag.length() > 5) tag = tag.substring(0, 5);
+        this.tag = tag;
+    }
+
+    @Override
+    public String getTag() {
+        return tag;
+    }
+
+    @Override
+    public void setSymbol(ItemStack itemStack) {
+        this.symbol = itemStack;
+    }
+
+    @Override
+    public ItemStack getSymbol() {
+        return symbol != null ? symbol : new ItemStack(Material.CHEST);
+    }
+
+    @Override
+    public List<ItemStack> getVault() {
+        return vault;
+    }
+
+    @Override
+    public void setVault(List<ItemStack> vault) {
+        this.vault = vault;
+    }
+
+    @Override
+    public void addVaultItem(ItemStack itemStack) {
+        vault.add(itemStack);
+    }
+
+    @Override
+    public void removeVaultItem(ItemStack itemStack) {
+        vault.remove(itemStack);
+    }
+
+    @Override
+    public BigDecimal getBankBalance() {
+        return bankBalance;
+    }
+
+    @Override
+    public void setBankBalance(BigDecimal balance) {
+        this.bankBalance = balance;
+    }
+
+    @Override
+    public void addBankBalance(BigDecimal balance) {
+        BigDecimal newBalance = getBankBalance().add(balance);
+        setBankBalance(newBalance);
+    }
+
+    @Override
+    public void removeBankBalance(BigDecimal balance) {
+        BigDecimal newBalance = getBankBalance().subtract(balance);
+        setBankBalance(newBalance);
+    }
+
+    @Override
+    public int getRating() {
+        int members = getMembers().size();
+        int balance = getBankBalance().intValue();
+        int memberRating = (int) (members * MEMBER_WEIGHT);
+        int balanceRating = (int) (balance * BALANCE_WEIGHT);
+        return memberRating + balanceRating;
+    }
 }

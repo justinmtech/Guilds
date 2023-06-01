@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.*;
 
 @SuppressWarnings("unchecked")
@@ -162,7 +163,8 @@ public class FileManager implements GuildsRepository {
         ArrayList<Object> warps = (ArrayList<Object>) guild.getOrDefault("warps", new ArrayList<>());
         long level = (long) guild.getOrDefault("level", 1);
 
-        GuildImp guildObject = new GuildImp(name, UUID.fromString(ownerId), description, members, warps, (int) level);
+        //TODO add bank and vault
+        GuildImp guildObject = new GuildImp(name, UUID.fromString(ownerId), description, members, warps, (int) level, BigDecimal.ZERO, new ArrayList<>());
         _addMembers(members, name);
 
         getCache().addGuild(guildObject);

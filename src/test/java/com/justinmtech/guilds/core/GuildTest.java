@@ -71,14 +71,14 @@ class GuildTest {
 
     @Test
     void getOwner() {
-        assertEquals(owner, defaultGuild.getOwner());
+        assertEquals(owner, defaultGuild.getLeader());
     }
 
     @Test
     void setOwner() {
-        defaultGuild.setOwner(testPlayer);
+        defaultGuild.setLeader(testPlayer);
         assertFalse(defaultGuild.isOwner(owner));
-        assertEquals(testPlayer, defaultGuild.getOwner());
+        assertEquals(testPlayer, defaultGuild.getLeader());
         assertTrue(defaultGuild.isOwner(testPlayer));
     }
 
@@ -111,25 +111,25 @@ class GuildTest {
     @Test
     void getMaxWarps() {
         defaultGuild.setLevel(1);
-        assertEquals(defaultGuild.getLevel(), defaultGuild.getMaxWarps());
+        assertEquals(0, defaultGuild.getMaxWarps());
         defaultGuild.setLevel(2);
-        assertEquals(defaultGuild.getLevel(), defaultGuild.getMaxWarps());
+        assertEquals(1, defaultGuild.getMaxWarps());
         defaultGuild.setLevel(6);
-        assertEquals(defaultGuild.getLevel(), defaultGuild.getMaxWarps());
+        assertEquals(3, defaultGuild.getMaxWarps());
         defaultGuild.setLevel(10);
-        assertEquals(defaultGuild.getLevel(), defaultGuild.getMaxWarps());
+        assertEquals(5, defaultGuild.getMaxWarps());
         defaultGuild.setLevel(20);
-        assertEquals(10, defaultGuild.getMaxWarps());
+        assertEquals(5, defaultGuild.getMaxWarps());
     }
 
     @Test
     void getMaxMembers() {
         defaultGuild.setLevel(1);
-        assertEquals(3, defaultGuild.getMaxMembers());
+        assertEquals(5, defaultGuild.getMaxMembers());
         defaultGuild.setLevel(3);
-        assertEquals(9, defaultGuild.getMaxMembers());
+        assertEquals(15, defaultGuild.getMaxMembers());
         defaultGuild.setLevel(9);
-        assertEquals(27, defaultGuild.getMaxMembers());
+        assertEquals(45, defaultGuild.getMaxMembers());
 
     }
 
@@ -145,4 +145,9 @@ class GuildTest {
     @Test
     void isColeader() {
     }
+
+/*    @Test
+    void testString() {
+        System.out.println(defaultGuild.toString());
+    }*/
 }

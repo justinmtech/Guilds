@@ -1,4 +1,4 @@
-package com.justinmtech.guilds.bukkit.commands.subcommand;
+package com.justinmtech.guilds.bukkit.commands.sub_command;
 
 import com.justinmtech.guilds.Guilds;
 import com.justinmtech.guilds.bukkit.commands.SubCommand;

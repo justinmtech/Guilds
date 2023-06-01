@@ -1,4 +1,4 @@
-package com.justinmtech.guilds.bukkit.commands.subcommand;
+package com.justinmtech.guilds.bukkit.commands.sub_command;
 
 import com.justinmtech.guilds.Guilds;
 import com.justinmtech.guilds.bukkit.commands.SubCommand;
@@ -59,7 +59,7 @@ public class KickPlayer extends SubCommand {
             }
 
             //ensure player is not kicking the leader
-            if (target.getUniqueId() == guild.get().getOwner()) {
+            if (target.getUniqueId() == guild.get().getLeader()) {
                 Message.send(getPlugin(), getSender(), "kick-leader-error");
                 return false;
             }

@@ -1,4 +1,4 @@
-package com.justinmtech.guilds.bukkit.commands.subcommand;
+package com.justinmtech.guilds.bukkit.commands.sub_command;
 
 import com.justinmtech.guilds.Guilds;
 import com.justinmtech.guilds.bukkit.commands.SubCommand;
@@ -26,7 +26,7 @@ public class DisbandGuild extends SubCommand {
                 return true;
             }
 
-            if (guild.get().getOwner().equals(player.getUniqueId())) {
+            if (guild.get().getLeader().equals(player.getUniqueId())) {
                 getPlugin().getData().deleteGuild(guild.get().getName());
                 Message.send(getPlugin(), getSender(), "disband-guild");
             } else {

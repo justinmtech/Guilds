@@ -303,7 +303,7 @@ public class Database implements GuildsRepository {
             guild.setMembers(members.get());
             for (UUID uuid : members.get().keySet()) {
                 if (members.get().get(uuid).equals(Role.LEADER)) {
-                    guild.setOwner(uuid);
+                    guild.setLeader(uuid);
                 }
             }
         } else {

@@ -13,6 +13,7 @@ public class WarpImp implements Warp {
     private final double z;
     private final float yaw;
     private final float pitch;
+    private boolean isPublic;
 
     public WarpImp(String id, String world, double x, double y, double z, float yaw, float pitch) {
         this.id = id;
@@ -22,6 +23,18 @@ public class WarpImp implements Warp {
         this.z = z;
         this.yaw = yaw;
         this.pitch = pitch;
+        this.isPublic = false;
+    }
+
+    public WarpImp(String id, String world, double x, double y, double z, float yaw, float pitch, boolean isPublic) {
+        this.id = id;
+        this.world = world;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.yaw = yaw;
+        this.pitch = pitch;
+        this.isPublic = isPublic;
     }
 
     public WarpImp(String id, Location loc) {
@@ -32,6 +45,7 @@ public class WarpImp implements Warp {
         this.z = loc.getZ();
         this.yaw = loc.getYaw();
         this.pitch = loc.getPitch();
+        this.isPublic = false;
     }
 
     @Override
@@ -62,6 +76,16 @@ public class WarpImp implements Warp {
     @Override
     public float getPitch() {
         return pitch;
+    }
+
+    @Override
+    public boolean isPublic() {
+        return isPublic;
+    }
+
+    @Override
+    public void setPublic(boolean isPublic) {
+        this.isPublic = isPublic;
     }
 
     @Override

@@ -10,5 +10,7 @@ public interface Warp {
     double getZ();
     float getYaw();
     float getPitch();
+    boolean isPublic();
+    void setPublic(boolean isPublic);
     Location toLocation();
 }
