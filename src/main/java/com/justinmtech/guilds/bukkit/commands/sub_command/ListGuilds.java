@@ -18,7 +18,7 @@ public class ListGuilds extends SubCommand {
 
     @SuppressWarnings("UnusedReturnValue")
     private boolean execute() {
-        List<Guild> guildList = getPlugin().getData().getAllGuilds();
+        List<Guild> guildList = getPlugin().getGuildsRepository().getAllGuilds();
         Collections.sort(guildList);
         if (guildList.size() == 0) {
             Message.send(getPlugin(), getSender(), "no-guilds");

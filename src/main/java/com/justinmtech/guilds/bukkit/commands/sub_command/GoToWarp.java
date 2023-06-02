@@ -21,7 +21,7 @@ public class GoToWarp extends SubCommand {
     private void execute() {
         Player player = (Player) getSender();
         String warpName = getArgs()[1];
-        Optional<Warp> warp = getPlugin().getData().getWarp(player.getUniqueId(), warpName);
+        Optional<Warp> warp = getPlugin().getGuildsRepository().getWarp(player.getUniqueId(), warpName);
         if (warp.isPresent()) {
             teleportWarmup(player, warp.get());
         } else {

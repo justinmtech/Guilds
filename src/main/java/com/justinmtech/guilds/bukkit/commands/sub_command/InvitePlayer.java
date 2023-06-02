@@ -24,7 +24,7 @@ public class InvitePlayer extends SubCommand {
         Player player = (Player) getSender();
         Player player2;
         player2 = Bukkit.getPlayer(getArgs()[1]);
-        Optional<Guild> guild = getPlugin().getData().getGuild(player.getUniqueId());
+        Optional<Guild> guild = getPlugin().getGuildsRepository().getGuild(player.getUniqueId());
 
         if (guild.isEmpty()) {
             Message.send(getPlugin(), getSender(), "must-be-owner");
@@ -51,7 +51,7 @@ public class InvitePlayer extends SubCommand {
             return false;
         }
 
-        getPlugin().getData().saveInvite(player2.getUniqueId(), guild.get().getName());
+        getPlugin().getGuildsRepository().saveInvite(player2.getUniqueId(), guild.get().getName());
         Message.sendPlaceholder(getPlugin(), getSender(), "invite-send", player2.getName());
         Message.sendPlaceholder(getPlugin(), player2, "invite-receive", guild.get().getName());
         return true;

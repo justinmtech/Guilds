@@ -20,9 +20,10 @@ public class LeaveGuild extends SubCommand {
     private boolean execute() {
         if (getSender() instanceof Player) {
             Player player = (Player) getSender();
-            Optional<Guild> guild = getPlugin().getData().getGuild(player.getUniqueId());
+            Optional<GPlayer> gPlayer = getPlugin().getGuildsRepository().getPlayer(player.getUniqueId());
+            Optional<Guild> guild = getPlugin().getGuildsRepository().getGuild(player.getUniqueId());
 
-            if (guild.isEmpty()) {
+            if (guild.isEmpty() || gPlayer.isEmpty()) {
                 Message.send(getPlugin(), getSender(), "not-in-guild");
                 return false;
             }
@@ -31,11 +32,7 @@ public class LeaveGuild extends SubCommand {
                 Message.send(getPlugin(), getSender(), "leave-guild-owner");
                 return false;
             }
-            guild.get().removeMember(player.getUniqueId());
-            Optional<GPlayer> gPlayer = getPlugin().getData().getPlayer(player.getUniqueId());
-            gPlayer.ifPresent(value -> value.setGuildId(null));
-            getPlugin().getData().savePlayer(gPlayer.get());
-            getPlugin().getData().saveGuild(guild.get());
+            getPlugin().getGuildsService().leaveGuild(guild.get(), gPlayer.get());
             Message.sendPlaceholder(getPlugin(), getSender(), "leave-guild", guild.get().getName());
             return true;
         }

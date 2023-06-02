@@ -24,7 +24,7 @@ public class Upgrade extends SubCommand {
     private void execute() {
         if (getSender() instanceof Player) {
             Player player = (Player) getSender();
-            Optional<Guild> guild = getPlugin().getData().getGuild(player.getUniqueId());
+            Optional<Guild> guild = getPlugin().getGuildsRepository().getGuild(player.getUniqueId());
             if (guild.isEmpty()) {
                 Message.send(getPlugin(), getSender(), "not-in-guild");
                 return;

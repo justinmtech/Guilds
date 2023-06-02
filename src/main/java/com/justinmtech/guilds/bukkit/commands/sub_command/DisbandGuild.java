@@ -20,14 +20,14 @@ public class DisbandGuild extends SubCommand {
     public boolean execute() {
         Player player = (Player) getSender();
         try {
-            Optional<Guild> guild = getPlugin().getData().getGuild(player.getUniqueId());
+            Optional<Guild> guild = getPlugin().getGuildsRepository().getGuild(player.getUniqueId());
             if (guild.isEmpty()) {
                 Message.send(getPlugin(), getSender(), "must-be-owner");
                 return true;
             }
 
             if (guild.get().getLeader().equals(player.getUniqueId())) {
-                getPlugin().getData().deleteGuild(guild.get().getName());
+                getPlugin().getGuildsRepository().deleteGuild(guild.get().getName());
                 Message.send(getPlugin(), getSender(), "disband-guild");
             } else {
                 Message.send(getPlugin(), getSender(), "must-be-owner");

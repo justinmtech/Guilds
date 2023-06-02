@@ -18,7 +18,7 @@ public class SetDescription extends SubCommand {
 
     private void execute() {
         Player player = (Player) getSender();
-        Optional<Guild> guild = getPlugin().getData().getGuild(player.getUniqueId());
+        Optional<Guild> guild = getPlugin().getGuildsRepository().getGuild(player.getUniqueId());
         if (guild.isEmpty()) {
             Message.send(getPlugin(), getSender(), "generic-error");
             return;

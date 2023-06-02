@@ -21,8 +21,8 @@ public class CreateGuild extends SubCommand {
     public void execute() {
         Player player = (Player) getSender();
         String name = getArgs()[1];
-        Optional<Guild> guild = getPlugin().getData().getGuild(name);
-        Optional<GPlayer> gPlayer = getPlugin().getData().getPlayer(player.getUniqueId());
+        Optional<Guild> guild = getPlugin().getGuildsRepository().getGuild(name);
+        Optional<GPlayer> gPlayer = getPlugin().getGuildsRepository().getPlayer(player.getUniqueId());
         if (guild.isEmpty()) {
             if (gPlayer.isEmpty() || !gPlayer.get().hasGuild()) {
                 if (Guilds.getEcon().has(Bukkit.getOfflinePlayer(player.getUniqueId()), getPlugin().getConfig().getDouble("settings.guild-cost"))) {
@@ -44,8 +44,8 @@ public class CreateGuild extends SubCommand {
     }
 
     private void createGuild(Player player, String name) {
-        getPlugin().getData().saveGuild(new GuildImp(player.getUniqueId(), name));
-        getPlugin().getData().savePlayer(new GPlayerImp(player.getUniqueId(), name, Role.LEADER));
+        getPlugin().getGuildsRepository().saveGuild(new GuildImp(player.getUniqueId(), name));
+        getPlugin().getGuildsRepository().savePlayer(new GPlayerImp(player.getUniqueId(), name, Role.LEADER));
         Message.send(getPlugin(), player, "create-guild");
     }
 }

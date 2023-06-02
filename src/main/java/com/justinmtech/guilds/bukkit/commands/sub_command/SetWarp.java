@@ -22,14 +22,14 @@ public class SetWarp extends SubCommand {
         Player player = (Player) getSender();
         try {
             String warpName = getArgs()[1];
-            Optional<Guild> guild = getPlugin().getData().getGuild(player.getUniqueId());
+            Optional<Guild> guild = getPlugin().getGuildsRepository().getGuild(player.getUniqueId());
             if (guild.isEmpty()) {
                 Message.send(getPlugin(), getSender(), "must-be-owner");
                 return;
             }
             if (guild.get().isOwner(player.getUniqueId())) {
                 Location loc = player.getLocation();
-                getPlugin().getData().saveWarp(warpName,
+                getPlugin().getGuildsRepository().saveWarp(warpName,
                         Objects.requireNonNull(loc.getWorld()).getName(),
                         loc.getX(), loc.getY(), loc.getZ(),
                         loc.getYaw(), loc.getPitch(),

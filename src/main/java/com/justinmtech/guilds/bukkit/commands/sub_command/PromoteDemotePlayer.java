@@ -28,7 +28,7 @@ public class PromoteDemotePlayer extends SubCommand {
     private boolean execute() {
         if (getSender() instanceof Player) {
             Player player = (Player) getSender();
-            Optional<Guild> guild = getPlugin().getData().getGuild(player.getUniqueId());
+            Optional<Guild> guild = getPlugin().getGuildsRepository().getGuild(player.getUniqueId());
             if (guild.isEmpty()) {
                 Message.send(getPlugin(), getSender(), "must-be-mod");
                 return false;
@@ -43,13 +43,13 @@ public class PromoteDemotePlayer extends SubCommand {
                 Message.send(getPlugin(), getSender(), "player-not-in-guild");
                 return false;
             }
-            Optional<GPlayer> targetGplayer = getPlugin().getData().getPlayer(target.getUniqueId());
+            Optional<GPlayer> targetGplayer = getPlugin().getGuildsRepository().getPlayer(target.getUniqueId());
 
             if (targetGplayer.isEmpty()) {
                 Message.send(getPlugin(), getSender(), "player-not-found");
                 return false;
             }
-            Optional<GPlayer> gplayer = getPlugin().getData().getPlayer(player.getUniqueId());
+            Optional<GPlayer> gplayer = getPlugin().getGuildsRepository().getPlayer(player.getUniqueId());
             if (gplayer.isEmpty()) {
                 Message.send(getPlugin(), getSender(), "must-be-mod");
                 return false;
@@ -63,8 +63,8 @@ public class PromoteDemotePlayer extends SubCommand {
             Map<UUID, Role> onlineMembers = guild.get().getOnlineMembers();
             if (newRole != null) {
                 guild.get().getMembers().put(target.getUniqueId(), newRole);
-                getPlugin().getData().savePlayer(targetGplayer.get());
-                getPlugin().getData().saveGuild(guild.get());
+                getPlugin().getGuildsRepository().savePlayer(targetGplayer.get());
+                getPlugin().getGuildsRepository().saveGuild(guild.get());
                 for (UUID uuid : onlineMembers.keySet()) {
                     Player onlineMember = Bukkit.getPlayer(uuid);
                     if (onlineMember != null) {

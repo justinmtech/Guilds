@@ -19,12 +19,12 @@ public class GetGuildInfo extends SubCommand {
     private void execute() {
         if (getArgs().length == 1) {
             String guildName = getArgs()[0];
-            Optional<Guild> guild = getPlugin().getData().getGuild(guildName);
+            Optional<Guild> guild = getPlugin().getGuildsRepository().getGuild(guildName);
             if (guild.isEmpty() || guild.get().getMembers().size() == 0)
                 Message.sendPlaceholder(getPlugin(), getSender(), "guild-not-found", getArgs()[0]);
             else Message.sendGuildInfo(getPlugin(), getSender(), "messages.guild-info", guild.get());
         } else if (getArgs().length == 0 && getSender() instanceof Player) {
-            Optional<Guild> guild = getPlugin().getData().getGuild(((Player) getSender()).getUniqueId());
+            Optional<Guild> guild = getPlugin().getGuildsRepository().getGuild(((Player) getSender()).getUniqueId());
             if (guild.isEmpty()) {
                 Message.sendHelp(getPlugin(), getSender(), "help", "guild");
             } else {
@@ -32,7 +32,7 @@ public class GetGuildInfo extends SubCommand {
             }
         } else if (getArgs().length == 1) {
             Player player = (Player) getSender();
-            Optional<Guild> guild = getPlugin().getData().getGuild(player.getUniqueId());
+            Optional<Guild> guild = getPlugin().getGuildsRepository().getGuild(player.getUniqueId());
             guild.ifPresent(value -> Message.sendGuildInfo(getPlugin(), getSender(), "messages.guild-info", value));
         }
     }

@@ -24,13 +24,13 @@ public class KickPlayer extends SubCommand {
             Player player = (Player) getSender();
 
             //ensure is player
-            Optional<GPlayer> gPlayer = getPlugin().getData().getPlayer(player.getUniqueId());
+            Optional<GPlayer> gPlayer = getPlugin().getGuildsRepository().getPlayer(player.getUniqueId());
             if (gPlayer.isEmpty()) {
                 Message.send(getPlugin(), getSender(), "not-in-guild");
                 return false;
             }
             //ensure player is in a guild
-            Optional<Guild> guild = getPlugin().getData().getGuild(player.getUniqueId());
+            Optional<Guild> guild = getPlugin().getGuildsRepository().getGuild(player.getUniqueId());
             if (guild.isEmpty()) {
                 Message.send(getPlugin(), getSender(), "not-in-guild");
                 return false;
@@ -43,7 +43,7 @@ public class KickPlayer extends SubCommand {
                 return false;
             }
 
-            Optional<GPlayer> targetPlayer = getPlugin().getData().getPlayer(target.getUniqueId());
+            Optional<GPlayer> targetPlayer = getPlugin().getGuildsRepository().getPlayer(target.getUniqueId());
 
 
             //ensure player is at least a mod
@@ -72,9 +72,9 @@ public class KickPlayer extends SubCommand {
 
             //kick the player
             guild.get().getMembers().remove(target.getUniqueId());
-            getPlugin().getData().saveGuild(guild.get());
+            getPlugin().getGuildsRepository().saveGuild(guild.get());
             targetPlayer.get().setGuildId(null);
-            getPlugin().getData().savePlayer(targetPlayer.get());
+            getPlugin().getGuildsRepository().savePlayer(targetPlayer.get());
             guild.get().getOnlineMembers().forEach((uuid, p) -> {
                 Player bukkitPlayer = Bukkit.getPlayer(uuid);
                 if (bukkitPlayer != null) {
