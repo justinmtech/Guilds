@@ -2,11 +2,14 @@ package com.justinmtech.guilds;
 
 import com.justinmtech.guilds.bukkit.commands.CommandHandler;
 import com.justinmtech.guilds.bukkit.commands.TabCompleter;
+import com.justinmtech.guilds.bukkit.gui.GuildGui;
+import com.justinmtech.guilds.bukkit.gui.GuildGuiImp;
 import com.justinmtech.guilds.bukkit.util.Placeholders;
 import com.justinmtech.guilds.persistence.GuildsRepository;
 import com.justinmtech.guilds.persistence.database.Database;
 import com.justinmtech.guilds.persistence.file.FileManager;
 import com.justinmtech.guilds.persistence.file.PlayerListener;
+import com.justinmtech.guilds.service.GuildServiceImp;
 import com.justinmtech.guilds.service.TransactionCache;
 import com.justinmtech.guilds.service.TransactionCacheImp;
 import net.milkbowl.vault.economy.Economy;
@@ -23,9 +26,11 @@ import java.util.Objects;
 import java.util.logging.Level;
 
 public final class Guilds extends JavaPlugin {
-    private GuildsRepository data;
+    private GuildsRepository guildsRepository;
+    private GuildServiceImp guildsService;
     private static Economy econ = null;
     private TransactionCache cache;
+    private GuildGui gui;
 
     public Guilds() {
         super();
@@ -48,8 +53,8 @@ public final class Guilds extends JavaPlugin {
         }
 
         if (!dbEnabled) {
-            data.loadAllData();
-            getServer().getPluginManager().registerEvents(new PlayerListener(data), this);
+            guildsRepository.loadAllData();
+            getServer().getPluginManager().registerEvents(new PlayerListener(guildsRepository), this);
             autoSaveTask();
         }
 
@@ -64,14 +69,17 @@ public final class Guilds extends JavaPlugin {
         cache = new TransactionCacheImp();
 
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            new Placeholders(getData()).register();
+            new Placeholders(getGuildsRepository()).register();
         }
+
+        gui = new GuildGuiImp(guildsRepository, getConfig());
+        guildsService = new GuildServiceImp(this);
         getLogger().log(Level.INFO, "Plugin enabled!");
     }
 
     @Override
     public void onDisable() {
-        data.saveAllData();
+        guildsRepository.saveAllData();
         getLogger().log(Level.INFO, "Plugin disabled!");
     }
 
@@ -79,7 +87,7 @@ public final class Guilds extends JavaPlugin {
         new BukkitRunnable() {
             @Override
             public void run() {
-                data.saveAllData();
+                guildsRepository.saveAllData();
                 getLogger().log(Level.INFO, "Auto-saved data.");
             }
         }.runTaskTimer(this, 6000L, 6000L);
@@ -101,7 +109,7 @@ public final class Guilds extends JavaPlugin {
     @SuppressWarnings("UnusedReturnValue")
     private boolean setupDatabase() {
         try {
-            data = new Database(
+            guildsRepository = new Database(
                     getConfig().getString("db.host"),
                     getConfig().getInt("db.port"),
                     getConfig().getString("db.username"),
@@ -120,7 +128,7 @@ public final class Guilds extends JavaPlugin {
     @SuppressWarnings("UnusedReturnValue")
     private boolean setupFilesystem() {
         try {
-            data = new FileManager(this);
+            guildsRepository = new FileManager(this);
             return true;
         } catch (Exception e) {
             getLogger().log(Level.SEVERE, "File system could not be initialized..");
@@ -133,11 +141,19 @@ public final class Guilds extends JavaPlugin {
         return econ;
     }
 
-    public GuildsRepository getData() {
-        return data;
+    public GuildsRepository getGuildsRepository() {
+        return guildsRepository;
     }
 
     public TransactionCache getCache() {
         return cache;
+    }
+
+    public GuildGui getGui() {
+        return gui;
+    }
+
+    public GuildServiceImp getGuildsService() {
+        return guildsService;
     }
 }

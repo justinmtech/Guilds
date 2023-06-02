@@ -16,8 +16,6 @@ class GuildTest {
     private static UUID testMember;
 
 
-
-
     @BeforeEach
     void init() {
         defaultGuild = new GuildImp(owner, "GuildName");

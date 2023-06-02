@@ -2,12 +2,16 @@ package com.justinmtech.guilds.bukkit.commands;
 
 import com.justinmtech.guilds.Guilds;
 import com.justinmtech.guilds.bukkit.commands.sub_command.*;
-import com.justinmtech.guilds.util.InputChecker;
 import com.justinmtech.guilds.bukkit.util.Message;
+import com.justinmtech.guilds.core.GPlayer;
+import com.justinmtech.guilds.util.InputChecker;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
+
+import java.util.Optional;
 
 public class CommandHandler implements CommandExecutor {
     private final Guilds plugin;
@@ -20,9 +24,13 @@ public class CommandHandler implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!command.getName().equalsIgnoreCase("guilds")) return false;
         if (sender instanceof ConsoleCommandSender) Message.sendHelp(plugin, sender, "help", label);
-        if (args.length == 0) {
-            guildInfo(sender, args, label);
-            return true;
+        if (args.length == 0 && sender instanceof Player player) {
+            Optional<GPlayer> gPlayer = plugin.getGuildsRepository().getPlayer(player.getUniqueId());
+            if (gPlayer.isPresent()) {
+                player.openInventory(plugin.getGui().getMainMenu(gPlayer.get()));
+                //guildInfo(sender, args, label);
+                return true;
+            }
         }
         parseSubCommand(sender, args, label);
         return true;
