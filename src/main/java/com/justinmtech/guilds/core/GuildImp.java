@@ -17,36 +17,43 @@ public class GuildImp implements Guild {
     private Map<UUID, Role> members;
     private Map<String, Warp> warps;
     private int level;
+    private String tag;
+
+    public static int MAX_TAG_LENGTH = 5;
+    public static int MAX_NAME_LENGTH = 16;
 
     public GuildImp(UUID owner, String name) {
         this.owner = owner;
-        this.name = name;
+        setName(name);
         this.members = new HashMap<>();
         members.put(owner, Role.LEADER);
         this.warps = new HashMap<>();
         this.description = "A new guild!";
         this.level = 1;
+        this.tag = name;
     }
 
     public GuildImp(String name) {
         this.owner = null;
-        this.name = name;
+        setName(name);
         this.members = new HashMap<>();
         //members.put(null, Role.LEADER);
         this.warps = new HashMap<>();
         this.description = "A new guild!";
         this.level = 1;
+        this.tag = name;
     }
 
-    public GuildImp(String name, UUID ownerId, String description, List<Object> memberObjects, Object warps, int level) {
+    public GuildImp(String name, String tag, UUID ownerId, String description, List<Object> memberObjects, Object warps, int level) {
         this.members = new HashMap<>();
         this.warps = new HashMap<>();
-        this.name = name;
+        setName(name);
         this.owner = ownerId;
         this.description = description;
         memberObjects.forEach(member -> _addMember((JSONObject) member));
         ((JSONArray) warps).forEach(warp -> _addWarps((JSONObject) warp));
         this.level = level;
+        this.tag = tag != null ? tag : name;
     }
 
     private void _addMember(JSONObject member) {
@@ -72,8 +79,26 @@ public class GuildImp implements Guild {
     }
 
     @Override
+    public String getTag() {
+        return tag;
+    }
+
+    @Override
+    public void setTag(String tag) {
+        if (tag.length() > MAX_TAG_LENGTH) {
+            this.tag  = tag.substring(0, MAX_TAG_LENGTH);
+        } else {
+            this.tag = tag;
+        }
+    }
+
+    @Override
     public void setName(String name) {
-        this.name = name;
+        if (name.length() > MAX_NAME_LENGTH) {
+            this.name = name.substring(0, MAX_NAME_LENGTH);
+        } else {
+            this.name = name;
+        }
     }
 
     @Override
@@ -218,6 +243,7 @@ public class GuildImp implements Guild {
         }
         json.put("warps", warpArray);
         json.put("level", level);
+        if (tag != null) json.put("tag", tag);
         return json.toString();
     }
 

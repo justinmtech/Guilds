@@ -6,6 +6,8 @@ import java.util.UUID;
 public interface Guild extends Comparable<Guild> {
 
     String getName();
+    String getTag();
+    void setTag(String tag);
     void setName(String name);
 
     UUID getOwner();

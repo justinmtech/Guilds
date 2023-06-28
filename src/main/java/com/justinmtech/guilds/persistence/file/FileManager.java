@@ -160,9 +160,10 @@ public class FileManager implements GuildsRepository {
         String description = (String) guild.getOrDefault("description", "No description set!");
         ArrayList<Object> members = (ArrayList<Object>) guild.getOrDefault("members", new ArrayList<>());
         ArrayList<Object> warps = (ArrayList<Object>) guild.getOrDefault("warps", new ArrayList<>());
+        String tag = (String) guild.getOrDefault("tag", name);
         long level = (long) guild.getOrDefault("level", 1);
 
-        GuildImp guildObject = new GuildImp(name, UUID.fromString(ownerId), description, members, warps, (int) level);
+        GuildImp guildObject = new GuildImp(name, tag, UUID.fromString(ownerId), description, members, warps, (int) level);
         _addMembers(members, name);
 
         getCache().addGuild(guildObject);
