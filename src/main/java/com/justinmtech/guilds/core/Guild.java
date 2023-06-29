@@ -39,4 +39,6 @@ public interface Guild extends Comparable<Guild> {
     int getMaxLevel();
     int getLevel();
     void setLevel(int level);
+
+    void sendChat(String message);
 }

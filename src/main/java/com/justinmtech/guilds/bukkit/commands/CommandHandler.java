@@ -17,17 +17,20 @@ public class CommandHandler implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!command.getName().equalsIgnoreCase("guilds")) return false;
+        if (!command.getName().equalsIgnoreCase("guilds") && !command.getName().equalsIgnoreCase("gc")) return false;
         if (sender instanceof ConsoleCommandSender) Message.sendHelp(plugin, sender, "help", label);
-        if (args.length == 0) {
+        if (args.length == 0 && command.getName().equalsIgnoreCase("guilds")) {
             guildInfo(sender, args, label);
             return true;
+        } else if (command.getName().equalsIgnoreCase("gc")) {
+            sendChat(sender, args, label, command.getName());
+            return true;
         }
-        parseSubCommand(sender, args, label);
+        if (command.getName().equalsIgnoreCase("guilds")) parseSubCommand(sender, args, label, command.getName());
         return true;
     }
 
-    private void parseSubCommand(CommandSender sender, String[] args, String label) {
+    private void parseSubCommand(CommandSender sender, String[] args, String label, String command) {
         if (args[0].equalsIgnoreCase("help")) Message.sendHelp(plugin, sender, "help", label);
         else if (args[0].equalsIgnoreCase("create")) {
             if (InputChecker.noSpecialCharacters(args)) {
@@ -64,7 +67,16 @@ public class CommandHandler implements CommandExecutor {
                 Message.send(plugin, sender, "no-special-characters");
             }
         }
+        else if (args[0].equalsIgnoreCase("chat") || args[0].equalsIgnoreCase("c")) {
+            sendChat(sender, args, label, command);
+        }
         else if (args.length == 1) guildInfo(sender, args, label);
+    }
+
+    private void sendChat(CommandSender sender, String[] args, String label, String command) {
+        if (command.equalsIgnoreCase("gc") && args.length >= 1) new Chat(plugin, sender, args);
+        else if (!command.equalsIgnoreCase("gc") && args.length >= 2) new Chat(plugin, sender, args);
+        else Message.sendPlaceholder(plugin, sender, "syntax.chat", label);
     }
 
     private void playerKick(CommandSender sender, String[] args, String label) {

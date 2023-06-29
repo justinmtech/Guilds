@@ -13,6 +13,13 @@ commands:
       - guild
       - guilds
       - g
+  gc:
+    description: Use guild chat.
+    usage: "/gc <message>"
+    aliases:
+      - gc
+      - gchat
+      - guildchat
 depend:
   - Vault
 softdepend:

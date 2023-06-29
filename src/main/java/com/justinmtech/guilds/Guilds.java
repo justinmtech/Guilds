@@ -25,6 +25,7 @@ public final class Guilds extends JavaPlugin {
     private GuildsRepository data;
     private static Economy econ = null;
     private TransactionCacheImp cache;
+    private CommandHandler commandHandler;
 
     public Guilds() {
         super();
@@ -52,7 +53,9 @@ public final class Guilds extends JavaPlugin {
             autoSaveTask();
         }
 
-        Objects.requireNonNull(this.getCommand("guilds")).setExecutor(new CommandHandler(this));
+        commandHandler = new CommandHandler(this);
+        Objects.requireNonNull(this.getCommand("guilds")).setExecutor(commandHandler);
+        Objects.requireNonNull(this.getCommand("gc")).setExecutor(commandHandler);
         Objects.requireNonNull(getCommand("guilds")).setTabCompleter(new TabCompleter(this));
 
         if (!setupEconomy()) {

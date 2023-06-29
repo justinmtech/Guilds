@@ -20,6 +20,8 @@ settings:
     level-8: 500000
     level-9: 1000000
     level-10: 2000000
+  chat:
+    format: "§a[GC] &f%player%&7: &a%message%"
 messages:
   create-guild: "&aYou created a new guild!"
   disband-guild: "&cYou disbanded your guild!"
@@ -68,6 +70,7 @@ messages:
   upgrade-insufficient-funds: "&cYou need at least %placeholder% to buy the next guild upgrade."
   guild-level-up: "&aYour guild is now level %placeholder%!"
   no-confirmation: "&cNo pending confirmation found.."
+  message-empty: "&cYou cannot send an empty message!"
   guild-info:
     header: "&8&m-------&r &6&l%placeholder% &8&m--------"
     leader: "&eLeader: &c%placeholder%"
@@ -99,6 +102,7 @@ messages:
     upgrade: "&cUsage: /%placeholder% upgrade"
     promote: "&cUsage: /%placeholder% <promote/demote> <player>"
     kick: "&cUsage: /%placeholder% kick <player>"
+    chat: "&cUsage: /%placeholder% <chat/c> <message>"
 
 help:
   header: "&6&lGuilds Help"

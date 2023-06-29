@@ -1,6 +1,7 @@
 package com.justinmtech.guilds.core;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -187,6 +188,16 @@ public class GuildImp implements Guild {
         } else {
             if (level < 1) this.level = 1;
             if (level > 10) this.level = 10;
+        }
+    }
+
+    @Override
+    public void sendChat(String message) {
+        for (UUID uuid : members.keySet()) {
+            Player player = Bukkit.getPlayer(uuid);
+            if (player != null) {
+                player.sendMessage(message);
+            }
         }
     }
 
