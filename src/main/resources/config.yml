@@ -31,6 +31,8 @@ messages:
   invite-accepted: "&aYou accepted an invite from %placeholder%!"
   invite-denied: "&cYou denied the invite from %placeholder%."
   set-warp: "&aYou set a warp: %placeholder%!"
+  set-tag: "&aYou set a new guild tag: %placeholder%!"
+  tag-too-long: "&cYour tag is too long! It must be less than %placeholder% characters."
   must-be-owner: "&cYou must be the owner of a guild to do this!"
   guild-not-found: "&c%placeholder% not found!"
   cannot-promote: "&cYou cannot promote this player any further!"
@@ -85,6 +87,7 @@ messages:
     disband: "&cUsage: /%placeholder% disband"
     warp: "&cUsage: /%placeholder% warp <warpName>"
     setwarp: "&Usage: /%placeholder% setwarp <warpName>"
+    settag: "&cUsage: /%placeholder% settag <tag>"
     invite: "&cUsage: /%placeholder% invite <player>"
     deny-invite: "&cUsage: /%placeholder% deny <guild>"
     accept-invite: "&cUsage: /%placeholder% accept <guild>"
@@ -109,5 +112,7 @@ help:
   line-8: "&e/%placeholder% list - List the top guilds"
   line-9: "&e/%placeholder% <guild> - View another guild"
   line-10: "&e/%placeholder% upgrade - Upgrade your guild"
+  line-11: "&e/%placeholder% promote/demote <player> - Promote or demote a player"
+  line-12: "&e/%placeholder% settag - Set your guild tag"
 
 

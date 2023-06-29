@@ -57,12 +57,24 @@ public class CommandHandler implements CommandExecutor {
         else if (args[0].equalsIgnoreCase("confirm")) guildConfirmUpgrade(sender, args, label);
         else if (args[0].equalsIgnoreCase("leave")) guildLeave(sender, args, label);
         else if (args[0].equalsIgnoreCase("accept")) guildAcceptInvite(sender, args, label);
+        else if (args[0].equalsIgnoreCase("settag")) {
+            if (InputChecker.noSpecialCharacters(args)) {
+                setTag(sender, args, label);
+            } else {
+                Message.send(plugin, sender, "no-special-characters");
+            }
+        }
         else if (args.length == 1) guildInfo(sender, args, label);
     }
 
     private void playerKick(CommandSender sender, String[] args, String label) {
         if (args.length == 2) new KickPlayer(plugin, sender, args);
         else Message.sendPlaceholder(plugin, sender, "syntax.kick", label);
+    }
+
+    private void setTag(CommandSender sender, String[] args, String label) {
+        if (args.length == 2) new SetTag(plugin, sender, args);
+        else Message.sendPlaceholder(plugin, sender, "syntax.settag", label);
     }
 
     private void guildPromote(CommandSender sender, String[] args, String label) {
